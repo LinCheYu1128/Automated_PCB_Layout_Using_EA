@@ -10,7 +10,7 @@
 
 ## Todo
 - [ ] 寫tree construction
--[x] 寫file input
+- [x] 寫file input
   * component
   * pin position
     * T501
