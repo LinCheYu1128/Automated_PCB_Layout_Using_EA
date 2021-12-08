@@ -10,6 +10,8 @@
 
 ## Todo
 - [ ] Binary tree class
+  * constructor
+  * plot tree
 - [x] File input class
   * component
   * pin position
