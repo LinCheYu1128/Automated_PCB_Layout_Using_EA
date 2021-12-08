@@ -1,27 +1,35 @@
 #ifndef TREENODE_H
 #define TREENODE_H
 
-#include "Data.h"
+#include "Component.h"
 
 class TreeNode {
     private:
         TreeNode* leftchild;
         TreeNode* rightchild;
         TreeNode* parent;
-        Data* data;
+        ComponentProperty* comp_prop;
+        ComponentState* comp_state;
 
     public:
         // constructor, destructor
-        TreeNode(Data* data);
+        TreeNode(ComponentProperty* comp_prop);
         ~TreeNode();
 
         // getter
-        void printTreeNode();
-
+        TreeNode* getLeftchild();
+        TreeNode* getRightchild();
+        TreeNode* getParent();
+        ComponentProperty* getComponentProp();
+        
         // setter
-        void setData(Data* data);
+        void setLeftchild(ComponentProperty* comp_prop);
+        void setRightchild(ComponentProperty* comp_prop);
+        void setParent(TreeNode* parent);
+        void setTreeNode(ComponentProperty* comp_prop);
         
         // printer
+        void printTreeNode();
 };
 
 #endif

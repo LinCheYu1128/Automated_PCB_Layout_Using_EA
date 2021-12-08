@@ -71,6 +71,16 @@ void ComponentProperty::setAllPinPosition(map<string, Point> pin_position) {
     }
 }
 
+void ComponentProperty::setAllInfo(ComponentProperty* comp_prop) {
+    setName(comp_prop->getName());
+    setColor(comp_prop->getColor());
+    setLength(comp_prop->getLength());
+    setWidth(comp_prop->getWidth());
+    setHeight(comp_prop->getHeight());
+    setVoltage(comp_prop->getVoltage());
+    setAllPinPosition(comp_prop->getPinPosition());
+}
+
 void ComponentProperty::printPinPosition() {
     auto iter = pin_position.begin();
     while (iter != pin_position.end()) {

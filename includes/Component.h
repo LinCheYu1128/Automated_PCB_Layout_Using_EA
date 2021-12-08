@@ -39,6 +39,7 @@ class ComponentProperty {
         void setVoltage(int voltage);
         void setPinPosition(string key, Point pin_position);
         void setAllPinPosition(map<string, Point> pin_position);
+        void setAllInfo(ComponentProperty* comp_prop);
         
         // printer
         void printPinPosition();

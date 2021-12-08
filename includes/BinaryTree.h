@@ -4,6 +4,7 @@
 #include "TreeNode.h"
 #include "Contour.h"
 #include "Component.h"
+#include "../includes/ComponentList.h"
 
 class BinaryTree {
     private:
@@ -12,15 +13,36 @@ class BinaryTree {
 
     public:
         // constructor, destructor
-        BinaryTree(ComponentProperty* comp_prop);
+        BinaryTree(ComponentList* comp_list);
         ~BinaryTree();
+        
+        // getter
+        TreeNode* getRoot();
+
+        // setter
+        
+        // printer
+        void printBinaryTree();
+        void plotBinaryTree();
+};
+
+class PlotBinaryTree {
+private:
+        BinaryTree* tree;
+
+    public:
+        // constructor, destructor
+        PlotBinaryTree(BinaryTree* tree);
+        ~PlotBinaryTree();
         
         // getter
         
         // setter
         
         // printer
-        void printBinaryTree();
+        void plotBinaryTree();
+        void plotBinaryTree(TreeNode* node);
+        void plotBinaryTree(string prefix, TreeNode* node, bool isLeft);
 };
 
 #endif

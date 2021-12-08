@@ -1,3 +1,3 @@
 Contour::Contour() {
-    cout << "build contour" << endl;
+    cout << "build contour successfully" << endl;
 }
