@@ -9,16 +9,16 @@
   * 找人review code
 
 ## Todo
-* 寫tree construction
-* 寫file input
+-[ ] 寫tree construction
+-[x] 寫file input
   * component
   * pin position
     * T501
     * M503
-* 寫GA
+-[ ] 寫GA
   * Crossover
   * Mutation
-* 寫Evaluation
+-[ ] 寫Evaluation
   * Area
   * PnS
   * WireLength
