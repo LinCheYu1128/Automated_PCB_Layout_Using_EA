@@ -9,7 +9,7 @@ BinaryTree::BinaryTree(ComponentList* comp_list) {
     root->getLeftchild()->setRightchild(comp_list->getData("Q504"));
     root->getLeftchild()->getLeftchild()->setRightchild(comp_list->getData("ZD501"));
     root->getLeftchild()->getRightchild()->setRightchild(comp_list->getData("R517"));
-    root->getRightchild()->setRightchild(comp_list->getData("C520"));
+    root->getRightchild()->setRightchild(comp_list->getData("L501"));
 
     cout << "construct tree successfully" << endl;
     contour = new Contour();
