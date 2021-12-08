@@ -9,16 +9,19 @@
   * 找人review code
 
 ## Todo
-- [ ] 寫tree construction
-- [x] 寫file input
+- [ ] Binary tree class
+- [x] File input class
   * component
   * pin position
     * T501
     * M503
-- [ ] 寫GA
+- [ ] GA class
   * Crossover
   * Mutation
-- [ ] 寫Evaluation
+- [ ] Evaluation class
+  * Contour
+    * Horizon contour
+    * Preplace contour
   * Area
   * PnS
   * WireLength
