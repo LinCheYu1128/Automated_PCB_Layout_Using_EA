@@ -7,6 +7,7 @@ BinaryTree::BinaryTree(ComponentList* comp_list) {
     root->setRightchild(comp_list->getData("D508"));
     root->getLeftchild()->setLeftchild(comp_list->getData("R532"));
     root->getLeftchild()->setRightchild(comp_list->getData("Q504"));
+    root->getLeftchild()->getLeftchild()->setRightchild(comp_list->getData("ZD501"));
     root->getLeftchild()->getRightchild()->setRightchild(comp_list->getData("R517"));
     root->getRightchild()->setRightchild(comp_list->getData("C520"));
 
