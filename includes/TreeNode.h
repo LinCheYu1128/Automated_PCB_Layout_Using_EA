@@ -5,6 +5,7 @@
 
 class TreeNode {
     private:
+        string branch;
         TreeNode* leftchild;
         TreeNode* rightchild;
         TreeNode* parent;
@@ -17,6 +18,7 @@ class TreeNode {
         ~TreeNode();
 
         // getter
+        string getBranch();
         TreeNode* getLeftchild();
         TreeNode* getRightchild();
         TreeNode* getParent();

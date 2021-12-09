@@ -48,7 +48,6 @@ class ComponentProperty {
 
 class ComponentState {
     private:
-        string branch;
         string side;
         int angle;
         double coor_X;
@@ -60,7 +59,6 @@ class ComponentState {
         ComponentState();
         ~ComponentState() {};
         // getter
-        string getBranch();
         string getSide();
         int getAngle();
         double getCoordX();

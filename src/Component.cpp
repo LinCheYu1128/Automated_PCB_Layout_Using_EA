@@ -87,16 +87,11 @@ void ComponentProperty::printPinPosition() {
 }
 
 ComponentState::ComponentState() {
-    branch = "";
     side = "";
     angle = 0;
     coor_X = 0;
     coor_Y = 0;
     margin = 0;
-}
-
-string ComponentState::getBranch() {
-    return branch;
 }
 
 string ComponentState::getSide() {

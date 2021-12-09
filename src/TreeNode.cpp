@@ -2,6 +2,7 @@
 
 // TreeNode::TreeNode(Data* data) {
 TreeNode::TreeNode(ComponentProperty* comp_prop) {
+    this->branch = "";
     this->parent = nullptr;
     this->leftchild = nullptr;
     this->rightchild = nullptr;
@@ -16,6 +17,10 @@ TreeNode::~TreeNode() {
     delete rightchild;
     delete comp_prop;
     delete comp_state;
+}
+
+string TreeNode::getBranch() {
+    return branch;
 }
 
 TreeNode* TreeNode::getLeftchild() {
@@ -58,7 +63,6 @@ void TreeNode::printTreeNode() {
     cout << "Component voltage: " << comp_prop->getVoltage() << endl;
     cout << "Component pin position: " << endl;
     comp_prop->printPinPosition();
-    cout << "Component branch: " << comp_state->getBranch() << endl;
     cout << "Component side: " << comp_state->getSide() << endl;
     cout << "Component angle: " << comp_state->getAngle() << endl;
     cout << "Component coor_X: " << comp_state->getCoordX() << endl;
