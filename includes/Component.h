@@ -50,8 +50,7 @@ class ComponentState {
     private:
         string side;
         int angle;
-        double coor_X;
-        double coor_Y;
+        Point position;
         double margin;
 
     public:
@@ -62,10 +61,9 @@ class ComponentState {
         // getter
         string getSide();
         int getAngle();
-        double getCoordX();
-        double getCoordY();
+        Point getPosition();
         double getMargin();
-        
+
         // setter
 
         // printer

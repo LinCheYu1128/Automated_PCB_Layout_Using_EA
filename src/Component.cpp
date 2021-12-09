@@ -89,8 +89,8 @@ void ComponentProperty::printPinPosition() {
 ComponentState::ComponentState() {
     side = "";
     angle = 0;
-    coor_X = 0;
-    coor_Y = 0;
+    position.x = 0;
+    position.y = 0;
     margin = 0;
 }
 
@@ -102,12 +102,8 @@ int ComponentState::getAngle() {
     return angle;
 }
 
-double ComponentState::getCoordX() {
-    return coor_X;
-}
-
-double ComponentState::getCoordY() {
-    return coor_Y;
+Point ComponentState::getPosition() {
+    return position;
 }
 
 double ComponentState::getMargin() {

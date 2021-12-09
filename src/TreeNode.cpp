@@ -65,7 +65,6 @@ void TreeNode::printTreeNode() {
     comp_prop->printPinPosition();
     cout << "Component side: " << comp_state->getSide() << endl;
     cout << "Component angle: " << comp_state->getAngle() << endl;
-    cout << "Component coor_X: " << comp_state->getCoordX() << endl;
-    cout << "Component coor_Y: " << comp_state->getCoordY() << endl;
+    cout << "Component coor_X: " << comp_state->getPosition().x << ", coor_Y: " << comp_state->getPosition().y << endl;
     cout << "Component margin: " << comp_state->getMargin() << endl;
 }
