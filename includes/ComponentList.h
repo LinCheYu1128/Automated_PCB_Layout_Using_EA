@@ -16,6 +16,7 @@ class ComponentList {
     public:
         // constructer, destructor
         ComponentList(Component_Info comp_info);
+        ~ComponentList();
         // getter
         ComponentProperty* getData(string comp_name);
         map<string, ComponentProperty*> getAllData();

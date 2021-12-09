@@ -5,6 +5,14 @@ ComponentList::ComponentList(Component_Info comp_info) {
     setAllData();
 }
 
+ComponentList::~ComponentList() {
+    auto iter = comp_data.begin();
+    while (iter != comp_data.end()) {
+        delete iter->second;
+        ++iter;
+    }
+}
+
 ComponentProperty* ComponentList::getData(string comp_name) {
     return comp_data[comp_name];
 }

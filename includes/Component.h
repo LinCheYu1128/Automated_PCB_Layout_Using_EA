@@ -19,7 +19,7 @@ class ComponentProperty {
     public:
         // constructor, destructor
         ComponentProperty();
-        ~ComponentProperty();
+        ~ComponentProperty() {};
 
         // getter
         string getName();
@@ -56,8 +56,9 @@ class ComponentState {
         double margin;
 
     public:
-        // constructor
+        // constructor, destructor
         ComponentState();
+        ~ComponentState() {};
         // getter
         string getBranch();
         string getSide();

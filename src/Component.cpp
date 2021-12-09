@@ -9,9 +9,6 @@ ComponentProperty::ComponentProperty() {
     voltage = 0;
 }
 
-ComponentProperty::~ComponentProperty() {
-}
-
 string ComponentProperty::getName() {
     return name;
 }

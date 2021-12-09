@@ -11,6 +11,13 @@ TreeNode::TreeNode(ComponentProperty* comp_prop) {
     this->setTreeNode(comp_prop);
 }
 
+TreeNode::~TreeNode() {
+    delete leftchild;
+    delete rightchild;
+    delete comp_prop;
+    delete comp_state;
+}
+
 TreeNode* TreeNode::getLeftchild() {
     return leftchild;
 }

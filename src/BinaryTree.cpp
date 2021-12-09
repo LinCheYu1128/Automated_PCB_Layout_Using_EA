@@ -15,15 +15,17 @@ BinaryTree::BinaryTree(ComponentList* comp_list) {
     contour = new Contour();
 }
 
+BinaryTree::~BinaryTree() {
+    delete root;
+    delete contour;
+}
+
 TreeNode* BinaryTree::getRoot() {
     return root;
 }
 
 void BinaryTree::printBinaryTree() {
-    root->printTreeNode();
-}
-
-void BinaryTree::plotBinaryTree() {
+    cout << "start print binary tree" << endl;
     PlotBinaryTree* plot_tree = new PlotBinaryTree(this);
     plot_tree->plotBinaryTree();
 }

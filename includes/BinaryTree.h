@@ -23,7 +23,6 @@ class BinaryTree {
         
         // printer
         void printBinaryTree();
-        void plotBinaryTree();
 };
 
 class PlotBinaryTree {

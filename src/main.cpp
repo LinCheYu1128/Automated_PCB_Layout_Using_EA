@@ -32,7 +32,5 @@ int main () {
     
     BinaryTree* tree = new BinaryTree(component_list);
     tree->printBinaryTree();
-    tree->plotBinaryTree();
-
     return 0;
 }
