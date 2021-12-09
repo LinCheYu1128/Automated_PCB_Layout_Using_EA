@@ -58,12 +58,14 @@ class ComponentState {
         // constructor, destructor
         ComponentState();
         ~ComponentState() {};
+
         // getter
         string getSide();
         int getAngle();
         double getCoordX();
         double getCoordY();
         double getMargin();
+        
         // setter
 
         // printer

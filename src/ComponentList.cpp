@@ -1,6 +1,6 @@
 #include "../includes/ComponentList.h"
 
-ComponentList::ComponentList(Component_Info comp_info) {
+ComponentList::ComponentList(Component_Path comp_info) {
     this->comp_info = comp_info;
     setAllData();
 }

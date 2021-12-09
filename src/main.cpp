@@ -14,7 +14,7 @@ using namespace std;
 
 // Function
 
-const Component_Info comp_info = {
+const Component_Path comp_info = {
     "component.csv",                    // component_csvfile
     ".\\resources\\",                   // component_relativePath
     ".\\resources\\pin position\\"      // pinPosition_relativePath
