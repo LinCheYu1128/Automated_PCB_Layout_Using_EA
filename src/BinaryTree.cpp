@@ -2,7 +2,21 @@
 #include <cwchar>
 
 BinaryTree::BinaryTree(ComponentList* comp_list) {
-    root = new TreeNode(comp_list->getData("T501"));
+    this->root = setBinaryTree(comp_list);
+    this->contour = new Contour();
+}
+
+BinaryTree::~BinaryTree() {
+    delete this->root;
+    delete this->contour;
+}
+
+TreeNode* BinaryTree::getRoot() {
+    return this->root;
+}
+
+TreeNode* BinaryTree::setBinaryTree(ComponentList* comp_list) {
+    TreeNode* root = new TreeNode(comp_list->getData("T501"));
     root->setLeftchild(comp_list->getData("M503"));
     root->setRightchild(comp_list->getData("D508"));
     root->getLeftchild()->setLeftchild(comp_list->getData("R532"));
@@ -12,15 +26,6 @@ BinaryTree::BinaryTree(ComponentList* comp_list) {
     root->getRightchild()->setRightchild(comp_list->getData("L501"));
 
     cout << "construct tree successfully" << endl;
-    contour = new Contour();
-}
-
-BinaryTree::~BinaryTree() {
-    delete root;
-    delete contour;
-}
-
-TreeNode* BinaryTree::getRoot() {
     return root;
 }
 
@@ -37,7 +42,7 @@ PlotBinaryTree::PlotBinaryTree(BinaryTree* tree) {
 }
 
 void PlotBinaryTree::plotBinaryTree() {
-    plotBinaryTree(tree->getRoot());
+    plotBinaryTree(this->tree->getRoot());
 }
 
 void PlotBinaryTree::plotBinaryTree(TreeNode* node) {

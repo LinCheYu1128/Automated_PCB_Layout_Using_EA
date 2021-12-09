@@ -20,7 +20,8 @@ class BinaryTree {
         TreeNode* getRoot();
 
         // setter
-        
+        TreeNode* setBinaryTree(ComponentList* comp_list);
+
         // printer
         void printBinaryTree();
 };
