@@ -44,7 +44,7 @@ void ComponentList::setPinPosition(string comp_name) {
         point.x = stod(temp);
         getline(inFile, temp, '\n' );
         point.y = stod(temp);
-        comp_data[comp_name]->setPinPosition(key, point);
+        comp_data[comp_name]->setOneDefaultPinPosition(key, point);
     }
 }
 
@@ -81,7 +81,7 @@ void ComponentList::printData(string comp_name) {
          << ", height:" << comp_data[comp_name]->getHeight()
          << ", voltage:" << comp_data[comp_name]->getVoltage()
          << " ]" << endl;
-         comp_data[comp_name]->printPinPosition();
+         comp_data[comp_name]->printDefaultPinPosition();
 }
 
 void ComponentList::printAllData() {
@@ -94,7 +94,7 @@ void ComponentList::printAllData() {
              << ", height:" << iter->second->getHeight()
              << ", voltage:" << iter->second->getVoltage()
              << " ]" << endl;
-        iter->second->printPinPosition();
+        iter->second->printDefaultPinPosition();
         ++iter;
     }
 }

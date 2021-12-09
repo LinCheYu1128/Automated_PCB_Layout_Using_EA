@@ -61,8 +61,8 @@ void TreeNode::printTreeNode() {
     cout << "Component width: " << comp_prop->getWidth() << endl;
     cout << "Component height: " << comp_prop->getHeight() << endl;
     cout << "Component voltage: " << comp_prop->getVoltage() << endl;
-    cout << "Component pin position: " << endl;
-    comp_prop->printPinPosition();
+    cout << "Component default pin position: " << endl;
+    comp_prop->printDefaultPinPosition();
     cout << "Component side: " << comp_state->getSide() << endl;
     cout << "Component angle: " << comp_state->getAngle() << endl;
     cout << "Component coor_X: " << comp_state->getPosition().x << ", coor_Y: " << comp_state->getPosition().y << endl;

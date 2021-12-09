@@ -14,7 +14,7 @@ class ComponentProperty {
         double width;
         double height;
         int voltage;
-        map<string, Point> pin_position;
+        map<string, Point> default_pin_position;
 
     public:
         // constructor, destructor
@@ -28,7 +28,7 @@ class ComponentProperty {
         double getWidth();
         double getHeight();
         int getVoltage();
-        map<string, Point> getPinPosition();
+        map<string, Point> getDefaultPinPosition();
 
         // setter
         void setName(string name);
@@ -37,12 +37,12 @@ class ComponentProperty {
         void setWidth(double width);
         void setHeight(double height);
         void setVoltage(int voltage);
-        void setPinPosition(string key, Point pin_position);
-        void setAllPinPosition(map<string, Point> pin_position);
+        void setOneDefaultPinPosition(string key, Point one_pin_position);
+        void setAllDefaultPinPosition(map<string, Point> all_pin_position);
         void setAllInfo(ComponentProperty* comp_prop);
         
         // printer
-        void printPinPosition();
+        void printDefaultPinPosition();
 };
 
 
@@ -52,6 +52,7 @@ class ComponentState {
         int angle;
         Point position;
         double margin;
+        map<string, Point> pin_position;
 
     public:
         // constructor, destructor
@@ -63,7 +64,7 @@ class ComponentState {
         int getAngle();
         Point getPosition();
         double getMargin();
-
+        map<string, Point> getPinPosition();
         // setter
 
         // printer
