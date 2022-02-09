@@ -2,6 +2,9 @@
 #define TREENODE_H
 
 #include "Component.h"
+#include <iostream>
+#include <map>
+using namespace std;
 
 class TreeNode {
     private:

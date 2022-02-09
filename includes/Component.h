@@ -1,6 +1,10 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include <iostream>
+#include <map>
+using namespace std;
+
 typedef struct Point {
     double x;
     double y;

@@ -6,18 +6,18 @@
 using namespace std;
 
 // Class
-#include "BinaryTree.cpp"
-#include "Contour.cpp"
-#include "TreeNode.cpp"
-#include "Component.cpp"
-#include "ComponentList.cpp"
+#include "BinaryTree.h"
+// #include "Contour.h"
+// #include "TreeNode.h"
+// #include "Component.h"
+#include "ComponentList.h"
 
 // Function
 
 const Component_Path comp_info = {
     "component.csv",                    // component_csvfile
-    ".\\resources\\",                   // component_relativePath
-    ".\\resources\\pin position\\"      // pinPosition_relativePath
+    "..\\resources\\",                   // component_relativePath
+    "..\\resources\\pin position\\"      // pinPosition_relativePath
 };
 
 int main () {

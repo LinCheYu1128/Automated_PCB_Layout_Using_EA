@@ -1,7 +1,12 @@
-#ifndef UTILITY_H
-#define UTILITY_H
+#ifndef COMPONENTLIST_H
+#define COMPONENTLIST_H
 
 #include "Component.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
 
 typedef struct Component_Path {
     string component_csvfile;

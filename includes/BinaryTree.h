@@ -4,7 +4,7 @@
 #include "TreeNode.h"
 #include "Contour.h"
 #include "Component.h"
-#include "../includes/ComponentList.h"
+#include "ComponentList.h"
 
 class BinaryTree {
     private:
@@ -25,24 +25,4 @@ class BinaryTree {
         // printer
         void printBinaryTree();
 };
-
-class PlotBinaryTree {
-private:
-        BinaryTree* tree;
-
-    public:
-        // constructor, destructor
-        PlotBinaryTree(BinaryTree* tree);
-        ~PlotBinaryTree();
-        
-        // getter
-        
-        // setter
-        
-        // printer
-        void plotBinaryTree();
-        void plotBinaryTree(TreeNode* node);
-        void plotBinaryTree(string prefix, TreeNode* node, bool isLeft);
-};
-
 #endif

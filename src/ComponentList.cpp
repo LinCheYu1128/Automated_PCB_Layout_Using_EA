@@ -1,8 +1,13 @@
 #include "../includes/ComponentList.h"
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <map>
+using namespace std;
 
 ComponentList::ComponentList(Component_Path comp_info) {
     this->comp_info = comp_info;
-    setAllData();
+    this->setAllData();
 }
 
 ComponentList::~ComponentList() {
@@ -14,15 +19,15 @@ ComponentList::~ComponentList() {
 }
 
 ComponentProperty* ComponentList::getData(string comp_name) {
-    return comp_data[comp_name];
+    return this->comp_data[comp_name];
 }
 
 map<string, ComponentProperty*> ComponentList::getAllData() {
-    return comp_data;
+    return this->comp_data;
 }
 
 void ComponentList::setData(string comp_name, ComponentProperty* comp_prop) {
-    comp_data[comp_name] = comp_prop;
+    this->comp_data[comp_name] = comp_prop;
 }
 
 void ComponentList::setPinPosition(string comp_name) {
@@ -68,20 +73,20 @@ void ComponentList::setAllData() {
         getline(inFile, temp, '\n' );
         comp_prop->setVoltage(stod(temp));
 
-        setData(comp_prop->getName(), comp_prop);
-        setPinPosition(comp_prop->getName());
+        this->setData(comp_prop->getName(), comp_prop);
+        this->setPinPosition(comp_prop->getName());
     }
 }
 
 void ComponentList::printData(string comp_name) {
-    cout << "[ component " << comp_data[comp_name] << " | "
-         << "name: " << comp_data[comp_name]->getName()
-         << ", length:" << comp_data[comp_name]->getLength()
-         << ", width:" << comp_data[comp_name]->getWidth()
-         << ", height:" << comp_data[comp_name]->getHeight()
-         << ", voltage:" << comp_data[comp_name]->getVoltage()
+    cout << "[ component " << this->comp_data[comp_name] << " | "
+         << "name: " << this->comp_data[comp_name]->getName()
+         << ", length:" << this->comp_data[comp_name]->getLength()
+         << ", width:" << this->comp_data[comp_name]->getWidth()
+         << ", height:" << this->comp_data[comp_name]->getHeight()
+         << ", voltage:" << this->comp_data[comp_name]->getVoltage()
          << " ]" << endl;
-         comp_data[comp_name]->printDefaultPinPosition();
+         this->comp_data[comp_name]->printDefaultPinPosition();
 }
 
 void ComponentList::printAllData() {

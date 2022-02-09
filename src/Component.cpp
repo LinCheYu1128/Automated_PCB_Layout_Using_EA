@@ -1,12 +1,17 @@
 #include "../includes/Component.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
 
 ComponentProperty::ComponentProperty() {
-    name = "";
-    color = "";
-    length = 0;
-    width = 0;
-    height = 0;
-    voltage = 0;
+    this->name = "";
+    this->color = "";
+    this->length = 0;
+    this->width = 0;
+    this->height = 0;
+    this->voltage = 0;
 }
 
 string ComponentProperty::getName() {
