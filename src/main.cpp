@@ -20,7 +20,7 @@ int main () {
     component_list->printData("T501");
     
     BinaryTree* tree = new BinaryTree(component_list);
-    tree->setSingleSide();
+    tree->setDoubleSide();
     tree->printBinaryTree();
 
     return 0;
