@@ -16,7 +16,8 @@ typedef struct Component_Path {
 
 class ComponentList {
     private:
-        map<string, ComponentProperty*> comp_data;
+        map<string, ComponentProperty*> comp_data_dictionary;
+        vector<ComponentProperty*> comp_data_vector;
         Component_Path comp_info;
     public:
         // constructer, destructor
@@ -25,7 +26,8 @@ class ComponentList {
         
         // getter
         int getSize();
-        ComponentProperty* getData(string comp_name);
+        ComponentProperty* getDataByName(string comp_name);
+        ComponentProperty* getDataByIndex(int index);
         map<string, ComponentProperty*> getAllData();
         
         // setter

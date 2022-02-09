@@ -22,7 +22,7 @@ class BinaryTree {
         TreeNode* getRoot();
 
         // setter
-        TreeNode* setBinaryTree(ComponentList* comp_list);
+        void setBinaryTree();
         void setSingleSide();
         void setDoubleSide();
 

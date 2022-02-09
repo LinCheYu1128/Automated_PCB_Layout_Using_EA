@@ -8,7 +8,9 @@ PlotBinaryTree::PlotBinaryTree(BinaryTree* tree) {
 }
 
 void PlotBinaryTree::plotBinaryTree() {
+    cout << endl;
     this->plotBinaryTree(this->tree->getRoot());
+    cout << endl;
 }
 
 void PlotBinaryTree::plotBinaryTree(TreeNode* node) {

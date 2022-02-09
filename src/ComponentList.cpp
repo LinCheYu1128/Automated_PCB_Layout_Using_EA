@@ -11,27 +11,32 @@ ComponentList::ComponentList(Component_Path comp_info) {
 }
 
 ComponentList::~ComponentList() {
-    auto iter = comp_data.begin();
-    while (iter != comp_data.end()) {
+    auto iter = comp_data_dictionary.begin();
+    while (iter != comp_data_dictionary.end()) {
         delete iter->second;
         ++iter;
     }
 }
 
 int ComponentList::getSize() {
-    return this->comp_data.size();
+    return this->comp_data_dictionary.size();
 }
 
-ComponentProperty* ComponentList::getData(string comp_name) {
-    return this->comp_data[comp_name];
+ComponentProperty* ComponentList::getDataByName(string comp_name) {
+    return this->comp_data_dictionary[comp_name];
+}
+
+ComponentProperty* ComponentList::getDataByIndex(int index) {
+    return this->comp_data_vector[index];
 }
 
 map<string, ComponentProperty*> ComponentList::getAllData() {
-    return this->comp_data;
+    return this->comp_data_dictionary;
 }
 
 void ComponentList::setData(string comp_name, ComponentProperty* comp_prop) {
-    this->comp_data[comp_name] = comp_prop;
+    this->comp_data_dictionary[comp_name] = comp_prop;
+    comp_data_vector.push_back(comp_prop);
 }
 
 void ComponentList::setPinPosition(string comp_name) {
@@ -53,7 +58,7 @@ void ComponentList::setPinPosition(string comp_name) {
         point.x = stod(temp);
         getline(inFile, temp, '\n' );
         point.y = stod(temp);
-        comp_data[comp_name]->setOneDefaultPinPosition(key, point);
+        comp_data_dictionary[comp_name]->setOneDefaultPinPosition(key, point);
     }
 }
 
@@ -83,19 +88,19 @@ void ComponentList::setAllData() {
 }
 
 void ComponentList::printData(string comp_name) {
-    cout << "[ component " << this->comp_data[comp_name] << " | "
-         << "name: " << this->comp_data[comp_name]->getName()
-         << ", length:" << this->comp_data[comp_name]->getLength()
-         << ", width:" << this->comp_data[comp_name]->getWidth()
-         << ", height:" << this->comp_data[comp_name]->getHeight()
-         << ", voltage:" << this->comp_data[comp_name]->getVoltage()
+    cout << "[ component " << comp_name << " | "
+         << "name: " << this->comp_data_dictionary[comp_name]->getName()
+         << ", length:" << this->comp_data_dictionary[comp_name]->getLength()
+         << ", width:" << this->comp_data_dictionary[comp_name]->getWidth()
+         << ", height:" << this->comp_data_dictionary[comp_name]->getHeight()
+         << ", voltage:" << this->comp_data_dictionary[comp_name]->getVoltage()
          << " ]" << endl;
-         this->comp_data[comp_name]->printDefaultPinPosition();
+         this->comp_data_dictionary[comp_name]->printDefaultPinPosition();
 }
 
 void ComponentList::printAllData() {
-    auto iter = comp_data.begin();
-    while (iter != comp_data.end()) {
+    auto iter = comp_data_dictionary.begin();
+    while (iter != comp_data_dictionary.end()) {
         cout << "[ component " << iter->first << " | "
              << "name: " << iter->second->getName()
              << ", length:" << iter->second->getLength()
