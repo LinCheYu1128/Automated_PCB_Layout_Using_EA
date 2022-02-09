@@ -24,6 +24,7 @@ class ComponentList {
         ~ComponentList();
         
         // getter
+        int getSize();
         ComponentProperty* getData(string comp_name);
         map<string, ComponentProperty*> getAllData();
         

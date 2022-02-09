@@ -18,6 +18,10 @@ ComponentList::~ComponentList() {
     }
 }
 
+int ComponentList::getSize() {
+    return this->comp_data.size();
+}
+
 ComponentProperty* ComponentList::getData(string comp_name) {
     return this->comp_data[comp_name];
 }

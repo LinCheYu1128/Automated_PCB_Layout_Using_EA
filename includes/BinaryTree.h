@@ -8,6 +8,8 @@
 
 class BinaryTree {
     private:
+        int side;   // 0: single side, 1: double side
+        ComponentList* comp_list;
         TreeNode* root;
         Contour* contour;
 
@@ -21,6 +23,8 @@ class BinaryTree {
 
         // setter
         TreeNode* setBinaryTree(ComponentList* comp_list);
+        void setSingleSide();
+        void setDoubleSide();
 
         // printer
         void printBinaryTree();
