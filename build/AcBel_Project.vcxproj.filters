@@ -1,28 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Layout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\BinaryTree\BinaryTree.cpp">
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Placement\BinaryTree\BinaryTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\BinaryTree\PlotBinaryTree.cpp">
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Placement\BinaryTree\PlotBinaryTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\BinaryTree\TreeNode.cpp">
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Placement\BinaryTree\TreeNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Contour.cpp">
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Placement\Contour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Component.cpp">
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Placement\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\ComponentList.cpp">
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Placement\ComponentList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\main.cpp">
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Routing\Net.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
