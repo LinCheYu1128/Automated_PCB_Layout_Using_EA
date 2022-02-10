@@ -1,9 +1,6 @@
 #include "BinaryTree.h"
 #include "ComponentList.h"
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include <map>
 #include <ctime>
 using namespace std;
 
