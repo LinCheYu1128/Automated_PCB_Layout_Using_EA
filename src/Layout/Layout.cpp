@@ -16,11 +16,8 @@ Layout::~Layout() {
 
 void Layout::setComponent(string side) {
     this->tree = new BinaryTree(this->comp_list);
-    if (side == "single") {
-        this->tree->setSingleSide();
-    } else if (side == "double") {
-        this->tree->setDoubleSide();
-    }
+    if (side == "single") { this->tree->setSingleSide(); }
+    if (side == "double") { this->tree->setDoubleSide(); }
 }
 
 void Layout::setContour() {

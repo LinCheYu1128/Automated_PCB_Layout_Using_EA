@@ -28,6 +28,9 @@
     <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Routing\Net.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\GA\Generation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\CMakeLists.txt" />
