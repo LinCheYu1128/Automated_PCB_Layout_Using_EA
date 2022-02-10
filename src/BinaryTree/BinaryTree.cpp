@@ -23,20 +23,6 @@ TreeNode* BinaryTree::getRoot() {
     return this->root;
 }
 
-void BinaryTree::setBinaryTree() {
-    this->root = new TreeNode(this->comp_list->getDataByName("T501"));
-    this->root->setLeftchild(this->comp_list->getDataByName("M503"));
-    this->root->setRightchild(this->comp_list->getDataByName("D508"));
-    this->root->getLeftchild()->setLeftchild(this->comp_list->getDataByName("R532"));
-    this->root->getLeftchild()->setRightchild(this->comp_list->getDataByName("Q504"));
-    this->root->getLeftchild()->getLeftchild()->setRightchild(this->comp_list->getDataByName("ZD501"));
-    this->root->getLeftchild()->getRightchild()->setRightchild(this->comp_list->getDataByName("R517"));
-    this->root->getRightchild()->setRightchild(this->comp_list->getDataByName("L501"));
-
-    cout << "construct tree successfully" << endl;
-    // return root;
-}
-
 void BinaryTree::setSingleSide() {
     this->side = 0;
     vector<int> comp_list_index(this->comp_list->getSize()-3);
