@@ -309,12 +309,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\BinaryTree\BinaryTree.cpp" />
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\BinaryTree\PlotBinaryTree.cpp" />
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Layout.cpp" />
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\BinaryTree\BinaryTree.cpp" />
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\BinaryTree\PlotBinaryTree.cpp" />
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\BinaryTree\TreeNode.cpp" />
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Contour.cpp" />
     <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Component.cpp" />
     <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\ComponentList.cpp" />
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Contour.cpp" />
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\TreeNode.cpp" />
     <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

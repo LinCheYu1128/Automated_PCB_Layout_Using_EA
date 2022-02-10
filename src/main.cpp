@@ -1,4 +1,4 @@
-#include "BinaryTree.h"
+#include "Layout.h"
 #include "ComponentList.h"
 #include <iostream>
 #include <ctime>
@@ -14,13 +14,8 @@ int main () {
     srand((unsigned)time(0));
     
     ComponentList* component_list = new ComponentList(comp_info);
-    // component_list->printData("T501");   // test log component data
-    
-    BinaryTree* tree = new BinaryTree(component_list);
-    tree->setSingleSide();  // single side
-    // tree->setDoubleSide();  // double side
-    
-    tree->printBinaryTree();
+    Layout* layout = new Layout(component_list, "double");
+    layout->printComponent();
 
     return 0;
 }

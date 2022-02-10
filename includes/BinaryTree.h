@@ -8,10 +8,9 @@
 
 class BinaryTree {
     private:
-        int side;   // 0: single side, 1: double side
+        int side;
         ComponentList* comp_list;
         TreeNode* root;
-        Contour* contour;
 
     public:
         // constructor, destructor

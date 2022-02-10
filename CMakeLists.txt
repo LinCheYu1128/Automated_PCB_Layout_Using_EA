@@ -5,12 +5,13 @@ project(AcBel_Project)
 
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
-    src/BinaryTree/BinaryTree.cpp
-    src/BinaryTree/PlotBinaryTree.cpp
+    src/Layout/Layout.cpp
+    src/Layout/BinaryTree/BinaryTree.cpp
+    src/Layout/BinaryTree/PlotBinaryTree.cpp
+    src/Layout/BinaryTree/TreeNode.cpp
+    src/Layout/Contour.cpp
     src/Component.cpp
     src/ComponentList.cpp
-    src/Contour.cpp
-    src/TreeNode.cpp
     src/main.cpp
 )
 
