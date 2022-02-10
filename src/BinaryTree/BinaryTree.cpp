@@ -47,12 +47,11 @@ void BinaryTree::setSingleSide() {
 
     random_shuffle(comp_list_index.begin(), comp_list_index.end());
 
-    int branch_dir = 0;
-    int selected_pos = 0;
+    int parent_pos = 0;
     int existed_nodes_num = 0;
     ComponentProperty* new_comp;
-    TreeNode* selected_node;
-    TreeNode* new_node;
+    TreeNode* parent_node;
+    TreeNode* child_node;
     vector<TreeNode*> existed_nodes;
 
     for (int i = 0; i < comp_list_index.size(); i++) {
@@ -65,12 +64,11 @@ void BinaryTree::setSingleSide() {
             continue;
         }
         // left & right branch
-        branch_dir = rand() % 2;
-        selected_pos = rand() % existed_nodes_num;
-        selected_node = existed_nodes[selected_pos];
-        new_node = random_select_node(branch_dir, selected_node, new_comp);
+        parent_pos = rand() % existed_nodes_num;
+        parent_node = existed_nodes[parent_pos];
+        child_node = random_select_node(parent_node, new_comp);
         existed_nodes_num += 1;
-        existed_nodes.push_back(new_node);
+        existed_nodes.push_back(child_node);
     }
     cout << "construct single side tree successfully" << endl;
 }
@@ -85,12 +83,11 @@ void BinaryTree::setDoubleSide() {
 
     random_shuffle(comp_list_index.begin()+3, comp_list_index.end());
 
-    int branch_dir = 0;
-    int selected_pos = 0;
+    int parent_pos = 0;
     int existed_nodes_num = 0;
     ComponentProperty* new_comp;
-    TreeNode* selected_node;
-    TreeNode* new_node;
+    TreeNode* parent_node;
+    TreeNode* child_node;
     vector<TreeNode*> existed_nodes;
 
     for (int i = 0; i < comp_list_index.size(); i++) {
@@ -117,12 +114,13 @@ void BinaryTree::setDoubleSide() {
             continue;
         }
         // left & right branch
-        branch_dir = rand() % 2;
-        selected_pos = rand() % existed_nodes_num;
-        selected_node = existed_nodes[selected_pos];
-        new_node = random_select_node(branch_dir, selected_node, new_comp);
+        parent_pos = rand() % existed_nodes_num;
+        parent_node = existed_nodes[parent_pos];
+        cout << "parent_node: " << parent_node->getComponentProp()->getName() << endl;
+        child_node = random_select_node(parent_node, new_comp);
+        cout << "child_node: " << child_node->getComponentProp()->getName() << endl;
         existed_nodes_num += 1;
-        existed_nodes.push_back(new_node);
+        existed_nodes.push_back(child_node);
     }
     cout << "construct double side tree successfully" << endl;
 }
@@ -133,41 +131,32 @@ void BinaryTree::printBinaryTree() {
     plot_tree->plotBinaryTree();
 }
 
-TreeNode* random_select_node(int branch_dir, TreeNode* selected_node, ComponentProperty* new_comp) {
-    TreeNode* new_node;
-    if (branch_dir == 0) {
-        while (selected_node->getLeftchild() != nullptr) {
-            int rand_branch = rand() % 2;
-            if (rand_branch == 0) {
-                selected_node = selected_node->getLeftchild();
-            } else {
-                if (selected_node->getRightchild() != nullptr) {
-                    selected_node = selected_node->getRightchild();
-                } else {
-                    selected_node = selected_node->getLeftchild();
-                }
-            }
-        }
-        selected_node->setLeftchild(new_comp);
-        selected_node->getLeftchild()->setParent(selected_node);
-        new_node = selected_node->getLeftchild();
-    } else {
-        while (selected_node->getRightchild() != nullptr) {
-            int rand_branch = rand() % 2;
-            if (rand_branch == 0) {
-                if (selected_node->getLeftchild() != nullptr) {
-                    selected_node = selected_node->getLeftchild();
-                } else {
-                    selected_node = selected_node->getRightchild();
-                }
-            } else {
-                selected_node = selected_node->getRightchild();
-            }
-        }
-        selected_node->setRightchild(new_comp);
-        selected_node->getRightchild()->setParent(selected_node);
-        new_node = selected_node->getRightchild();
-    }
+TreeNode* random_select_node(TreeNode* parent_node, ComponentProperty* new_comp) {
+    int branch_dir;
+    TreeNode* child_node;
+    vector<TreeNode*> successors;
+    successors.push_back(parent_node->getLeftchild());
+    successors.push_back(parent_node->getRightchild());
 
-    return new_node;
+    while (true) {
+        branch_dir = rand() % 2;
+        if (successors[branch_dir] == nullptr) {
+            if (branch_dir == 0) {
+                parent_node->setLeftchild(new_comp);
+                parent_node->getLeftchild()->setParent(parent_node);
+                child_node = parent_node->getLeftchild();
+                break;
+            } else {
+                parent_node->setRightchild(new_comp);
+                parent_node->getRightchild()->setParent(parent_node);
+                child_node = parent_node->getRightchild();
+                break;
+            }
+        }
+        parent_node = successors[branch_dir];
+        successors[0] = parent_node->getLeftchild();
+        successors[1] = parent_node->getRightchild();
+    }
+    
+    return child_node;
 }

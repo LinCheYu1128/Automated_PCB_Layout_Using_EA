@@ -30,6 +30,6 @@ class BinaryTree {
         void printBinaryTree();
 };
 
-TreeNode* random_select_node(int branch_dir, TreeNode* selected_node, ComponentProperty* new_comp);
+TreeNode* random_select_node(TreeNode* selected_node, ComponentProperty* new_comp);
 
 #endif
