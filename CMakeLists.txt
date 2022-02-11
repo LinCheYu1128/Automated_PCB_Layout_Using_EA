@@ -20,6 +20,8 @@ set(SOURCES
     # GA
     src/GA/GA.cpp
     src/GA/GA_Parameter.cpp
+    src/GA/Crossover/Crossover.cpp
+    src/GA/Mutation/Mutation.cpp
 )
 
 # Add an executable with the above sources
