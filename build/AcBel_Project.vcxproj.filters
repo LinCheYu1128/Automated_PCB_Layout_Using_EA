@@ -28,7 +28,10 @@
     <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\Layout\Routing\Net.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\GA\Generation.cpp">
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\GA\GA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\GA\GA_Parameter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

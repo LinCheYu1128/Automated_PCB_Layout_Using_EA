@@ -53,6 +53,12 @@
         "tuple": "cpp",
         "fstream": "cpp",
         "map": "cpp",
-        "ctime": "cpp"
+        "ctime": "cpp",
+        "ga_parameter": "c",
+        "layout.h": "c",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "numeric": "cpp",
+        "random": "cpp"
     }
 }

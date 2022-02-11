@@ -18,7 +18,8 @@ set(SOURCES
     # Layout -> Routing
     src/Layout/Routing/Net.cpp
     # GA
-    src/GA/Generation.cpp
+    src/GA/GA.cpp
+    src/GA/GA_Parameter.cpp
 )
 
 # Add an executable with the above sources
