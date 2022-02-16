@@ -11,8 +11,6 @@ int main () {
 
     cout << "complete GA_optimizer" << endl;
 
-    cout << "Hi" << endl;
-
     delete GA_optimizer;
 
     return 0;
