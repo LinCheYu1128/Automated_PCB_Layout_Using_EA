@@ -41,7 +41,7 @@
 
 ## Git Message
 - create / modify / move / rename / remove
-- <function> / <class> / <.cpp> / <.h>
+- function / class / .cpp / .h
 
 ## How To Compile
 - cd .\build
