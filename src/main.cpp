@@ -12,7 +12,7 @@ int main () {
     cout << "complete GA_optimizer" << endl;
 
     cout << "Hello we are testing git pull upstream" << endl;
-
+    
     delete GA_optimizer;
 
     return 0;
