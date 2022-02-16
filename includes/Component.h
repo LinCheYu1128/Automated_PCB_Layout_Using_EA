@@ -54,7 +54,10 @@ class ComponentState {
     private:
         string side;
         int angle;
-        Point position;
+        Point leftdown_position;
+        Point center_position;
+        double length;
+        double width;
         double margin;
         map<string, Point> pin_position;
 
@@ -67,12 +70,24 @@ class ComponentState {
         string getSide();
         int getAngle();
         Point getPosition();
+        double getLength();
+        double getWidth();
         double getMargin();
         map<string, Point> getPinPosition();
+        
         // setter
+        void setSide(string side);
+        void setAngle(int angle);
+        void setPosition(double x, double y);
+        void setLength(double length);
+        void setWidth(double width);
+        void setMargin(double margin);
+        // void rotatePinPosition(int angle);
 
         // printer
 
 };
+
+void clearPoint(Point point);
 
 #endif

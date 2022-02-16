@@ -8,9 +8,10 @@ int main () {
     srand((unsigned)time(0));
     
     GA* GA_optimizer = new GA();
-    GA_optimizer->setPopulation();
 
     cout << "complete GA_optimizer" << endl;
+
+    cout << "Hi" << endl;
 
     delete GA_optimizer;
 

@@ -22,7 +22,14 @@ set(SOURCES
     src/GA/GA_Parameter.cpp
     src/GA/Crossover/Crossover.cpp
     src/GA/Mutation/Mutation.cpp
+    # src/GL.cpp
 )
+
+# find_package(OpenGL REQUIRED)
+# find_package(GLUT REQUIRED)
+# include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
+
+# target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
 
 # Add an executable with the above sources
 add_executable(${PROJECT_NAME} ${SOURCES})

@@ -36,16 +36,16 @@ GA::~GA() {
 
 vector<Layout*> GA::selectParent() {
     vector<Layout*> selected_parent;
-    
+    // TODO
     return selected_parent;
 }
 
 void GA::crossover() {
-    
+    // TODO
 }
 
 void GA::mutation() {
-    
+    // TODO
 }
 
 GA_Parameter* GA::getParameter() {

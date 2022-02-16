@@ -34,6 +34,12 @@
     <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\GA\GA_Parameter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\GA\Crossover\Crossover.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\src\GA\Mutation\Mutation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\danlu\Desktop\自我練習\AcBel_Project\CMakeLists.txt" />
