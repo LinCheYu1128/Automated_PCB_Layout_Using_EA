@@ -28,6 +28,21 @@
   * PnS
   * WireLength
 
+## How To Manage Using Git
+- git clone https://github.com/danlu008/AcBel_Project.git
+- git init
+- git config --global user.name {$User Name}
+- git config --global user.email {$User Email}
+- git remote add origin ${Your Git}
+- git remote add upstream https://github.com/danlu008/AcBel_Project.git
+- git add .
+- git commit -m "{$message}"
+- git push origin main
+
+## Git Message
+- create / modify / move / rename / remove
+- <function> / <class> / <.cpp> / <.h>
+
 ## How To Compile
 - cd .\build
 - cmake --build .
