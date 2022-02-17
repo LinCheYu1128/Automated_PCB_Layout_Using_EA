@@ -35,6 +35,12 @@
 - git config --global user.email {$User Email}
 - git remote add origin ${Your Git}
 - git remote add upstream https://github.com/danlu008/AcBel_Project.git
+
+
+## Before editing files
+- git pull upstream main
+
+## After editing files
 - git add .
 - git commit -m "{$message}"
 - git push origin main
