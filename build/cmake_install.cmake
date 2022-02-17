@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/danlu/Desktop/自我練習/AcBel_Project
+# Install script for directory: D:/0. Project/AcBelProject/AcBel_Project-main/AcBel_Project-main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/danlu/Desktop/自我練習/AcBel_Project/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/0. Project/AcBelProject/AcBel_Project-main/AcBel_Project-main/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
