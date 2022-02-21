@@ -39,7 +39,6 @@ GA::~GA() {
 vector<Layout*> GA::selectParent() {
     int popSize = this->parameter->getPopSize();
     int k = this->parameter->getTournamentNum();
-    bool check = true;
 
     vector<Layout*> selected_parent;
     selected_parent.reserve(2);
@@ -68,6 +67,8 @@ vector<Layout*> GA::selectParent() {
 void GA::crossover() {
     // TODO
     cout << "Conduct Crossover" << endl;
+    vector<Layout*> Parents = this->selectParent();
+
 
 
 }
