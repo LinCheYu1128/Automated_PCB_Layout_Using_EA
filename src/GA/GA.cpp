@@ -37,7 +37,6 @@ GA::~GA() {
 }
 
 vector<Layout*> GA::selectParent() {
-    // TODO
     int popSize = this->parameter->getPopSize();
     int k = this->parameter->getTournamentNum();
     bool check = true;
@@ -57,12 +56,12 @@ vector<Layout*> GA::selectParent() {
         // Ignore repeating check. (YF)
         selected_parent.push_back(this->population.at(index_arr.front()));
         
-        if ()
+        if (selected_parent.size() == 2) {
+            if (selected_parent.front() == selected_parent.back()) {
+                selected_parent.pop_back();
+            }
+        }
     }
-    
-
-    
-
     return selected_parent;
 }
 

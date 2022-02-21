@@ -20,6 +20,8 @@ class TreeNode {
         TreeNode(ComponentProperty* comp_prop);
         ~TreeNode();
 
+        TreeNode* copy();
+
         // getter
         string getBranch();
         TreeNode* getLeftchild();

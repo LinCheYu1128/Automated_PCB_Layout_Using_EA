@@ -9,6 +9,7 @@
 class BinaryTree {
     private:
         int side;
+        map<int, TreeNode*> TreeNode_map;
         ComponentList* comp_list;
         TreeNode* root;
 
@@ -17,6 +18,8 @@ class BinaryTree {
         BinaryTree(ComponentList* comp_list);
         ~BinaryTree();
         
+        TreeNode* copy();
+
         // getter
         TreeNode* getRoot();
 

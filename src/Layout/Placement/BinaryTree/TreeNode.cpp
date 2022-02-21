@@ -22,6 +22,14 @@ TreeNode::~TreeNode() {
     delete this->comp_state;
 }
 
+TreeNode* TreeNode::copy() {
+    TreeNode* new_node = new TreeNode(this->comp_prop);
+    new_node->setLeftchild(this->getLeftchild()->getComponentProp());
+    new_node->setRightchild(this->getRightchild()->getComponentProp());
+    new_node->setParent(this->getParent());
+    return new_node;
+}
+
 string TreeNode::getBranch() {
     return this->branch;
 }

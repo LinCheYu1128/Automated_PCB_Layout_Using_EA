@@ -53,5 +53,6 @@
 
 ## How To Compile
 - cd .\build\
+- cmake ..
 - cmake --build .
 - .\Debug\AcBel_Project.exe
