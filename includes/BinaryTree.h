@@ -19,13 +19,16 @@ class BinaryTree {
         ~BinaryTree();
         
         BinaryTree* copy();
-        void copyNode(TreeNode* parent);
+        void copyNode(TreeNode* old_root, TreeNode* new_root);
+        void delete_node(TreeNode* node);
 
         // getter
         TreeNode* getRoot();
         int getSide();
+        map<int, TreeNode*> getTreeNodeMap();
 
         // setter
+        void setRoot(TreeNode* node);
         void setSide(int side);
         void setSingleSide();
         void setDoubleSide();

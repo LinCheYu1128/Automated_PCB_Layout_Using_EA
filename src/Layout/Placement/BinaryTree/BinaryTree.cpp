@@ -25,26 +25,32 @@ int BinaryTree::getSide() {
     return this->side;
 }
 
+map<int, TreeNode*> BinaryTree::getTreeNodeMap() {
+    return this->TreeNode_map;
+}
+
 BinaryTree* BinaryTree::copy() {
     BinaryTree* new_tree = new BinaryTree(this->comp_list);
     new_tree->setSide(this->side);
-    TreeNode* new_root = new_tree->getRoot();
-    new_root->setTreeNode(this->root);
-    this->copyNode(new_root);
+    new_tree->setRoot(this->root);
+    this->copyNode(this->root, new_tree->getRoot());
     return new_tree;
 }
 
-void BinaryTree::copyNode(TreeNode* parent) {
-    if (parent->getLeftchild() != nullptr) {
-        TreeNode* left_child = parent->getLeftchild()->copy();
-        parent->setLeftchild(left_child);
-        this->copyNode(parent->getLeftchild());
+void BinaryTree::copyNode(TreeNode* old_root, TreeNode* new_root) {
+    if (old_root->getLeftchild() != nullptr) {
+        new_root->setLeftchild(old_root->getLeftchild());
+        this->copyNode(old_root->getLeftchild(), new_root->getLeftchild());
     }
-    if (parent->getRightchild() != nullptr) {
-        TreeNode* right_child = parent->getRightchild()->copy();
-        parent->setRightchild(right_child);
-        this->copyNode(parent->getRightchild());
+    if (old_root->getRightchild() != nullptr) {
+        new_root->setRightchild(old_root->getRightchild());
+        this->copyNode(old_root->getRightchild(), new_root->getRightchild());
     }
+    return;
+}
+
+void BinaryTree::setRoot(TreeNode* node) {
+    this->root = node->copy();
 }
 
 void BinaryTree::setSide(int side) {
@@ -73,6 +79,7 @@ void BinaryTree::setSingleSide() {
         if (i == 0) {
             // root
             this->root = new TreeNode(new_comp);
+            this->root->setBranch("root");
             child_node = this->root;
         } else {
             // left & right branch
@@ -81,6 +88,7 @@ void BinaryTree::setSingleSide() {
             child_node = random_select_node(parent_node, new_comp);
         }
 
+        child_node->setID(i);
         TreeNode_map[i] = child_node;
         existed_nodes_num += 1;
     }
@@ -111,15 +119,18 @@ void BinaryTree::setDoubleSide() {
         if (i == 0) {
             // origin
             this->root = new TreeNode(new_comp);
+            this->root->setBranch("root");
             child_node = this->root;
         } else if (i == 1) {
             // front_root
             this->root->setLeftchild(new TreeNode(new_comp));
+            this->root->getLeftchild()->setBranch("left");
             child_node = this->root->getLeftchild();
             child_node->setParent(this->root);
         } else if (i == 2) {
             // back_root
             this->root->setRightchild(new TreeNode(new_comp));
+            this->root->getRightchild()->setBranch("right");
             child_node = this->root->getRightchild();
             child_node->setParent(this->root);
         } else {
@@ -129,6 +140,7 @@ void BinaryTree::setDoubleSide() {
             child_node = random_select_node(parent_node, new_comp);
         }
 
+        child_node->setID(i);
         TreeNode_map[i] = child_node;
         existed_nodes_num += 1;
     }
@@ -155,11 +167,13 @@ TreeNode* random_select_node(TreeNode* parent_node, ComponentProperty* new_comp)
                 parent_node->setLeftchild(new TreeNode(new_comp));
                 parent_node->getLeftchild()->setParent(parent_node);
                 child_node = parent_node->getLeftchild();
+                child_node->setBranch("left");
                 break;
             } else {
                 parent_node->setRightchild(new TreeNode(new_comp));
                 parent_node->getRightchild()->setParent(parent_node);
                 child_node = parent_node->getRightchild();
+                child_node->setBranch("right");
                 break;
             }
         }
@@ -169,4 +183,23 @@ TreeNode* random_select_node(TreeNode* parent_node, ComponentProperty* new_comp)
     }
     
     return child_node;
+}
+
+void BinaryTree::delete_node(TreeNode* node) {
+    // leaf node
+    // if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
+    //     if (node->getBranch() == "root") {  // if not root
+    //         throw invalid_argument( "You delete root! Check your code!" );
+    //     }
+    //     node->getParent()->setChild(node->getBranch(), nullptr);
+    // }
+    if (node->getBranch() == "root") {  // if not root
+        throw invalid_argument( "You delete root! Check your code!" );
+    }
+    string branch = node->getBranch();
+    cout << branch << endl;
+    TreeNode* parent = node->getParent();
+    cout << parent->getChild(branch)->getComponentProp()->getName() << endl;
+    parent->setChild(branch, nullptr);
+    cout << "end" << endl;
 }

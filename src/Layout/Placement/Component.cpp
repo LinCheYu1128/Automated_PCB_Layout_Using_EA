@@ -14,6 +14,12 @@ ComponentProperty::ComponentProperty() {
     this->voltage = 0;
 }
 
+ComponentProperty* ComponentProperty::copy() {
+    ComponentProperty* new_comp_prop = new ComponentProperty();
+    new_comp_prop->setAllInfo(this);
+    return new_comp_prop;
+}
+
 string ComponentProperty::getName() {
     return this->name;
 }
@@ -101,6 +107,12 @@ ComponentState::ComponentState() {
     this->margin = 0;
 }
 
+ComponentState* ComponentState::copy() {
+    ComponentState* new_comp_state = new ComponentState();
+    new_comp_state->setAllInfo(this);
+    return new_comp_state;
+}
+
 string ComponentState::getSide() {
     return this->side;
 }
@@ -182,6 +194,15 @@ void ComponentState::setMargin(double margin) {
 //         this->pin_position[iter->first] = make_tuple(pin_abs_position_X, pin_abs_position_Y);
 //     }
 // }
+
+void ComponentState::setAllInfo(ComponentState* comp_state) {      
+    this->setSide(comp_state->getSide());
+    this->setAngle(comp_state->getAngle());
+    this->setPosition(comp_state->getPosition().x, comp_state->getPosition().y);
+    this->setLength(comp_state->getLength());
+    this->setWidth(comp_state->getWidth());
+    this->setMargin(comp_state->getMargin());
+}
 
 void clearPoint(Point point) {
     point.x = 0;

@@ -8,6 +8,7 @@ using namespace std;
 
 class TreeNode {
     private:
+        int id;
         string branch;
         TreeNode* leftchild;
         TreeNode* rightchild;
@@ -23,7 +24,9 @@ class TreeNode {
         TreeNode* copy();
 
         // getter
+        int getID();
         string getBranch();
+        TreeNode* getChild(string branch);
         TreeNode* getLeftchild();
         TreeNode* getRightchild();
         TreeNode* getParent();
@@ -31,12 +34,17 @@ class TreeNode {
         ComponentState* getComponentState();
         
         // setter
+        void copyTreeNode(TreeNode* node);
+        void setID(int id);
+        void setBranch(string branch);
+        void setChild(string branch, TreeNode* node);
         void setLeftchild(TreeNode* node);
         void setRightchild(TreeNode* node);
         void setParent(TreeNode* parent);
-        void setTreeNode(TreeNode* node);
         void setComponentProp(ComponentProperty* comp_prop);
         void setComponentState(ComponentState* comp_state);
+
+        // void changeParent(TreeNode* parent, string branch);
         
         // printer
         void printTreeNode();

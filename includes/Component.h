@@ -25,6 +25,8 @@ class ComponentProperty {
         ComponentProperty();
         ~ComponentProperty() {};
 
+        ComponentProperty* copy();
+
         // getter
         string getName();
         string getColor();
@@ -66,6 +68,8 @@ class ComponentState {
         ComponentState();
         ~ComponentState() {};
 
+        ComponentState* copy();
+
         // getter
         string getSide();
         int getAngle();
@@ -83,6 +87,7 @@ class ComponentState {
         void setWidth(double width);
         void setMargin(double margin);
         // void rotatePinPosition(int angle);
+        void setAllInfo(ComponentState* comp_state);
 
         // printer
 
