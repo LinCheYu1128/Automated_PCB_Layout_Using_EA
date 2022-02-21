@@ -11,6 +11,7 @@ class Layout {
         // Placement
         BinaryTree* tree;
         Contour* contour;
+        float fitness;
 
     public:
         // constructor, destructor
@@ -20,6 +21,7 @@ class Layout {
         // getter
         BinaryTree* getComponent();
         Contour* getContour();
+        float getFitness();
 
         // setter
         void setComponent(string side);

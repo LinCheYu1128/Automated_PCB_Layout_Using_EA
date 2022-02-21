@@ -52,6 +52,6 @@
 - function / class / .cpp / .h
 
 ## How To Compile
-- cd .\build
+- cd .\build\
 - cmake --build .
 - .\Debug\AcBel_Project.exe

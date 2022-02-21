@@ -4,6 +4,8 @@
 #include <ctime>
 using namespace std;
 
+
+
 int main () {
     srand((unsigned)time(0));
     
@@ -12,6 +14,8 @@ int main () {
     cout << "complete GA_optimizer" << endl;
 
     cout << "Hello we are testing git pull upstream" << endl;
+    
+    vector<Layout*> parent = GA_optimizer->selectParent();
     
     delete GA_optimizer;
 

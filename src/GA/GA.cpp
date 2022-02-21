@@ -1,6 +1,8 @@
 #include "ComponentList.h"
 #include "GA/GA.h"
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #include <ctime>
 using namespace std;
 
@@ -35,13 +37,40 @@ GA::~GA() {
 }
 
 vector<Layout*> GA::selectParent() {
-    vector<Layout*> selected_parent;
     // TODO
+    int popSize = this->parameter->getPopSize();
+    int k = this->parameter->getTournamentNum();
+    bool check = true;
+
+    vector<Layout*> selected_parent;
+    selected_parent.reserve(2);
+    vector<int> index_arr;
+    index_arr.reserve(k);
+    
+    while (selected_parent.size() < 2) {
+        
+        index_arr.clear();
+        for (int i = 0; i < k; i++)
+            index_arr.push_back(rand() % popSize);
+        
+        sort(index_arr.begin(), index_arr.end());
+        // Ignore repeating check. (YF)
+        selected_parent.push_back(this->population.at(index_arr.front()));
+        
+        if ()
+    }
+    
+
+    
+
     return selected_parent;
 }
 
 void GA::crossover() {
     // TODO
+    cout << "Conduct Crossover" << endl;
+
+
 }
 
 void GA::mutation() {

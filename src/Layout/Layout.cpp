@@ -14,6 +14,10 @@ Layout::~Layout() {
     delete this->contour;
 }
 
+float Layout::getFitness() {
+    return this->fitness;
+}
+
 void Layout::setComponent(string side) {
     this->tree = new BinaryTree(this->comp_list);
     if (side == "single") { this->tree->setSingleSide(); }
