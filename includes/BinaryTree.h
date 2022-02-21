@@ -18,12 +18,15 @@ class BinaryTree {
         BinaryTree(ComponentList* comp_list);
         ~BinaryTree();
         
-        TreeNode* copy();
+        BinaryTree* copy();
+        void copyNode(TreeNode* parent);
 
         // getter
         TreeNode* getRoot();
+        int getSide();
 
         // setter
+        void setSide(int side);
         void setSingleSide();
         void setDoubleSide();
 

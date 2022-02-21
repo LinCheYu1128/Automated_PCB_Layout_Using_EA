@@ -21,9 +21,34 @@ TreeNode* BinaryTree::getRoot() {
     return this->root;
 }
 
-TreeNode* BinaryTree::copy() {
-    TreeNode* new_root = this->root->copy();
-    return new_root;
+int BinaryTree::getSide() {
+    return this->side;
+}
+
+BinaryTree* BinaryTree::copy() {
+    BinaryTree* new_tree = new BinaryTree(this->comp_list);
+    new_tree->setSide(this->side);
+    TreeNode* new_root = new_tree->getRoot();
+    new_root->setTreeNode(this->root);
+    this->copyNode(new_root);
+    return new_tree;
+}
+
+void BinaryTree::copyNode(TreeNode* parent) {
+    if (parent->getLeftchild() != nullptr) {
+        TreeNode* left_child = parent->getLeftchild()->copy();
+        parent->setLeftchild(left_child);
+        this->copyNode(parent->getLeftchild());
+    }
+    if (parent->getRightchild() != nullptr) {
+        TreeNode* right_child = parent->getRightchild()->copy();
+        parent->setRightchild(right_child);
+        this->copyNode(parent->getRightchild());
+    }
+}
+
+void BinaryTree::setSide(int side) {
+    this->side = side;
 }
 
 void BinaryTree::setSingleSide() {
@@ -89,12 +114,12 @@ void BinaryTree::setDoubleSide() {
             child_node = this->root;
         } else if (i == 1) {
             // front_root
-            this->root->setLeftchild(new_comp);
+            this->root->setLeftchild(new TreeNode(new_comp));
             child_node = this->root->getLeftchild();
             child_node->setParent(this->root);
         } else if (i == 2) {
             // back_root
-            this->root->setRightchild(new_comp);
+            this->root->setRightchild(new TreeNode(new_comp));
             child_node = this->root->getRightchild();
             child_node->setParent(this->root);
         } else {
@@ -127,12 +152,12 @@ TreeNode* random_select_node(TreeNode* parent_node, ComponentProperty* new_comp)
         branch_dir = rand() % 2;
         if (successors[branch_dir] == nullptr) {
             if (branch_dir == 0) {
-                parent_node->setLeftchild(new_comp);
+                parent_node->setLeftchild(new TreeNode(new_comp));
                 parent_node->getLeftchild()->setParent(parent_node);
                 child_node = parent_node->getLeftchild();
                 break;
             } else {
-                parent_node->setRightchild(new_comp);
+                parent_node->setRightchild(new TreeNode(new_comp));
                 parent_node->getRightchild()->setParent(parent_node);
                 child_node = parent_node->getRightchild();
                 break;

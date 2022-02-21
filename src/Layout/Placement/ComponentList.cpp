@@ -2,10 +2,17 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <map>
 using namespace std;
 
-ComponentList::ComponentList(Component_Path comp_info) {
+ComponentList::ComponentList(/*Component_Path comp_info*/) {
+    const Component_Path comp_info = {
+        "component.csv",                     // component_csvfile
+        "./../resources/",                   // component_relativePath
+        "./../resources/pin position/"      // pinPosition_relativePath
+    };
+
     this->comp_info = comp_info;
     this->setAllData();
 }
@@ -40,26 +47,29 @@ void ComponentList::setData(string comp_name, ComponentProperty* comp_prop) {
 }
 
 void ComponentList::setPinPosition(string comp_name) {
-    ifstream inFile(comp_info.pinPosition_relativePath + comp_name + ".csv");
+    ifstream pin_file(comp_info.pinPosition_relativePath + comp_name + ".csv");
+    string temp_line;
+    vector<string> token_list;
     string key;
-    string temp;
     Point point;
-    if (!inFile) {
-        // cout << "can't open file" << endl;
+
+    if (!pin_file) {
+        cout << "can't open file " << comp_name << endl;
         return;
     } else {
         // cout << "can open " << comp_name << " file" << endl;
     }
 
-    while (!inFile.eof()) {
-        getline(inFile, temp, ',' );
-        key = temp;
-        getline(inFile, temp, ',' );
-        point.x = stod(temp);
-        getline(inFile, temp, '\n' );
-        point.y = stod(temp);
+    while (getline(pin_file, temp_line, '\n')) {
+        token_list = split(temp_line, ",");
+        key = token_list[0];
+        point.x = stod(token_list[1]);
+        point.y = stod(token_list[2]);
+        // cout << key << " " << point.x << " " << point.y << endl;
         comp_data_dictionary[comp_name]->setOneDefaultPinPosition(key, point);
     }
+
+    pin_file.close();
 }
 
 void ComponentList::setAllData() {
@@ -111,4 +121,19 @@ void ComponentList::printAllData() {
         iter->second->printDefaultPinPosition();
         ++iter;
     }
+}
+
+vector<string> split(string str, string delim) {
+    int pos = 0;  
+    string token;
+    vector<string> token_list;
+    while ((pos = str.find(delim)) != string::npos) {
+        token = str.substr(0, pos); // store the substring
+        token_list.push_back(token);
+        // cout << token << " ";
+        str.erase(0, pos + delim.length());  /* erase() function store the current positon and move to next token. */
+    }
+    token_list.push_back(str);
+    // cout << str << endl; // it print last token of the string.
+    return token_list;
 }

@@ -25,7 +25,7 @@ class ComponentList {
         };
     public:
         // constructer, destructor
-        ComponentList(Component_Path comp_info);
+        ComponentList(/*Component_Path comp_info*/);
         ~ComponentList();
         
         // getter
@@ -49,5 +49,7 @@ class PinPosition_Reader {
         // constructer, destructor
         PinPosition_Reader(string filename, string relativePath);
 };
+
+vector<string> split(string s, string delim);
 
 #endif

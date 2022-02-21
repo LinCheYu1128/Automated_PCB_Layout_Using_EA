@@ -4,12 +4,6 @@
 #include <ctime>
 using namespace std;
 
-const Component_Path comp_info = {
-    "component.csv",                     // component_csvfile
-    "..\\resources\\",                   // component_relativePath
-    "..\\resources\\pin position\\"      // pinPosition_relativePath
-};
-
 GA::GA() {
     this->setParameter(new GA_Parameter());
     this->setPopulation();
@@ -74,11 +68,12 @@ void GA::setParameter(GA_Parameter* parameter) {
 }
 
 void GA::setPopulation() {
-    ComponentList* component_list = new ComponentList(comp_info);
+    ComponentList* component_list = new ComponentList();
 
-    for (int i = 0; i < this->parameter->getPopSize(); i++) {
+    // for (int i = 0; i < this->parameter->getPopSize(); i++) {
+    for (int i = 0; i < 1; i++) {
         Layout* layout = new Layout(component_list, "double");
-        layout->printComponent();
+        // layout->printComponent();
         this->population.push_back(layout);
     }
 }

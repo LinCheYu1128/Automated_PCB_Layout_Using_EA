@@ -28,12 +28,15 @@ class TreeNode {
         TreeNode* getRightchild();
         TreeNode* getParent();
         ComponentProperty* getComponentProp();
+        ComponentState* getComponentState();
         
         // setter
-        void setLeftchild(ComponentProperty* comp_prop);
-        void setRightchild(ComponentProperty* comp_prop);
+        void setLeftchild(TreeNode* node);
+        void setRightchild(TreeNode* node);
         void setParent(TreeNode* parent);
-        void setTreeNode(ComponentProperty* comp_prop);
+        void setTreeNode(TreeNode* node);
+        void setComponentProp(ComponentProperty* comp_prop);
+        void setComponentState(ComponentState* comp_state);
         
         // printer
         void printTreeNode();
