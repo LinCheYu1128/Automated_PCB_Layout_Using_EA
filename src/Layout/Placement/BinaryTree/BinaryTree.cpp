@@ -21,6 +21,11 @@ TreeNode* BinaryTree::getRoot() {
     return this->root;
 }
 
+TreeNode* BinaryTree::copy() {
+    TreeNode* new_root = this->root->copy();
+    return new_root;
+}
+
 void BinaryTree::setSingleSide() {
     this->side = 0;
     vector<int> comp_list_index(this->comp_list->getSize()-3);
@@ -40,19 +45,25 @@ void BinaryTree::setSingleSide() {
 
     for (int i = 0; i < comp_list_index.size(); i++) {
         new_comp = comp_list->getDataByIndex(comp_list_index[i]);
-        // root
+
         if (i == 0) {
+            // root
             this->root = new TreeNode(new_comp);
-            existed_nodes.push_back(this->root);
-            existed_nodes_num += 1;
-            continue;
+            child_node = this->root;
+            // TreeNode_map[i] = this->root;
+            // existed_nodes.push_back(this->root);
+            // existed_nodes_num += 1;
+            // continue;
+        } else {
+            // left & right branch
+            parent_pos = rand() % existed_nodes_num;
+            parent_node = existed_nodes[parent_pos];
+            child_node = random_select_node(parent_node, new_comp);
         }
-        // left & right branch
-        parent_pos = rand() % existed_nodes_num;
-        parent_node = existed_nodes[parent_pos];
-        child_node = random_select_node(parent_node, new_comp);
-        existed_nodes_num += 1;
+
         existed_nodes.push_back(child_node);
+        existed_nodes_num += 1;
+        TreeNode_map[i] = child_node;
     }
     cout << "construct single side tree successfully" << endl;
 }
@@ -100,9 +111,9 @@ void BinaryTree::setDoubleSide() {
         // left & right branch
         parent_pos = rand() % existed_nodes_num;
         parent_node = existed_nodes[parent_pos];
-        cout << "parent_node: " << parent_node->getComponentProp()->getName() << endl;
+        // cout << "parent_node: " << parent_node->getComponentProp()->getName() << endl;
         child_node = random_select_node(parent_node, new_comp);
-        cout << "child_node: " << child_node->getComponentProp()->getName() << endl;
+        // cout << "child_node: " << child_node->getComponentProp()->getName() << endl;
         existed_nodes_num += 1;
         existed_nodes.push_back(child_node);
     }
