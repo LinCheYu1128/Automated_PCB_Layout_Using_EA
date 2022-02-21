@@ -50,20 +50,17 @@ void BinaryTree::setSingleSide() {
             // root
             this->root = new TreeNode(new_comp);
             child_node = this->root;
-            // TreeNode_map[i] = this->root;
-            // existed_nodes.push_back(this->root);
-            // existed_nodes_num += 1;
-            // continue;
         } else {
             // left & right branch
             parent_pos = rand() % existed_nodes_num;
-            parent_node = existed_nodes[parent_pos];
+            // parent_node = existed_nodes[parent_pos];
+            parent_node = TreeNode_map[parent_pos];
             child_node = random_select_node(parent_node, new_comp);
         }
 
-        existed_nodes.push_back(child_node);
-        existed_nodes_num += 1;
         TreeNode_map[i] = child_node;
+        // existed_nodes.push_back(child_node);
+        existed_nodes_num += 1;
     }
     cout << "construct single side tree successfully" << endl;
 }
