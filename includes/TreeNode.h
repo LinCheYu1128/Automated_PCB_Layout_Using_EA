@@ -23,6 +23,9 @@ class TreeNode {
 
         TreeNode* copy();
 
+        void replaceBy(TreeNode* node);
+        void disconnect(string branch="all");
+
         // getter
         int getID();
         string getBranch();
@@ -34,13 +37,12 @@ class TreeNode {
         ComponentState* getComponentState();
         
         // setter
-        void copyTreeNode(TreeNode* node);
         void setID(int id);
         void setBranch(string branch);
         void setChild(string branch, TreeNode* node);
-        void setLeftchild(TreeNode* node);
-        void setRightchild(TreeNode* node);
-        void setParent(TreeNode* parent);
+        void setLeftChild(TreeNode* node);
+        void setRightChild(TreeNode* node);
+        void setParent(TreeNode* parent, string branch);
         void setComponentProp(ComponentProperty* comp_prop);
         void setComponentState(ComponentState* comp_state);
 

@@ -13,13 +13,20 @@ class BinaryTree {
         ComponentList* comp_list;
         TreeNode* root;
 
+        void copyByTraverseTree(TreeNode* old_root, TreeNode* new_root);
+        TreeNode* random_construct_tree(TreeNode* selected_node, ComponentProperty* new_comp);
+        void delete_leaf_node(TreeNode* node);
+        void delete_hasOneChild_node(TreeNode* node);
+        void delete_hasBothChild_node(TreeNode* node);
+
     public:
         // constructor, destructor
         BinaryTree(ComponentList* comp_list);
         ~BinaryTree();
         
         BinaryTree* copy();
-        void copyNode(TreeNode* old_root, TreeNode* new_root);
+
+        // delete node
         void delete_node(TreeNode* node);
 
         // getter
@@ -36,7 +43,5 @@ class BinaryTree {
         // printer
         void printBinaryTree();
 };
-
-TreeNode* random_select_node(TreeNode* selected_node, ComponentProperty* new_comp);
 
 #endif

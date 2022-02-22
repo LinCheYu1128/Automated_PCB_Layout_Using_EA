@@ -22,11 +22,15 @@ int main () {
     
     // random select node
     map<int, TreeNode*> TreeNode_map = tree->getTreeNodeMap();
-    TreeNode* node = TreeNode_map[rand() % component_list->getSize()];
-    cout << node->getComponentProp()->getName() << endl;
 
-    // delete node
-    tree->delete_node(node);
+    for (int i = 0; i < 2; i++) {
+        TreeNode* node = TreeNode_map[rand() % component_list->getSize()];
+        cout << node->getComponentProp()->getName() << endl;
+
+        // delete node
+        cout << "start delete node" << endl;
+        tree->delete_node(node);
+    }
     
     tree->printBinaryTree();
     new_tree->printBinaryTree();

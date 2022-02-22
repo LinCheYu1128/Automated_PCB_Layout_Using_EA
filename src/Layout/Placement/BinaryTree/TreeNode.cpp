@@ -23,13 +23,11 @@ TreeNode::~TreeNode() {
 }
 
 TreeNode* TreeNode::copy() {
+    // copy information without connection
     TreeNode* new_node = new TreeNode(this->comp_prop);
     new_node->setID(this->id);
     new_node->setBranch(this->branch);
     new_node->setComponentState(this->getComponentState());
-    new_node->setLeftchild(this->getLeftchild());
-    new_node->setRightchild(this->getRightchild());
-    new_node->setParent(this->getParent());
     return new_node;
 }
 
@@ -69,10 +67,24 @@ ComponentState* TreeNode::getComponentState() {
     return this->comp_state;
 }
 
-void TreeNode::copyTreeNode(TreeNode* node) {
-    cout << node->getComponentProp()->getName() << endl;
+void TreeNode::replaceBy(TreeNode* node) {
     this->setComponentProp(node->getComponentProp());
     this->setComponentState(node->getComponentState());
+    this->setID(node->getID());
+}
+
+void TreeNode::disconnect(string branch) {
+    if (branch == "parent" || branch == "all") {
+        this->parent = nullptr;
+    }
+    if (branch == "left" || branch == "all") {
+        cout << "disconnect left" << endl;
+        this->leftchild = nullptr;
+    }
+    if (branch == "right" || branch == "all") {
+        cout << "disconnect right" << endl;
+        this->rightchild = nullptr;
+    }
 }
 
 void TreeNode::setID(int id) {
@@ -85,54 +97,25 @@ void TreeNode::setBranch(string branch) {
 
 void TreeNode::setChild(string branch, TreeNode* node) {
     if (branch == "left") {
-        this->setLeftchild(node);
+        this->setLeftChild(node);
     } else if (branch == "right") {
-        this->setRightchild(node);
+        this->setRightChild(node);
     }
 }
 
-// void TreeNode::setLeftchild(ComponentProperty* comp_prop) {
-//     this->leftchild = new TreeNode(comp_prop);
-//     this->leftchild->setParent(this);
-// }
-void TreeNode::setLeftchild(TreeNode* node) {
-    if (node == nullptr) {
-        this->leftchild = nullptr;
-        return;
-    }
-    if (this->leftchild == nullptr) {
-        this->leftchild = node->copy();
-        this->leftchild->setParent(this);
-    } else {
-        this->leftchild->setComponentProp(node->getComponentProp());
-        this->leftchild->setComponentState(node->getComponentState());
-    }
-    this->leftchild->setID(node->getID());
-    this->leftchild->setBranch("left");
+void TreeNode::setLeftChild(TreeNode* node) {
+    this->leftchild = node;
+    this->leftchild->setParent(this, "left");
 }
 
-// void TreeNode::setRightchild(ComponentProperty* comp_prop) {
-//     this->rightchild = new TreeNode(comp_prop);
-//     this->rightchild->setParent(this);
-// }
-void TreeNode::setRightchild(TreeNode* node) {
-    if (node == nullptr) {
-        this->rightchild = nullptr;
-        return;
-    }
-    if (this->rightchild == nullptr) {
-        this->rightchild = node->copy();
-        this->rightchild->setParent(this);
-    } else {
-        this->rightchild->setComponentProp(node->getComponentProp());
-        this->rightchild->setComponentState(node->getComponentState());
-    }
-    this->rightchild->setID(node->getID());
-    this->rightchild->setBranch("right");
+void TreeNode::setRightChild(TreeNode* node) {
+    this->rightchild = node;
+    this->rightchild->setParent(this, "right");
 }
 
-void TreeNode::setParent(TreeNode* parent) {
+void TreeNode::setParent(TreeNode* parent, string branch) {
     this->parent = parent;
+    this->branch = branch;
 }
 
 void TreeNode::setComponentProp(ComponentProperty* comp_prop) {
