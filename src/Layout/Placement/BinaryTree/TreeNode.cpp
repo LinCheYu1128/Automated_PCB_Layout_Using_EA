@@ -78,11 +78,9 @@ void TreeNode::disconnect(string branch) {
         this->parent = nullptr;
     }
     if (branch == "left" || branch == "all") {
-        cout << "disconnect left" << endl;
         this->leftchild = nullptr;
     }
     if (branch == "right" || branch == "all") {
-        cout << "disconnect right" << endl;
         this->rightchild = nullptr;
     }
 }
@@ -95,7 +93,7 @@ void TreeNode::setBranch(string branch) {
     this->branch = branch;
 }
 
-void TreeNode::setChild(string branch, TreeNode* node) {
+void TreeNode::setChild(TreeNode* node, string branch) {
     if (branch == "left") {
         this->setLeftChild(node);
     } else if (branch == "right") {
@@ -105,17 +103,21 @@ void TreeNode::setChild(string branch, TreeNode* node) {
 
 void TreeNode::setLeftChild(TreeNode* node) {
     this->leftchild = node;
-    this->leftchild->setParent(this, "left");
+    this->leftchild->setBranch("left");
+    // this->leftchild->setParent(this, "left");
+    node->parent = this;
 }
 
 void TreeNode::setRightChild(TreeNode* node) {
     this->rightchild = node;
-    this->rightchild->setParent(this, "right");
+    this->rightchild->setBranch("right");
+    // this->rightchild->setParent(this, "right");
+    node->parent = this;
 }
 
 void TreeNode::setParent(TreeNode* parent, string branch) {
     this->parent = parent;
-    this->branch = branch;
+    parent->setChild(this, branch);
 }
 
 void TreeNode::setComponentProp(ComponentProperty* comp_prop) {

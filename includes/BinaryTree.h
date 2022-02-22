@@ -24,9 +24,9 @@ class BinaryTree {
         BinaryTree(ComponentList* comp_list);
         ~BinaryTree();
         
+        // utility
         BinaryTree* copy();
-
-        // delete node
+        TreeNode* findRightestNode(TreeNode* node);
         void delete_node(TreeNode* node);
 
         // getter

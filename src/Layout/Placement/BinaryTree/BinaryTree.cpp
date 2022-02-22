@@ -33,11 +33,12 @@ BinaryTree* BinaryTree::copy() {
     BinaryTree* new_tree = new BinaryTree(this->comp_list);
     new_tree->setSide(this->side);
     new_tree->setRoot(this->root->copy());
-    this->copyByTraverseTree(this->root, new_tree->getRoot());
+    new_tree->copyByTraverseTree(this->root, new_tree->getRoot());
     return new_tree;
 }
 
 void BinaryTree::copyByTraverseTree(TreeNode* old_root, TreeNode* new_root) {
+    this->TreeNode_map[new_root->getID()] = new_root;
     if (old_root->getLeftchild() != nullptr) {
         new_root->setLeftChild(old_root->getLeftchild()->copy());
         this->copyByTraverseTree(old_root->getLeftchild(), new_root->getLeftchild());
@@ -87,18 +88,16 @@ void BinaryTree::setSingleSide() {
         if (i == 0) {
             // root
             this->setRoot(new TreeNode(new_comp));
-            // this->root = new TreeNode(new_comp);
-            // this->root->setBranch("root");
             child_node = this->root;
         } else {
             // left & right branch
             parent_pos = rand() % existed_nodes_num;
-            parent_node = TreeNode_map[parent_pos];
+            parent_node = this->TreeNode_map[parent_pos];
             child_node = random_construct_tree(parent_node, new_comp);
         }
 
         child_node->setID(i);
-        TreeNode_map[i] = child_node;
+        this->TreeNode_map[i] = child_node;
         existed_nodes_num += 1;
     }
 
@@ -120,38 +119,30 @@ void BinaryTree::setDoubleSide() {
     ComponentProperty* new_comp;
     TreeNode* parent_node;
     TreeNode* child_node;
-    // vector<TreeNode*> existed_nodes;
 
     for (int i = 0; i < comp_list_index.size(); i++) {
         new_comp = comp_list->getDataByIndex(comp_list_index[i]);
-
         if (i == 0) {
             // origin
-            // this->root = new TreeNode(new_comp);
-            // this->root->setBranch("root");
             this->setRoot(new TreeNode(new_comp));
             child_node = this->root;
         } else if (i == 1) {
             // front_root
             this->root->setLeftChild(new TreeNode(new_comp));
-            // this->root->getLeftchild()->setBranch("left");
             child_node = this->root->getLeftchild();
-            // child_node->setParent(this->root);
         } else if (i == 2) {
             // back_root
             this->root->setRightChild(new TreeNode(new_comp));
-            // this->root->getRightchild()->setBranch("right");
             child_node = this->root->getRightchild();
-            // child_node->setParent(this->root);
         } else {
             // left & right branch
             parent_pos = rand() % existed_nodes_num;
-            parent_node = TreeNode_map[parent_pos];
+            parent_node = this->TreeNode_map[parent_pos];
             child_node = random_construct_tree(parent_node, new_comp);
         }
 
         child_node->setID(i);
-        TreeNode_map[i] = child_node;
+        this->TreeNode_map[i] = child_node;
         existed_nodes_num += 1;
     }
     cout << "construct double side tree successfully" << endl;
@@ -175,15 +166,11 @@ TreeNode* BinaryTree::random_construct_tree(TreeNode* parent_node, ComponentProp
         if (successors[branch_dir] == nullptr) {
             if (branch_dir == 0) {
                 parent_node->setLeftChild(new TreeNode(new_comp));
-                // parent_node->getLeftchild()->setParent(parent_node);
                 child_node = parent_node->getLeftchild();
-                // child_node->setBranch("left");
                 break;
             } else {
                 parent_node->setRightChild(new TreeNode(new_comp));
-                // parent_node->getRightchild()->setParent(parent_node);
                 child_node = parent_node->getRightchild();
-                // child_node->setBranch("right");
                 break;
             }
         }
@@ -199,6 +186,11 @@ void BinaryTree::delete_node(TreeNode* node) {
     if (node == nullptr) {
         return;
     }
+
+    if (!this->TreeNode_map[node->getID()]) {
+        cout << "this node has been removed" << endl;
+        return;
+    }
     /* Steps:
        - Find the node we want to delete.
        - Four cases:
@@ -209,7 +201,10 @@ void BinaryTree::delete_node(TreeNode* node) {
 
     this->delete_leaf_node(node);
     this->delete_hasOneChild_node(node);
-    // this->delete_hasBothChild_node(node);
+    this->delete_hasBothChild_node(node);
+
+    this->TreeNode_map[node->getID()] = nullptr;
+    node->disconnect();
 
     return;
 }
@@ -227,8 +222,13 @@ void BinaryTree::delete_leaf_node(TreeNode* node) {
     } else {
         cout << "delete node is " << node->getBranch() << endl;
         node->getParent()->disconnect(node->getBranch());
+        if (node->getParent()->getLeftchild() != nullptr) {
+            cout << "node parent leftchild " << node->getParent()->getLeftchild()->getComponentProp()->getName() << endl;
+        }
+        if (node->getParent()->getRightchild() != nullptr) {
+            cout << "node parent rightchild " << node->getParent()->getRightchild()->getComponentProp()->getName() << endl;
+        }
     }
-    node->disconnect();
 }
 
 void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
@@ -248,19 +248,19 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
         this->setRoot(successor);
     } else {
         cout << "delete node is " << node->getBranch() << endl;
-        node->getParent()->setChild(node->getBranch(), successor);
+        node->getParent()->setChild(successor, node->getBranch());
     }
-    node->disconnect();
 }
 
 void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
     TreeNode* successor;
-    if (node->getLeftchild() != nullptr && node->getRightchild() == nullptr) {
-        successor = node->getLeftchild();
-        cout << "delete hasLeftChild node " << node->getComponentProp()->getName() << endl;
-    } else if (node->getLeftchild() == nullptr && node->getRightchild() != nullptr) {
-        successor = node->getRightchild();
-        cout << "delete hasRightChild node " << node->getComponentProp()->getName() << endl;
+    if (node->getLeftchild() != nullptr && node->getRightchild() != nullptr) {
+        // since node has both children, findRightestNode(node) != nullptr
+        successor = findRightestNode(node);
+        cout << "delete hasBothChild node " << node->getComponentProp()->getName() << endl;
+        cout << "found successor node " << successor->getComponentProp()->getName() << endl;
+        cout << "successor old parent is " << successor->getParent()->getComponentProp()->getName() << endl;
+        successor->getParent()->disconnect(successor->getBranch());
     } else {
         return;
     }
@@ -268,15 +268,25 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
     if (node->getBranch() == "root") {
         cout << "delete node is root" << endl;
         this->setRoot(successor);
-        return;
     } else {
-        cout << node->getBranch() << endl;
-        node->getParent()->setChild(node->getBranch(), successor);
-        // successor->setParent(node->getParent());
-        // node->setParent(nullptr);
-        node->setLeftChild(nullptr);
-        node->setRightChild(nullptr);
+        cout << "delete node is " << node->getBranch() << endl;
+        cout << "successor new parent is " << successor->getParent()->getComponentProp()->getName() << endl;
+        successor->setParent(node->getParent(), node->getBranch());
+        // node must has left child, but right child may be successor        
+        if (node->getLeftchild()) {
+            cout << "node leftchild is " << node->getLeftchild()->getComponentProp()->getName() << endl;
+            successor->setLeftChild(node->getLeftchild());
+        }
+        if (node->getRightchild()) {
+            successor->setRightChild(node->getRightchild());
+            cout << "node rightchild is " << node->getRightchild()->getComponentProp()->getName() << endl;
+        }
     }
+}
 
-    return;
+TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
+    while (node->getRightchild() != nullptr) {
+        node = findRightestNode(node->getRightchild());
+    }
+    return node;
 }

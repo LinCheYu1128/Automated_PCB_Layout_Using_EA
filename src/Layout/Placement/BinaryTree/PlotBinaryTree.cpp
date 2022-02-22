@@ -24,6 +24,7 @@ void PlotBinaryTree::plotBinaryTree(string prefix, TreeNode* node, bool isLeft) 
 
         // print the value of the node
         cout << node->getComponentProp()->getName() << endl;
+        // cout << node->getBranch() << endl;
 
         // enter the next tree level - left and right branch
         this->plotBinaryTree(prefix + (isLeft ? "|   " : "    "), node->getLeftchild(), true);

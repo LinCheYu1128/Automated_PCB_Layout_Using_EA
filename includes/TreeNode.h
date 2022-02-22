@@ -10,11 +10,13 @@ class TreeNode {
     private:
         int id;
         string branch;
+        ComponentProperty* comp_prop;
+        ComponentState* comp_state;
+    
+    protected:
         TreeNode* leftchild;
         TreeNode* rightchild;
         TreeNode* parent;
-        ComponentProperty* comp_prop;
-        ComponentState* comp_state;
 
     public:
         // constructor, destructor
@@ -39,7 +41,7 @@ class TreeNode {
         // setter
         void setID(int id);
         void setBranch(string branch);
-        void setChild(string branch, TreeNode* node);
+        void setChild(TreeNode* node, string branch);
         void setLeftChild(TreeNode* node);
         void setRightChild(TreeNode* node);
         void setParent(TreeNode* parent, string branch);
