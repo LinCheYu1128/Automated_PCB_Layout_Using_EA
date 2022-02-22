@@ -19,7 +19,7 @@ int main () {
     
     cout << "construct copy tree" << endl;
     BinaryTree* new_tree = tree->copy();
-
+    
     // random select node
     map<int, TreeNode*> TreeNode_map = tree->getTreeNodeMap();
     TreeNode* node = TreeNode_map[rand() % component_list->getSize()];

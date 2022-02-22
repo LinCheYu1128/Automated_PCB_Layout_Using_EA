@@ -50,7 +50,11 @@ void BinaryTree::copyNode(TreeNode* old_root, TreeNode* new_root) {
 }
 
 void BinaryTree::setRoot(TreeNode* node) {
+    TreeNode* leftChild = node->getLeftchild();
+    TreeNode* rightChild = node->getLeftchild();
     this->root = node->copy();
+    this->root->setLeftchild(leftChild);
+    this->root->setLeftchild(rightChild);
 }
 
 void BinaryTree::setSide(int side) {
@@ -186,20 +190,43 @@ TreeNode* random_select_node(TreeNode* parent_node, ComponentProperty* new_comp)
 }
 
 void BinaryTree::delete_node(TreeNode* node) {
-    // leaf node
-    // if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
-    //     if (node->getBranch() == "root") {  // if not root
-    //         throw invalid_argument( "You delete root! Check your code!" );
-    //     }
-    //     node->getParent()->setChild(node->getBranch(), nullptr);
-    // }
-    if (node->getBranch() == "root") {  // if not root
+    /* Steps:
+       - Find the node we want to delete.
+       - Four cases:
+        * node with left & right child.
+        * node with left/right child only.
+        * leaf node.
+    */
+
+    if (node->getBranch() == "root") {  // if root
         throw invalid_argument( "You delete root! Check your code!" );
     }
-    string branch = node->getBranch();
-    cout << branch << endl;
-    TreeNode* parent = node->getParent();
-    cout << parent->getChild(branch)->getComponentProp()->getName() << endl;
-    parent->setChild(branch, nullptr);
-    cout << "end" << endl;
+
+    // leaf node
+    if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
+        cout << "leaf node" << endl;
+        string branch = node->getBranch();
+        cout << branch << endl;
+        TreeNode* parent = node->getParent();
+        cout << parent->getChild(branch)->getComponentProp()->getName() << endl;
+        parent->setChild(branch, nullptr);
+        cout << "end" << endl;
+    } else if (node->getLeftchild() == nullptr && node->getRightchild() != nullptr) {
+        // cout << "has right child" << endl;
+        // if (node->getBranch() == "root") {
+        //     // cout << "delete node is root" << endl;
+        //     this->setRoot(node->getRightchild());
+        //     node->right_child_->parent_ = nullptr;
+        // } else if (node->getParent()->getLeftchild() == node) {
+        //     node->parent_->left_child_ = node->right_child_;
+        //     node->right_child_->parent_ = node->parent_;
+        //     node->parent_ = nullptr;
+        //     node->right_child_ = nullptr;
+        // } else if (node->getParent()->getRightchild() == node) {
+        //     node->parent_->right_child_ = node->right_child_;
+        //     node->right_child_->parent_ = node->parent_;
+        //     node->parent_ = nullptr;
+        //     node->right_child_ = nullptr;
+        // }
+    }
 }

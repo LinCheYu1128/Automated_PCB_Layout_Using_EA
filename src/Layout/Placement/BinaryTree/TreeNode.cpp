@@ -100,9 +100,15 @@ void TreeNode::setLeftchild(TreeNode* node) {
         this->leftchild = nullptr;
         return;
     }
-    this->leftchild = new TreeNode(node->getComponentProp());
-    this->leftchild->setComponentState(node->getComponentState());
-    this->leftchild->setParent(this);
+    if (this->leftchild == nullptr) {
+        this->leftchild = node->copy();
+        this->leftchild->setParent(this);
+    } else {
+        this->leftchild->setComponentProp(node->getComponentProp());
+        this->leftchild->setComponentState(node->getComponentState());
+    }
+    this->leftchild->setID(node->getID());
+    this->leftchild->setBranch("left");
 }
 
 // void TreeNode::setRightchild(ComponentProperty* comp_prop) {
@@ -114,9 +120,15 @@ void TreeNode::setRightchild(TreeNode* node) {
         this->rightchild = nullptr;
         return;
     }
-    this->rightchild = new TreeNode(node->getComponentProp());
-    this->rightchild->setComponentState(node->getComponentState());
-    this->rightchild->setParent(this);
+    if (this->rightchild == nullptr) {
+        this->rightchild = node->copy();
+        this->rightchild->setParent(this);
+    } else {
+        this->rightchild->setComponentProp(node->getComponentProp());
+        this->rightchild->setComponentState(node->getComponentState());
+    }
+    this->rightchild->setID(node->getID());
+    this->rightchild->setBranch("right");
 }
 
 void TreeNode::setParent(TreeNode* parent) {
