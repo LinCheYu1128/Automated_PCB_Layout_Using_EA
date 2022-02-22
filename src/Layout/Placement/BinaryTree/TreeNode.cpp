@@ -67,11 +67,11 @@ ComponentState* TreeNode::getComponentState() {
     return this->comp_state;
 }
 
-void TreeNode::replaceBy(TreeNode* node) {
-    this->setComponentProp(node->getComponentProp());
-    this->setComponentState(node->getComponentState());
-    this->setID(node->getID());
-}
+// void TreeNode::pasteFrom(TreeNode* node) {
+//     this->setComponentProp(node->getComponentProp());
+//     this->setComponentState(node->getComponentState());
+//     this->setID(node->getID());
+// }
 
 void TreeNode::disconnect(string branch) {
     if (branch == "parent" || branch == "all") {
@@ -104,14 +104,12 @@ void TreeNode::setChild(TreeNode* node, string branch) {
 void TreeNode::setLeftChild(TreeNode* node) {
     this->leftchild = node;
     this->leftchild->setBranch("left");
-    // this->leftchild->setParent(this, "left");
     node->parent = this;
 }
 
 void TreeNode::setRightChild(TreeNode* node) {
     this->rightchild = node;
     this->rightchild->setBranch("right");
-    // this->rightchild->setParent(this, "right");
     node->parent = this;
 }
 

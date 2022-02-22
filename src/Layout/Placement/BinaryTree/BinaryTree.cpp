@@ -51,12 +51,6 @@ void BinaryTree::copyByTraverseTree(TreeNode* old_root, TreeNode* new_root) {
 }
 
 void BinaryTree::setRoot(TreeNode* node) {
-    // if (this->root && this->root->getLeftchild()) {
-    //     node->setLeftChild(this->root->getLeftchild());
-    // }
-    // if (this->root && this->root->getRightchild()) {
-    //     node->setRightChild(this->root->getRightchild());
-    // }
     this->root = node;
     this->root->setBranch("root");
     this->root->disconnect("parent");

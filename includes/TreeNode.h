@@ -25,7 +25,7 @@ class TreeNode {
 
         TreeNode* copy();
 
-        void replaceBy(TreeNode* node);
+        // void pasteFrom(TreeNode* node);
         void disconnect(string branch="all");
 
         // getter
