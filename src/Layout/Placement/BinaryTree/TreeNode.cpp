@@ -155,3 +155,23 @@ void TreeNode::printTreeNode() {
     cout << "Component coor_X: " << this->comp_state->getPosition().x << ", coor_Y: " << this->comp_state->getPosition().y << endl;
     cout << "Component margin: " << this->comp_state->getMargin() << endl;
 }
+
+bool TreeNode::search(int ID) {
+    TreeNode* temp = this;
+
+    while (temp != nullptr) {
+        if (temp->getID() == ID) {
+            cout << "node ID " << ID << " has been searched at node " << this->getComponentProp()->getName() << endl;
+            return true;
+        }
+        if (temp->getLeftchild() && temp->getLeftchild()->search(ID)) {
+                return true;
+        }
+        if (temp->getRightchild() && temp->getRightchild()->search(ID)) {
+            return true;
+        }
+    }
+
+    cout << "node ID " << ID << " can't be searched at node " << this->getComponentProp()->getName() << endl;
+    return false;
+}

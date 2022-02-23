@@ -23,10 +23,11 @@ class TreeNode {
         TreeNode(ComponentProperty* comp_prop);
         ~TreeNode();
 
+        // utility
         TreeNode* copy();
-
         // void pasteFrom(TreeNode* node);
         void disconnect(string branch="all");
+        bool search(int ID);
 
         // getter
         int getID();
