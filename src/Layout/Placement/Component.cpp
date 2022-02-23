@@ -5,13 +5,13 @@
 #include <map>
 using namespace std;
 
-ComponentProperty::ComponentProperty() {
-    this->name = "";
-    this->color = "";
-    this->length = 0;
-    this->width = 0;
-    this->height = 0;
-    this->voltage = 0;
+ComponentProperty::ComponentProperty(string name, string color, double length, double width, double height, int voltage) {
+    this->name = name;
+    this->color = color;
+    this->length = length;
+    this->width = width;
+    this->height = height;
+    this->voltage = voltage;
 }
 
 ComponentProperty* ComponentProperty::copy() {

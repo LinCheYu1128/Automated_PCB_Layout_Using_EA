@@ -62,10 +62,10 @@ void BinaryTree::setSide(int side) {
 void BinaryTree::setSingleSide() {
     delete this->root;
     this->side = 1;
-    vector<int> comp_list_index(this->comp_list->getSize()-3);
+    vector<int> comp_list_index(this->comp_list->getSize());
 
     for (int i = 0; i < comp_list_index.size(); i++) {
-        comp_list_index[i] = i+3;
+        comp_list_index[i] = i;
     }
 
     random_shuffle(comp_list_index.begin(), comp_list_index.end());
@@ -107,7 +107,7 @@ void BinaryTree::setDoubleSide() {
         comp_list_index[i] = i;
     }
     
-    random_shuffle(comp_list_index.begin()+3, comp_list_index.end());
+    random_shuffle(comp_list_index.begin(), comp_list_index.end());
 
     int parent_pos = 0;
     int existed_nodes_num = 0;
@@ -115,26 +115,25 @@ void BinaryTree::setDoubleSide() {
     TreeNode* parent_node;
     TreeNode* child_node;
 
+    // origin
+    this->setRoot(new TreeNode(new ComponentProperty("Origin", "0", 2, 9, 0.1, 0)));
+    this->root->setID(-1);
+    this->TreeNode_map[-1] = this->root;
+    // front_root
+    this->root->setLeftChild(new TreeNode(new ComponentProperty("F_RootHole", "0", 2, 9, 0.1, 0)));
+    this->root->getLeftchild()->setID(-2);
+    this->TreeNode_map[-2] = this->root->getLeftchild();
+    // back_root
+    this->root->setRightChild(new TreeNode(new ComponentProperty("B_RootHole", "0", 2, 9, 0.1, 0)));
+    this->root->getRightchild()->setID(-3);
+    this->TreeNode_map[-3] = this->root->getRightchild();
+        
     for (int i = 0; i < comp_list_index.size(); i++) {
         new_comp = comp_list->getDataByIndex(comp_list_index[i]);
-        if (i == 0) {
-            // origin
-            this->setRoot(new TreeNode(new_comp));
-            child_node = this->root;
-        } else if (i == 1) {
-            // front_root
-            this->root->setLeftChild(new TreeNode(new_comp));
-            child_node = this->root->getLeftchild();
-        } else if (i == 2) {
-            // back_root
-            this->root->setRightChild(new TreeNode(new_comp));
-            child_node = this->root->getRightchild();
-        } else {
-            // left & right branch
-            parent_pos = rand() % existed_nodes_num;
-            parent_node = this->TreeNode_map[parent_pos];
-            child_node = random_construct_tree(parent_node, new_comp);
-        }
+        // left & right branch
+        parent_pos = rand() % (existed_nodes_num+3)-3;
+        parent_node = this->TreeNode_map[parent_pos];
+        child_node = random_construct_tree(parent_node, new_comp);
 
         child_node->setID(i);
         this->TreeNode_map[i] = child_node;
@@ -178,27 +177,35 @@ TreeNode* BinaryTree::random_construct_tree(TreeNode* parent_node, ComponentProp
 }
 
 void BinaryTree::swap(int id_1, int id_2) {
-    TreeNode** node_1 = &this->TreeNode_map[id_1];
-    TreeNode** node_2 = &this->TreeNode_map[id_2];
+    // should make sure do search() before swap
+    TreeNode* A = this->TreeNode_map.at(id_1);
+    TreeNode* B = this->TreeNode_map.at(id_2);
     if (this->TreeNode_map[id_1] && this->TreeNode_map[id_2]) {
-        TreeNode* temp = *node_1;
-        *node_1 = *node_2;
-        *node_2 = temp;
+        TreeNode* A_parent = A->getParent();
+        TreeNode* B_parent = B->getParent();
+        string A_branch = A->getBranch();
+        string B_branch = B->getBranch();
+        A->setParent(B_parent, B_branch);
+        B->setParent(A_parent, A_branch);
     } else {
         cout << "Can't swap! Some node not inside this tree." << endl;
         exit(0);
     }
 }
 
-void BinaryTree::delete_node(TreeNode* node) {
-    if (node == nullptr) {
+void BinaryTree::delete_node(int ID) {
+    if (this->TreeNode_map.find(ID) == this->TreeNode_map.end()) {
+        cout << "this node does not exist in this tree" << endl;
         return;
     }
 
-    if (!this->TreeNode_map[node->getID()]) {
+    TreeNode* node = this->TreeNode_map.at(ID);
+
+    if (node == nullptr) {
         cout << "this node has been removed" << endl;
         return;
     }
+
     /* Steps:
        - Find the node we want to delete.
        - Four cases:
@@ -285,8 +292,21 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
 }
 
 TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
-    while (node->getRightchild() != nullptr) {
-        node = findRightestNode(node->getRightchild());
+    // while () {
+    //     node = findRightestNode(node->getRightchild());
+    //     node = findRightestNode(node->getLeftchild());
+    //     return node;
+    // }
+    if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
+        return node;
+    } else {
+        if (node->getRightchild()) {
+            node = findRightestNode(node->getRightchild());
+        }
+        if (node->getLeftchild()) {
+            node = findRightestNode(node->getLeftchild());
+        }
     }
+
     return node;
 }

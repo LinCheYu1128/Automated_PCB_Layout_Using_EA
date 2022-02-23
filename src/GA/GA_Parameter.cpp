@@ -1,4 +1,4 @@
-#include "GA/GA_Parameter.h"
+#include "GA_Parameter.h"
 #include <iostream>
 using namespace std;
 

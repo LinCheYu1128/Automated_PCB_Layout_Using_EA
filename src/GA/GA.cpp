@@ -1,5 +1,5 @@
 #include "ComponentList.h"
-#include "GA/GA.h"
+#include "GA.h"
 #include <iostream>
 #include <ctime>
 using namespace std;

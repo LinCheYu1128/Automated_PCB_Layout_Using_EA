@@ -157,21 +157,20 @@ void TreeNode::printTreeNode() {
 }
 
 bool TreeNode::search(int ID) {
+    cout << "start search " << ID << endl;
     TreeNode* temp = this;
-
-    while (temp != nullptr) {
-        if (temp->getID() == ID) {
-            cout << "node ID " << ID << " has been searched at node " << this->getComponentProp()->getName() << endl;
-            return true;
-        }
-        if (temp->getLeftchild() && temp->getLeftchild()->search(ID)) {
-                return true;
-        }
-        if (temp->getRightchild() && temp->getRightchild()->search(ID)) {
-            return true;
-        }
+    
+    if (temp->getID() == ID) {
+        cout << "node ID " << ID << " has been searched at node " << this->getID() << endl;
+        return true;
+    }
+    if (temp->getLeftchild() && temp->getLeftchild()->search(ID)) {
+        return true;
+    }
+    if (temp->getRightchild() && temp->getRightchild()->search(ID)) {
+        return true;
     }
 
-    cout << "node ID " << ID << " can't be searched at node " << this->getComponentProp()->getName() << endl;
+    cout << "node ID " << ID << " can't be searched at node " << this->getID() << endl;
     return false;
 }

@@ -1,7 +1,7 @@
 #ifndef GA_H
 #define GA_H
 
-#include "GA/GA_Parameter.h"
+#include "GA_Parameter.h"
 #include "Layout.h"
 
 class GA {

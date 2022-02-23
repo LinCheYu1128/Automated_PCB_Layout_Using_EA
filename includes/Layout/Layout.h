@@ -2,7 +2,11 @@
 #define LAYOUT_H
 
 #include "BinaryTree.h"
+#include "Component.h"
 #include "ComponentList.h"
+#include "Contour.h"
+#include "TreeNode.h"
+#include "PlotBinaryTree.h"
 
 class Layout {
     private:
