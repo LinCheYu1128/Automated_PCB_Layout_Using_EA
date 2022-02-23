@@ -67,12 +67,6 @@ ComponentState* TreeNode::getComponentState() {
     return this->comp_state;
 }
 
-// void TreeNode::pasteFrom(TreeNode* node) {
-//     this->setComponentProp(node->getComponentProp());
-//     this->setComponentState(node->getComponentState());
-//     this->setID(node->getID());
-// }
-
 void TreeNode::disconnect(string branch) {
     if (branch == "parent" || branch == "all") {
         this->parent = nullptr;
