@@ -2,7 +2,6 @@
 #define BINARYTREE_H
 
 #include "TreeNode.h"
-#include "Contour.h"
 #include "Component.h"
 #include "ComponentList.h"
 

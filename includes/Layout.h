@@ -3,6 +3,7 @@
 
 #include "BinaryTree.h"
 #include "ComponentList.h"
+#include "Contour.h"
 
 class Layout {
     private:
