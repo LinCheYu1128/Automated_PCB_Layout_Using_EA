@@ -72,7 +72,7 @@ void GA::setPopulation() {
 
     // for (int i = 0; i < this->parameter->getPopSize(); i++) {
     for (int i = 0; i < 1; i++) {
-        Layout* layout = new Layout(component_list, "double");
+        Layout* layout = new Layout(component_list, 2);
         // layout->printComponent();
         this->population.push_back(layout);
     }

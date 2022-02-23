@@ -14,7 +14,7 @@ class Layout {
 
     public:
         // constructor, destructor
-        Layout(ComponentList* comp_list, string side);
+        Layout(ComponentList* comp_list, int side);
         ~Layout();
         
         // getter
@@ -22,7 +22,7 @@ class Layout {
         Contour* getContour();
 
         // setter
-        void setComponent(string side);
+        void setComponent(int side);
         void setContour();
 
         // printer

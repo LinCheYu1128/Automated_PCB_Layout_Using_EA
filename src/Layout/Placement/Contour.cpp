@@ -3,5 +3,5 @@
 using namespace std;
 
 Contour::Contour() {
-    cout << "build contour successfully!" << endl;
+    cout << "build contour successfully" << endl;
 }
