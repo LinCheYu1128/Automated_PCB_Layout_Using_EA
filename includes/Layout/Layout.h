@@ -15,7 +15,8 @@ class Layout {
 
         // Placement
         BinaryTree* tree;
-        Contour* contour;
+        Contour* front_contour;
+        Contour* back_contour;
         float fitness;
 
     public:
@@ -32,7 +33,7 @@ class Layout {
         // setter
         void setBinaryTree(int side);
         void setContour();
-        void setState(TreeNode*);
+        void setState(TreeNode*, Contour*);
 
         // printer
         void printComponent();
