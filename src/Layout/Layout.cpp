@@ -16,6 +16,9 @@ Layout::Layout(ComponentList* comp_list, int side) {
     }
     else {cout << "unknown side" << endl; exit(0);} 
     this->component_num = comp_list->getSize();
+
+    this->front_contour->printContour();
+    this->back_contour->printContour();
 }
 
 Layout::~Layout() {

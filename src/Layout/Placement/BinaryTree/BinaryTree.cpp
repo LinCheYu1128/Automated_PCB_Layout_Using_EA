@@ -117,7 +117,7 @@ void BinaryTree::setDoubleSide() {
     TreeNode* child_node;
 
     // origin
-    this->setRoot(new TreeNode(new ComponentProperty("Origin", "0", 2, 9, 0.1, 0)));
+    this->setRoot(new TreeNode(new ComponentProperty("Origin", "0", 0, 0, 0.1, 0)));
     this->root->setID(-1);
     this->TreeNode_map[-1] = this->root;
     // front_root
