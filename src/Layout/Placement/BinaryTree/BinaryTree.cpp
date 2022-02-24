@@ -96,7 +96,7 @@ void BinaryTree::setSingleSide() {
         existed_nodes_num += 1;
     }
 
-    Console::log("construct single side tree successfully");
+    // Console::log("construct single side tree successfully");
 }
 
 void BinaryTree::setDoubleSide() {
@@ -140,7 +140,7 @@ void BinaryTree::setDoubleSide() {
         this->TreeNode_map[i] = child_node;
         existed_nodes_num += 1;
     }
-    Console::log("construct double side tree successfully");
+    // Console::log("construct double side tree successfully");
 }
 
 void BinaryTree::printBinaryTree() {

@@ -5,14 +5,16 @@ using namespace std;
 
 Layout::Layout(ComponentList* comp_list, int side) {
     this->comp_list = comp_list;
-    this->setComponent(side);
+    this->setBinaryTree(side);
     this->setContour();
-
+  
     this->setState(this->tree->getRoot());
     
     //----*
     this->printComponent();
     this->contour->printContour();
+=======
+    this->component_num = comp_list->getSize();
 }
 
 Layout::~Layout() {
@@ -21,7 +23,7 @@ Layout::~Layout() {
     delete this->contour;
 }
 
-void Layout::setComponent(int side) {
+void Layout::setBinaryTree(int side) {
     this->tree = new BinaryTree(this->comp_list);
     if (side == 1) { this->tree->setSingleSide(); }
     if (side == 2) { this->tree->setDoubleSide(); }

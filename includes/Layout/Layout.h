@@ -11,10 +11,12 @@
 class Layout {
     private:
         ComponentList* comp_list;
+        int component_num;
 
         // Placement
         BinaryTree* tree;
         Contour* contour;
+        float fitness;
 
     public:
         // constructor, destructor
@@ -22,11 +24,13 @@ class Layout {
         ~Layout();
         
         // getter
-        BinaryTree* getComponent();
+        BinaryTree* getBinaryTree();
         Contour* getContour();
+        int getComponentNum();
+        float getFitness();
 
         // setter
-        void setComponent(int side);
+        void setBinaryTree(int side);
         void setContour();
         void setState(TreeNode*);
 
