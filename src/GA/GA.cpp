@@ -13,17 +13,17 @@ GA::GA() {
 GA::~GA() {
     delete this->parameter;
 
-    for (int i = 0; i < this->population.size(); i++) {
+    for (unsigned int i = 0; i < this->population.size(); i++) {
         delete this->population[i];
     }
     this->population.clear();
 
-    for (int i = 0; i < this->parent.size(); i++) {
+    for (unsigned int i = 0; i < this->parent.size(); i++) {
         delete this->parent[i];
     }
     this->parent.clear();
     
-    for (int i = 0; i < this->offspring.size(); i++) {
+    for (unsigned int i = 0; i < this->offspring.size(); i++) {
         delete this->offspring[i];
     }
     this->offspring.clear();
@@ -38,6 +38,9 @@ vector<Layout*> GA::selectParent() {
     selected_parent.reserve(2);
     vector<int> index_arr;
     index_arr.reserve(k);
+
+    Console::log("Pop size = " + to_string(popSize));
+    Console::log("k = " + to_string(k));
     
     while (selected_parent.size() < 2) {
         index_arr.clear();
@@ -45,9 +48,13 @@ vector<Layout*> GA::selectParent() {
             index_arr.push_back(rand() % popSize);
         
         sort(index_arr.begin(), index_arr.end());
+
+        for(int i = 0; i < k; i++)
+            cout << index_arr.at(i) << " ";
+        cout << endl;
         // Ignore repeating check. (YF)
         selected_parent.push_back(this->population.at(index_arr.front()));
-        
+
         if (selected_parent.size() == 2) {
             if (selected_parent.front() == selected_parent.back()) {
                 selected_parent.pop_back();
@@ -103,8 +110,7 @@ void GA::setParameter(GA_Parameter* parameter) {
 void GA::setPopulation() {
     ComponentList* component_list = new ComponentList();
 
-    // for (int i = 0; i < this->parameter->getPopSize(); i++) {
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < this->parameter->getPopSize(); i++) {
         Layout* layout = new Layout(component_list, 2);
         // layout->printComponent();
         this->population.push_back(layout);
