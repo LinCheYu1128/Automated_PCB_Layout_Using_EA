@@ -32,6 +32,7 @@ class Layout {
         // setter
         void setBinaryTree(int side);
         void setContour();
+        void setState(TreeNode*);
 
         // printer
         void printComponent();

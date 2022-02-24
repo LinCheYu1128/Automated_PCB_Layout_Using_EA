@@ -2,7 +2,9 @@
 #define COMPONENT_H
 
 #include <iostream>
+#include <algorithm>
 #include <map>
+#include <vector>
 using namespace std;
 
 typedef struct Point {
@@ -93,6 +95,6 @@ class ComponentState {
 
 };
 
-void clearPoint(Point point);
+void clearPoint(Point& point);
 
 #endif
