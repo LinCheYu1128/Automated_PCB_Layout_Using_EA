@@ -8,25 +8,24 @@
   * 寫test function
   * 找人review code
 
-## Todo
-- [ ] Binary tree class
-  * constructor
-  * plot tree
-- [x] File input class
-  * component
-  * pin position
-    * T501
-    * M503
-- [ ] GA class
-  * Crossover
-  * Mutation
-- [ ] Evaluation class
-  * Contour
-    * Horizon contour
-    * Preplace contour
-  * Area
-  * PnS
-  * WireLength
+## Editing Files
+### Before editing
+- git pull upstream main
+### After editing
+- cd ./AcBel_project-main
+- git add .
+- git commit -m "{$message}"
+- git push origin main
+- On Github: pull requests
+
+## How To Compile
+### before build
+- cd .\build
+- cmake ..
+### after build
+- cd .\build\
+- cmake --build .
+- .\Debug\AcBel_Project.exe
 
 ## How To Manage Using Git
 - git clone https://github.com/danlu008/AcBel_Project.git
@@ -37,21 +36,44 @@
 - git remote add upstream https://github.com/danlu008/AcBel_Project.git
 - git reset --hard HEAD
 
-## Before editing files
-- git pull upstream main
-
-## After editing files
-- cd ./AcBel_project-main
-- git add .
-- git commit -m "{$message}"
-- git push origin main
-- On Github: pull requests
-
-## Git Message
+### Git Message
 - create / modify / move / rename / remove
 - function / class / .cpp / .h
 
-## How To Compile
-- cd .\build
-- cmake --build .
-- .\Debug\AcBel_Project.exe
+## Todo
+- [ ] Binary tree class
+  * constructor / getter / setter
+  * setSingleSide /setDoubleSide
+  * swap
+  * delete node
+  * printBinaryTree
+- [ ] GA class
+  * Crossover
+    * leftSubtreeCrossover
+    * kPointCrossover
+  * Mutation
+    * Swap
+      * swapNodeMutation
+      * swapBranchMutation
+      * swapSubtreeMutation
+    * Rotate
+      * k component rotation strickly
+      * k component rotation with probability
+    * Shift
+      * shiftSubtreeMutation
+    * Array Type Modification
+      * insert
+      * scramble
+- [ ] Layout class
+  * Contour
+    * Horizon contour
+    * Preplace contour
+  * Area Evaluation
+    * packing algorithm
+  * PnS Evaluation
+    * primary secondary separation
+  * WireLength Evaluation
+    * routing algorithm
+- [x] File input class
+  * component
+  * pin position
