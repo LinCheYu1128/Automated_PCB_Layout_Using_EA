@@ -11,8 +11,8 @@ Layout::Layout(ComponentList* comp_list, int side) {
     this->setState(this->tree->getRoot());
     
     //----*
-    this->printComponent();
-    this->contour->printContour();
+    // this->printComponent();
+    // this->contour->printContour();
     this->component_num = comp_list->getSize();
 }
 
@@ -36,7 +36,7 @@ void Layout::setState(TreeNode* root) {
     root->updateState(this->contour->getContour());
     //-----
     Point check = root->getComponentState()->getPosition();
-    cout << "Position after update: (" << check.x << ", " << check.y << ")" << endl;
+    // cout << "Position after update: (" << check.x << ", " << check.y << ")" << endl;
     //-----
     this->contour->addBlock(root->getComponentState());
     if (root->getLeftchild()) {

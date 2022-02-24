@@ -6,7 +6,7 @@ using namespace std;
 Contour::Contour() {
     Point p = {0,0};
     this->contour.push_back(p);
-    cout << "build contour successfully!" << endl;
+    // cout << "build contour successfully!" << endl;
 }
 
 vector<Point> Contour::getContour(){

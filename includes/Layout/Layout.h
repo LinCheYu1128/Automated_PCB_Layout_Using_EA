@@ -24,7 +24,7 @@ class Layout {
         ~Layout();
         
         // getter
-        BinaryTree* getBinaryTree();
+        BinaryTree* getBinaryTree(){return tree;};
         Contour* getContour();
         int getComponentNum();
         float getFitness();
