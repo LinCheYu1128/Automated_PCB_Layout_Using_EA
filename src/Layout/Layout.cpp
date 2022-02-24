@@ -7,19 +7,22 @@ Layout::Layout(ComponentList* comp_list, int side) {
     this->comp_list = comp_list;
     this->setBinaryTree(side);
     this->setContour();
-  
-    this->setState(this->tree->getRoot());
-    
-    //----*
-    this->printComponent();
-    this->contour->printContour();
+
+    if (side == 1) this->setState(this->tree->getRoot(), this->front_contour);
+    else if (side == 2) {
+        this->setState(this->tree->getRoot()->getLeftchild(), this->front_contour);
+        this->setState(this->tree->getRoot()->getRightchild(), this->back_contour);
+    }
+    else {cout << "unknown side" << endl; exit(0);} 
+
     this->component_num = comp_list->getSize();
 }
 
 Layout::~Layout() {
     delete this->comp_list;
     delete this->tree;
-    delete this->contour;
+    delete this->front_contour;
+    delete this->back_contour;
 }
 
 void Layout::setBinaryTree(int side) {
@@ -29,21 +32,18 @@ void Layout::setBinaryTree(int side) {
 }
 
 void Layout::setContour() {
-    this->contour = new Contour();
+    this->front_contour = new Contour();
+    this->back_contour = new Contour();
 }
 
-void Layout::setState(TreeNode* root) {
-    root->updateState(this->contour->getContour());
-    //-----
-    Point check = root->getComponentState()->getPosition();
-    cout << "Position after update: (" << check.x << ", " << check.y << ")" << endl;
-    //-----
-    this->contour->addBlock(root->getComponentState());
+void Layout::setState(TreeNode* root, Contour* contour) {
+    root->updateState(contour->getContour());
+    contour->addBlock(root->getComponentState());
     if (root->getLeftchild()) {
-        setState(root->getLeftchild());
+        setState(root->getLeftchild(), contour);
     }
     if (root->getRightchild()) {
-        setState(root->getRightchild());
+        setState(root->getRightchild(), contour);
     }
 }
 
