@@ -8,35 +8,6 @@
   * 寫test function
   * 找人review code
 
-## Todo
-- [ ] Binary tree class
-  * constructor
-  * plot tree
-- [x] File input class
-  * component
-  * pin position
-    * T501
-    * M503
-- [ ] GA class
-  * Crossover
-  * Mutation
-- [ ] Evaluation class
-  * Contour
-    * Horizon contour
-    * Preplace contour
-  * Area
-  * PnS
-  * WireLength
-
-## How To Manage Using Git
-- git clone https://github.com/danlu008/AcBel_Project.git
-- git init
-- git config --global user.name {$User Name}
-- git config --global user.email {$User Email}
-- git remote add origin ${Your Git}
-- git remote add upstream https://github.com/danlu008/AcBel_Project.git
-- git reset --hard HEAD
-
 ## Before editing files
 - git pull upstream main
 
@@ -59,3 +30,32 @@
 - cd .\build\
 - cmake --build .
 - .\Debug\AcBel_Project.exe
+
+## How To Manage Using Git
+- git clone https://github.com/danlu008/AcBel_Project.git
+- git init
+- git config --global user.name {$User Name}
+- git config --global user.email {$User Email}
+- git remote add origin ${Your Git}
+- git remote add upstream https://github.com/danlu008/AcBel_Project.git
+- git reset --hard HEAD
+
+## Todo
+- [ ] Binary tree class
+  * constructor
+  * plot tree
+- [x] File input class
+  * component
+  * pin position
+    * T501
+    * M503
+- [ ] GA class
+  * Crossover
+  * Mutation
+- [ ] Evaluation class
+  * Contour
+    * Horizon contour
+    * Preplace contour
+  * Area
+  * PnS
+  * WireLength
