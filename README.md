@@ -56,23 +56,24 @@
       * swapNodeMutation
       * swapBranchMutation
       * swapSubtreeMutation
-  * Rotate
-    * k component rotation strickly
-    * k component rotation with probability
-  * Shift
-    * shiftSubtreeMutation
-  * Array Type Modification
-    * insert
-    * scramble
-- [ ] Evaluation class
+    * Rotate
+      * k component rotation strickly
+      * k component rotation with probability
+    * Shift
+      * shiftSubtreeMutation
+    * Array Type Modification
+      * insert
+      * scramble
+- [ ] Layout class
   * Contour
     * Horizon contour
     * Preplace contour
-  * Area
-  * PnS
-  * WireLength
+  * Area Evaluation
+    * packing algorithm
+  * PnS Evaluation
+    * primary secondary separation
+  * WireLength Evaluation
+    * routing algorithm
 - [x] File input class
-* component
-* pin position
-  * T501
-  * M503
+  * component
+  * pin position
