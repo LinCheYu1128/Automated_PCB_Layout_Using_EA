@@ -8,19 +8,15 @@
   * 寫test function
   * 找人review code
 
-## Before editing files
+## Editing Files
+### Before editing
 - git pull upstream main
-
-## After editing files
+### After editing
 - cd ./AcBel_project-main
 - git add .
 - git commit -m "{$message}"
 - git push origin main
 - On Github: pull requests
-
-## Git Message
-- create / modify / move / rename / remove
-- function / class / .cpp / .h
 
 ## How To Compile
 ### before build
@@ -39,6 +35,10 @@
 - git remote add origin ${Your Git}
 - git remote add upstream https://github.com/danlu008/AcBel_Project.git
 - git reset --hard HEAD
+
+## Git Message
+- create / modify / move / rename / remove
+- function / class / .cpp / .h
 
 ## Todo
 - [ ] Binary tree class
