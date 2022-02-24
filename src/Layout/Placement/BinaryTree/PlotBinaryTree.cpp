@@ -1,4 +1,4 @@
-#include "../includes/PlotBinaryTree.h"
+#include "PlotBinaryTree.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -23,7 +23,9 @@ void PlotBinaryTree::plotBinaryTree(string prefix, TreeNode* node, bool isLeft) 
         cout << (isLeft ? "|-- " : "\\-- ");
 
         // print the value of the node
-        cout << node->getComponentProp()->getName() << endl;
+        // cout << node->getComponentProp()->getName() << endl;
+        // cout << node->getBranch() << endl;
+        cout << node->getID() << endl;
 
         // enter the next tree level - left and right branch
         this->plotBinaryTree(prefix + (isLeft ? "|   " : "    "), node->getLeftchild(), true);

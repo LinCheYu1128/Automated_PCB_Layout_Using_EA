@@ -1,16 +1,15 @@
 #include "ComponentList.h"
-#include "GA/GA.h"
+#include "GA.h"
+#include "console.h"
 #include <iostream>
+<<<<<<< HEAD
 #include <vector>
 #include <algorithm>
 #include <ctime>
+=======
+#include <algorithm>
+>>>>>>> f52d2a3388d715e43ca5329c86d0f7be7a975b05
 using namespace std;
-
-const Component_Path comp_info = {
-    "component.csv",                     // component_csvfile
-    "..\\resources\\",                   // component_relativePath
-    "..\\resources\\pin position\\"      // pinPosition_relativePath
-};
 
 GA::GA() {
     this->setParameter(new GA_Parameter());
@@ -39,6 +38,10 @@ GA::~GA() {
 vector<Layout*> GA::selectParent() {
     int popSize = this->parameter->getPopSize();
     int k = this->parameter->getTournamentNum();
+<<<<<<< HEAD
+=======
+    bool check = true;
+>>>>>>> f52d2a3388d715e43ca5329c86d0f7be7a975b05
 
     vector<Layout*> selected_parent;
     selected_parent.reserve(2);
@@ -46,7 +49,11 @@ vector<Layout*> GA::selectParent() {
     index_arr.reserve(k);
     
     while (selected_parent.size() < 2) {
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> f52d2a3388d715e43ca5329c86d0f7be7a975b05
         index_arr.clear();
         for (int i = 0; i < k; i++)
             index_arr.push_back(rand() % popSize);
@@ -103,11 +110,12 @@ void GA::setParameter(GA_Parameter* parameter) {
 }
 
 void GA::setPopulation() {
-    ComponentList* component_list = new ComponentList(comp_info);
+    ComponentList* component_list = new ComponentList();
 
-    for (int i = 0; i < this->parameter->getPopSize(); i++) {
-        Layout* layout = new Layout(component_list, "double");
-        layout->printComponent();
+    // for (int i = 0; i < this->parameter->getPopSize(); i++) {
+    for (int i = 0; i < 1; i++) {
+        Layout* layout = new Layout(component_list, 2);
+        // layout->printComponent();
         this->population.push_back(layout);
     }
 }
