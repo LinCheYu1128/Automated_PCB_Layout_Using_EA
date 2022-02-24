@@ -41,17 +41,29 @@
 - function / class / .cpp / .h
 
 ## Todo
-- [ ] Binary tree class
-  * constructor
-  * plot tree
-- [x] File input class
-  * component
-  * pin position
-    * T501
-    * M503
+- [x] Binary tree class
+  * constructor / getter / setter
+  * setSingleSide /setDoubleSide
+  * swap
+  * delete node
+  * printBinaryTree
 - [ ] GA class
   * Crossover
+    * leftSubtreeCrossover
+    * kPointCrossover
   * Mutation
+    * Swap
+      * swapNodeMutation
+      * swapBranchMutation
+      * swapSubtreeMutation
+  * Rotate
+    * k component rotation strickly
+    * k component rotation with probability
+  * Shift
+    * shiftSubtreeMutation
+  * Array Type Modification
+    * insert
+    * scramble
 - [ ] Evaluation class
   * Contour
     * Horizon contour
@@ -59,3 +71,8 @@
   * Area
   * PnS
   * WireLength
+- [x] File input class
+* component
+* pin position
+  * T501
+  * M503
