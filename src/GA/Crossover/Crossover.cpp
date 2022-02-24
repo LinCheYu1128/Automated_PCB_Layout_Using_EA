@@ -1,5 +1,5 @@
 #include "GA.h"
-#include "debug.h"
+#include "console.h"
 #include <iostream>
 #include <algorithm>
 using namespace std;

@@ -40,7 +40,6 @@ vector<Layout*> GA::selectParent() {
     index_arr.reserve(k);
     
     while (selected_parent.size() < 2) {
-
         index_arr.clear();
         for (int i = 0; i < k; i++)
             index_arr.push_back(rand() % popSize);
@@ -60,6 +59,11 @@ vector<Layout*> GA::selectParent() {
 
 void GA::crossover() {
     // TODO
+    cout << "Conduct Crossover" << endl;
+    vector<Layout*> Parents = this->selectParent();
+
+
+
 }
 
 void GA::mutation() {
