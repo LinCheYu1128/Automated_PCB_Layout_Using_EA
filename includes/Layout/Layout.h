@@ -24,13 +24,13 @@ class Layout {
         ~Layout();
         
         // getter
-        BinaryTree* getTree();
+        BinaryTree* getBinaryTree();
         Contour* getContour();
         int getComponentNum();
         float getFitness();
 
         // setter
-        void setComponent(int side);
+        void setBinaryTree(int side);
         void setContour();
 
         // printer
