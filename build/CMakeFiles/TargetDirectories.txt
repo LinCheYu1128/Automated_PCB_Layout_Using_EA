@@ -1,3 +1,0 @@
-C:/Users/dt095/OneDrive/桌面/lab/AcBel_Project/build/CMakeFiles/AcBel_Project.dir
-C:/Users/dt095/OneDrive/桌面/lab/AcBel_Project/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/dt095/OneDrive/桌面/lab/AcBel_Project/build/CMakeFiles/ZERO_CHECK.dir
