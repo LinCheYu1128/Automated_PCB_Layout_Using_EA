@@ -44,6 +44,9 @@ TreeNode* TreeNode::getChild(string branch) {
         return this->leftchild;
     } else if (branch == "right") {
         return this->rightchild;
+    } else {
+        cout << "no branch defined" << endl;
+        exit(0);
     }
 }
 
