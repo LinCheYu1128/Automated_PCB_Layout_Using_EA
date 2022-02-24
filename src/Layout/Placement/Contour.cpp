@@ -29,9 +29,7 @@ void Contour::addBlock(ComponentState* Block){
     Point front = {p.x, p.y + Block->getWidth()};
     int bp; // begin point
     for (unsigned int i = 0; i < this->contour.size(); i++){
-        cout << "begin " << this->contour.at(i).x << " " <<  p.x << endl;
         if (this->contour.at(i).x >= p.x ){
-            cout << "enter if" << endl;
             if (this->contour.at(i).x > p.x + Block->getLength()) {
                 // in single contour
                 Point back = {p.x + Block->getLength(), contour.at(i-1).y};
@@ -40,10 +38,7 @@ void Contour::addBlock(ComponentState* Block){
                 }
             else {bp = i; break;}
         }
-        cout << "end" << endl;
     }
-    cout << "Here" << endl;
-    cout << bp << endl;
     for (unsigned int j = bp; j < this->contour.size(); j++){
         if (this->contour.at(j).x > p.x + Block->getLength()) {
             // across different contour
