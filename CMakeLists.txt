@@ -22,8 +22,8 @@ set(SOURCES
     src/GA/GA_Parameter.cpp
     src/GA/Crossover/Crossover.cpp
     src/GA/Mutation/Mutation.cpp
-    # debug
-    src/debug.cpp
+    # console
+    src/console.cpp
     # src/GL.cpp
 )
 

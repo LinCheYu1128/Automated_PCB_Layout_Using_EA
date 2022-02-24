@@ -2,6 +2,8 @@
 #define DEBUGMODE_H
 
 #include <string.h>
+#include <iostream>
+using namespace std;
 
 #define DEBUG_MODE 0
 #define RELEASE_MODE 1
@@ -9,13 +11,11 @@
 class Console {
     private:
         static int mode;
-        static Console instance;
-
-        // constructor
-        Console() {};
+        static Console* instance;
+        Console(){};
 
     public:
-        static Console set(int argc, char **argv) {
+        static Console* set(int argc, char **argv) {
             for (int i = 0; i < argc; i++) {
                 if (strcmp(argv[i], "--debug") == 0 || strcmp(argv[i], "-d") == 0) {
                     cout << "Debug Mode On" << endl;
@@ -27,11 +27,14 @@ class Console {
             mode = 1;
             return instance;
         };
-        static Console &getInstance() {
+        static Console* getInstance() {
+            if (instance == 0) {
+                instance = new Console();
+            }
             return instance;
         }
-        void run();
-        void log(string message);
+        static void run();
+        static void log(string message);
 };
 
 #endif

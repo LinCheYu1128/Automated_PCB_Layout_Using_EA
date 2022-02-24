@@ -1,9 +1,7 @@
 #include "Layout.h"
-#include "debug.h"
+#include "console.h"
 #include <iostream>
 using namespace std;
-
-Console console = Console::getInstance();
 
 Layout::Layout(ComponentList* comp_list, int side) {
     this->comp_list = comp_list;

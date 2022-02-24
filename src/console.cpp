@@ -1,9 +1,10 @@
 #include "Layout.h"
-#include "debug.h"
+#include "GA.h"
+#include "console.h"
 #include <iostream>
 using namespace std;
 
-Console Console::instance;
+Console* Console::instance;
 int Console::mode;
 
 void Console::run() {
@@ -24,21 +25,6 @@ void Console::run() {
         new_tree->delete_node(i);
         new_tree->printBinaryTree();
     }
-    
-    // // random select node to swap
-    // cout << "start random select node to swap" << endl;
-    // map<int, TreeNode*> TreeNode_map = tree->getTreeNodeMap();
-    // int a = rand() % component_list->getSize();
-    // int b = rand() % component_list->getSize();
-    // cout << "initial random select node " << a << ", " << b << endl;
-    // while (b == a || TreeNode_map.at(a)->search(b) || TreeNode_map.at(b)->search(a)) {
-    //     b = rand() % component_list->getSize();
-    //     cout << "random select node " << a << ", " << b << endl;
-    // }
-    // // swap node
-    // tree->swap(a, b);
-    // tree->printBinaryTree();
-
 }
 
 void Console::log(string message) {
@@ -47,3 +33,21 @@ void Console::log(string message) {
     }
     return;
 }
+
+// GA* GA_optimizer = new GA();
+// log("complete GA_optimizer");
+// delete GA_optimizer;
+
+// // random select node to swap
+// cout << "start random select node to swap" << endl;
+// map<int, TreeNode*> TreeNode_map = tree->getTreeNodeMap();
+// int a = rand() % component_list->getSize();
+// int b = rand() % component_list->getSize();
+// cout << "initial random select node " << a << ", " << b << endl;
+// while (b == a || TreeNode_map.at(a)->search(b) || TreeNode_map.at(b)->search(a)) {
+//     b = rand() % component_list->getSize();
+//     cout << "random select node " << a << ", " << b << endl;
+// }
+// // swap node
+// tree->swap(a, b);
+// tree->printBinaryTree();

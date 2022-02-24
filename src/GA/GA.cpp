@@ -1,7 +1,8 @@
 #include "ComponentList.h"
 #include "GA.h"
+#include "console.h"
 #include <iostream>
-#include <ctime>
+#include <algorithm>
 using namespace std;
 
 GA::GA() {
@@ -29,8 +30,31 @@ GA::~GA() {
 }
 
 vector<Layout*> GA::selectParent() {
+    int popSize = this->parameter->getPopSize();
+    int k = this->parameter->getTournamentNum();
+    bool check = true;
+
     vector<Layout*> selected_parent;
-    // TODO
+    selected_parent.reserve(2);
+    vector<int> index_arr;
+    index_arr.reserve(k);
+    
+    while (selected_parent.size() < 2) {
+
+        index_arr.clear();
+        for (int i = 0; i < k; i++)
+            index_arr.push_back(rand() % popSize);
+        
+        sort(index_arr.begin(), index_arr.end());
+        // Ignore repeating check. (YF)
+        selected_parent.push_back(this->population.at(index_arr.front()));
+        
+        if (selected_parent.size() == 2) {
+            if (selected_parent.front() == selected_parent.back()) {
+                selected_parent.pop_back();
+            }
+        }
+    }
     return selected_parent;
 }
 

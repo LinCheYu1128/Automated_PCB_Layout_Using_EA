@@ -1,14 +1,12 @@
 #include "BinaryTree.h"
 #include "PlotBinaryTree.h"
-#include "debug.h"
+#include "console.h"
 #include <iostream>
 #include <vector>
 #include <map>
 #include <random>
 #include <algorithm>
 using namespace std;
-
-Console console = Console::getInstance();
 
 BinaryTree::BinaryTree(ComponentList* comp_list) {
     this->comp_list = comp_list;
@@ -98,7 +96,7 @@ void BinaryTree::setSingleSide() {
         existed_nodes_num += 1;
     }
 
-    console.log("construct single side tree successfully");
+    Console::log("construct single side tree successfully");
 }
 
 void BinaryTree::setDoubleSide() {
@@ -142,11 +140,11 @@ void BinaryTree::setDoubleSide() {
         this->TreeNode_map[i] = child_node;
         existed_nodes_num += 1;
     }
-    console.log("construct double side tree successfully");
+    Console::log("construct double side tree successfully");
 }
 
 void BinaryTree::printBinaryTree() {
-    console.log("start print binary tree");
+    Console::log("start print binary tree");
     PlotBinaryTree* plot_tree = new PlotBinaryTree(this);
     plot_tree->plotBinaryTree();
 }
@@ -191,21 +189,21 @@ void BinaryTree::swap(int id_1, int id_2) {
         A->setParent(B_parent, B_branch);
         B->setParent(A_parent, A_branch);
     } else {
-        console.log("Can't swap! Some node not inside this tree.");
+        Console::log("Can't swap! Some node not inside this tree.");
         exit(0);
     }
 }
 
 void BinaryTree::delete_node(int ID) {
     if (this->TreeNode_map.find(ID) == this->TreeNode_map.end()) {
-        console.log("this node does not exist in this tree");
+        Console::log("this node does not exist in this tree");
         return;
     }
 
     TreeNode* node = this->TreeNode_map.at(ID);
 
     if (node == nullptr) {
-        console.log("this node has been removed");
+        Console::log("this node has been removed");
         return;
     }
 
@@ -229,16 +227,16 @@ void BinaryTree::delete_node(int ID) {
 
 void BinaryTree::delete_leaf_node(TreeNode* node) {
     if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
-        console.log("delete leaf node " + to_string(node->getID()));
+        Console::log("delete leaf node " + to_string(node->getID()));
     } else {
         return;
     }
     
     if (node->getBranch() == "root") {
-        console.log("delete node is root");
+        Console::log("delete node is root");
         this->root = nullptr;
     } else {
-        console.log("delete node is " + node->getBranch());
+        Console::log("delete node is " + node->getBranch());
         node->getParent()->disconnect(node->getBranch());
     }
 }
@@ -247,16 +245,16 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
     TreeNode* successor;
     if (node->getLeftchild() != nullptr && node->getRightchild() == nullptr) {
         successor = node->getLeftchild();
-        console.log("delete hasLeftChild node " + to_string(node->getID()));
+        Console::log("delete hasLeftChild node " + to_string(node->getID()));
     } else if (node->getLeftchild() == nullptr && node->getRightchild() != nullptr) {
         successor = node->getRightchild();
-        console.log("delete hasRightChild node " + to_string(node->getID()));
+        Console::log("delete hasRightChild node " + to_string(node->getID()));
     } else {
         return;
     }
 
     if (node->getBranch() == "root") {
-        console.log("delete node is root");
+        Console::log("delete node is root");
         this->setRoot(successor);
     } else {
         node->getParent()->setChild(successor, node->getBranch());
@@ -268,28 +266,28 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
     if (node->getLeftchild() != nullptr && node->getRightchild() != nullptr) {
         // since node has both children, findRightestNode(node) != nullptr
         successor = findRightestNode(node);
-        console.log("delete hasBothChild node " + to_string(node->getID()));
-        console.log("found successor node "  + to_string(successor->getID()));
-        console.log("successor old parent is "  + to_string(successor->getParent()->getID()));
+        Console::log("delete hasBothChild node " + to_string(node->getID()));
+        Console::log("found successor node "  + to_string(successor->getID()));
+        Console::log("successor old parent is "  + to_string(successor->getParent()->getID()));
         successor->getParent()->disconnect(successor->getBranch());
     } else {
         return;
     }
 
     if (node->getBranch() == "root") {
-        console.log("delete node is root");
+        Console::log("delete node is root");
         this->setRoot(successor);
     } else {
         successor->setParent(node->getParent(), node->getBranch());
-        console.log("successor new parent is " + to_string(successor->getParent()->getID()));
+        Console::log("successor new parent is " + to_string(successor->getParent()->getID()));
         // node must has left child, but right child may be successor        
         if (node->getLeftchild()) {
-            console.log("node leftchild is " + to_string(node->getLeftchild()->getID()));
+            Console::log("node leftchild is " + to_string(node->getLeftchild()->getID()));
             successor->setLeftChild(node->getLeftchild());
         }
         if (node->getRightchild()) {
             successor->setRightChild(node->getRightchild());
-            console.log("node rightchild is " + to_string(node->getRightchild()->getID()));
+            Console::log("node rightchild is " + to_string(node->getRightchild()->getID()));
         }
     }
 }
