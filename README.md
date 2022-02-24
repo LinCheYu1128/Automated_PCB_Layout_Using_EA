@@ -41,13 +41,13 @@
 - function / class / .cpp / .h
 
 ## Todo
-- [] Binary tree class
+- [ ] Binary tree class
   * constructor / getter / setter
   * setSingleSide /setDoubleSide
   * swap
   * delete node
   * printBinaryTree
-- [] GA class
+- [ ] GA class
   * Crossover
     * leftSubtreeCrossover
     * kPointCrossover
@@ -64,7 +64,7 @@
     * Array Type Modification
       * insert
       * scramble
-- [] Layout class
+- [ ] Layout class
   * Contour
     * Horizon contour
     * Preplace contour
