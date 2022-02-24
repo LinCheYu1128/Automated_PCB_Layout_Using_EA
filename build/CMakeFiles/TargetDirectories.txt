@@ -1,3 +1,0 @@
-D:/AcBel/New_AcBel_Project/AcBel_Project/build/CMakeFiles/AcBel_Project.dir
-D:/AcBel/New_AcBel_Project/AcBel_Project/build/CMakeFiles/ALL_BUILD.dir
-D:/AcBel/New_AcBel_Project/AcBel_Project/build/CMakeFiles/ZERO_CHECK.dir
