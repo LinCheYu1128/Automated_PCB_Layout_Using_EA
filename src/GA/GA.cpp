@@ -13,17 +13,17 @@ GA::GA() {
 GA::~GA() {
     delete this->parameter;
 
-    for (int i = 0; i < this->population.size(); i++) {
+    for (unsigned int i = 0; i < this->population.size(); i++) {
         delete this->population[i];
     }
     this->population.clear();
 
-    for (int i = 0; i < this->parent.size(); i++) {
+    for (unsigned int i = 0; i < this->parent.size(); i++) {
         delete this->parent[i];
     }
     this->parent.clear();
     
-    for (int i = 0; i < this->offspring.size(); i++) {
+    for (unsigned int i = 0; i < this->offspring.size(); i++) {
         delete this->offspring[i];
     }
     this->offspring.clear();

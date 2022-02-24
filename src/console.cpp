@@ -8,23 +8,9 @@ Console* Console::instance;
 int Console::mode;
 
 void Console::run() {
-    ComponentList* component_list = new ComponentList();
-    // component_list->printAllData();
+    ComponentList* comp_list = new ComponentList();
+    Layout lay = Layout(comp_list, 1);
     
-    log("construct tree");
-    BinaryTree* tree = new BinaryTree(component_list);
-    tree->setDoubleSide();
-    tree->printBinaryTree();
-
-    log("construct copy tree");
-    BinaryTree* new_tree = tree->copy();
-    
-    log("start delete node");
-    map<int, TreeNode*> TreeNode_map = new_tree->getTreeNodeMap();
-    for (int i = 0; i < 38; i++) {
-        new_tree->delete_node(i);
-        new_tree->printBinaryTree();
-    }
 }
 
 void Console::log(string message) {

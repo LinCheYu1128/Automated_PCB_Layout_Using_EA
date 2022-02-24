@@ -65,7 +65,7 @@ void BinaryTree::setSingleSide() {
     this->side = 1;
     vector<int> comp_list_index(this->comp_list->getSize());
 
-    for (int i = 0; i < comp_list_index.size(); i++) {
+    for (unsigned int i = 0; i < comp_list_index.size(); i++) {
         comp_list_index[i] = i;
     }
 
@@ -77,7 +77,7 @@ void BinaryTree::setSingleSide() {
     TreeNode* parent_node;
     TreeNode* child_node;
 
-    for (int i = 0; i < comp_list_index.size(); i++) {
+    for (unsigned int i = 0; i < comp_list_index.size(); i++) {
         new_comp = comp_list->getDataByIndex(comp_list_index[i]);
 
         if (i == 0) {
@@ -104,7 +104,7 @@ void BinaryTree::setDoubleSide() {
     this->side = 2;
     vector<int> comp_list_index(this->comp_list->getSize());
 
-    for (int i = 0; i < comp_list_index.size(); i++) {
+    for (unsigned int i = 0; i < comp_list_index.size(); i++) {
         comp_list_index[i] = i;
     }
     
@@ -129,7 +129,7 @@ void BinaryTree::setDoubleSide() {
     this->root->getRightchild()->setID(-3);
     this->TreeNode_map[-3] = this->root->getRightchild();
         
-    for (int i = 0; i < comp_list_index.size(); i++) {
+    for (unsigned int i = 0; i < comp_list_index.size(); i++) {
         new_comp = comp_list->getDataByIndex(comp_list_index[i]);
         // left & right branch
         parent_pos = rand() % (existed_nodes_num+3)-3;

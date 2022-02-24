@@ -28,6 +28,7 @@ class Layout {
         // setter
         void setComponent(int side);
         void setContour();
+        void setState(TreeNode*);
 
         // printer
         void printComponent();

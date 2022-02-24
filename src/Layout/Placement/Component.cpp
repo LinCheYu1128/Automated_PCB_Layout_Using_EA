@@ -101,6 +101,7 @@ ComponentState::ComponentState() {
     this->side = "";
     this->angle = 0;
     clearPoint(this->leftdown_position);
+    // cout << "this->leftdown_position: " << this->leftdown_position.x << endl;
     clearPoint(this->center_position);
     this->length = 0;
     this->width = 0;
@@ -204,7 +205,7 @@ void ComponentState::setAllInfo(ComponentState* comp_state) {
     this->setMargin(comp_state->getMargin());
 }
 
-void clearPoint(Point point) {
+void clearPoint(Point& point) {
     point.x = 0;
     point.y = 0;
 }

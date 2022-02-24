@@ -27,6 +27,7 @@ class TreeNode {
         TreeNode* copy();
         void disconnect(string branch="all");
         bool search(int ID);
+        void updateState(vector<Point>);
 
         // getter
         int getID();
@@ -46,7 +47,7 @@ class TreeNode {
         void setRightChild(TreeNode* node);
         void setParent(TreeNode* parent, string branch);
         void setComponentProp(ComponentProperty* comp_prop);
-        void setComponentState(ComponentState* comp_state);
+        void setComponentState(ComponentState* comp_stat);
 
         // void changeParent(TreeNode* parent, string branch);
         

@@ -13,6 +13,7 @@ class Contour {
 
         // getter
         vector<Point> getContour();
+        int getSize();
         
         // setter
         

@@ -13,8 +13,12 @@ vector<Point> Contour::getContour(){
     return this->contour;
 }
 
+int Contour::getSize(){
+    return this->contour.size();
+}
+
 void Contour::printContour(){
-    for (int i = 0; i < this->contour.size(); i++){
+    for (unsigned int i = 0; i < this->contour.size(); i++){
         cout << "(" << this->contour.at(i).x << ", " << this->contour.at(i).y << ")" << endl;
     }
     return;
@@ -24,7 +28,7 @@ void Contour::addBlock(ComponentState* Block){
     Point p = Block->getPosition();
     Point front = {p.x, p.y + Block->getWidth()};
     int bp; // begin point
-    for (int i = 0; i < this->contour.size(); i++){
+    for (unsigned int i = 0; i < this->contour.size(); i++){
         if (this->contour.at(i).x >= p.x ){
             if (this->contour.at(i).x > p.x + Block->getLength()) {
                 // in single contour
@@ -35,7 +39,7 @@ void Contour::addBlock(ComponentState* Block){
             else {bp = i; break;}
         }
     }
-    for (int j = bp; j < this->contour.size(); j++){
+    for (unsigned int j = bp; j < this->contour.size(); j++){
         if (this->contour.at(j).x > p.x + Block->getLength()) {
             // across different contour
             Point back = {p.x + Block->getLength(), contour.at(j-1).y};
