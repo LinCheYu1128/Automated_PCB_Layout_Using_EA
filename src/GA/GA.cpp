@@ -1,4 +1,5 @@
 #include "ComponentList.h"
+// #include ".\Crossover\Crossover.cpp"
 #include "GA.h"
 #include "console.h"
 #include <iostream>
@@ -68,18 +69,11 @@ void GA::crossover() {
     // TODO
     cout << "Conduct Crossover" << endl;
     vector<Layout*> Parents = this->selectParent();
-
+    this->leftSubtreeCrossover(Parents);
 }
 
 void GA::mutation() {
     // TODO
-    int popSize = this->parameter->getPopSize();
-    double MutationRate = this->parameter->getMutationRate();
-
-    cout << "Conduct Nutation" << endl;
-    for (int i = 0; i < popSize; i++){
-        // swapBranchMutation();
-    }
 }
 
 GA_Parameter* GA::getParameter() {
@@ -115,4 +109,9 @@ void GA::setPopulation() {
         // layout->printComponent();
         this->population.push_back(layout);
     }
+}
+
+vector<Layout*> GA::leftSubtreeCrossover(vector<Layout*>Parents){
+    cout << "start crossover"<<endl;
+    return Parents;
 }
