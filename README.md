@@ -36,7 +36,7 @@
 - git remote add upstream https://github.com/danlu008/AcBel_Project.git
 - git reset --hard HEAD
 
-## Git Message
+### Git Message
 - create / modify / move / rename / remove
 - function / class / .cpp / .h
 
