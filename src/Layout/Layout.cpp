@@ -7,9 +7,8 @@ Layout::Layout(ComponentList* comp_list, int side) {
     this->comp_list = comp_list;
     this->setBinaryTree(side);
     this->setContour();
-  
+    this->tree->updateTree();
     this->setState(this->tree->getRoot());
-    
     //----*
     this->printComponent();
     this->contour->printContour();
@@ -33,7 +32,7 @@ void Layout::setContour() {
 }
 
 void Layout::setState(TreeNode* root) {
-    root->updateState(this->contour->getContour());
+    root->shiftUp(this->contour->getContour());
     //-----
     Point check = root->getComponentState()->getPosition();
     cout << "Position after update: (" << check.x << ", " << check.y << ")" << endl;

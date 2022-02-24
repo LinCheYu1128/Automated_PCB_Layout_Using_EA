@@ -305,3 +305,24 @@ TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
 
     return node;
 }
+
+void BinaryTree::updateTree() {
+    if (root == nullptr) {
+        return;
+    }
+
+    vector<TreeNode*> stack;
+    stack.push_back(this->root);
+    TreeNode* node;
+    while(!stack.empty()) {
+        node = stack.back();
+        node->updateNode();
+        stack.pop_back();
+        if (node->getRightchild() != nullptr) {
+            stack.push_back(node->getRightchild());
+        }
+        if (node->getLeftchild() != nullptr) {
+            stack.push_back(node->getLeftchild());
+        }
+    }
+}
