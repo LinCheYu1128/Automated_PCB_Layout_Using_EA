@@ -62,12 +62,17 @@ void GA::crossover() {
     cout << "Conduct Crossover" << endl;
     vector<Layout*> Parents = this->selectParent();
 
-
-
 }
 
 void GA::mutation() {
     // TODO
+    int popSize = this->parameter->getPopSize();
+    int MutationRate = this->parameter->getMutationRate();
+
+    cout << "Conduct Nutation" << endl;
+    for (int i = 0; i < popSize; i++){
+        // swapBranchMutation();
+    }
 }
 
 GA_Parameter* GA::getParameter() {
