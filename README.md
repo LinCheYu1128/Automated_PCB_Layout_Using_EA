@@ -112,6 +112,10 @@
 - function / class / .cpp / .h
 
 ## How To Compile
+### before build
+- cd .\build
+- cmake ..
+### after build
 - cd .\build
 - cmake --build .
 - .\Debug\AcBel_Project.exe
