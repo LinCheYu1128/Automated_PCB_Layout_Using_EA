@@ -25,7 +25,6 @@ class TreeNode {
 
         // utility
         TreeNode* copy();
-        // void pasteFrom(TreeNode* node);
         void disconnect(string branch="all");
         bool search(int ID);
 

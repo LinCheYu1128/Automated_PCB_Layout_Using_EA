@@ -25,8 +25,9 @@ class BinaryTree {
         
         // utility
         BinaryTree* copy();
+        void swap(int id_1, int id_2);
+        void delete_node(int ID);
         TreeNode* findRightestNode(TreeNode* node);
-        void delete_node(TreeNode* node);
 
         // getter
         TreeNode* getRoot();

@@ -1,4 +1,4 @@
-#include "../includes/PlotBinaryTree.h"
+#include "PlotBinaryTree.h"
 #include <iostream>
 #include <string>
 using namespace std;

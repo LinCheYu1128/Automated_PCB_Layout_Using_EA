@@ -22,7 +22,7 @@ class ComponentProperty {
 
     public:
         // constructor, destructor
-        ComponentProperty();
+        ComponentProperty(string name="", string color="", double length=0, double width=0, double height=0, int voltage=0);
         ~ComponentProperty() {};
 
         ComponentProperty* copy();
