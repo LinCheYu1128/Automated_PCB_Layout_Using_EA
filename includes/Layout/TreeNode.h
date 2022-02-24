@@ -47,7 +47,7 @@ class TreeNode {
         void setRightChild(TreeNode* node);
         void setParent(TreeNode* parent, string branch);
         void setComponentProp(ComponentProperty* comp_prop);
-        void setComponentState(ComponentState* comp_stat);
+        void setComponentState(ComponentState* comp_state);
 
         // void changeParent(TreeNode* parent, string branch);
         
