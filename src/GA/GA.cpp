@@ -2,13 +2,7 @@
 #include "GA.h"
 #include "console.h"
 #include <iostream>
-<<<<<<< HEAD
-#include <vector>
 #include <algorithm>
-#include <ctime>
-=======
-#include <algorithm>
->>>>>>> f52d2a3388d715e43ca5329c86d0f7be7a975b05
 using namespace std;
 
 GA::GA() {
@@ -38,10 +32,7 @@ GA::~GA() {
 vector<Layout*> GA::selectParent() {
     int popSize = this->parameter->getPopSize();
     int k = this->parameter->getTournamentNum();
-<<<<<<< HEAD
-=======
     bool check = true;
->>>>>>> f52d2a3388d715e43ca5329c86d0f7be7a975b05
 
     vector<Layout*> selected_parent;
     selected_parent.reserve(2);
@@ -49,11 +40,6 @@ vector<Layout*> GA::selectParent() {
     index_arr.reserve(k);
     
     while (selected_parent.size() < 2) {
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> f52d2a3388d715e43ca5329c86d0f7be7a975b05
         index_arr.clear();
         for (int i = 0; i < k; i++)
             index_arr.push_back(rand() % popSize);
