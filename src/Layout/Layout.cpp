@@ -7,6 +7,7 @@ Layout::Layout(ComponentList* comp_list, int side) {
     this->comp_list = comp_list;
     this->setBinaryTree(side);
     this->setContour();
+    this->tree->updateTree();
 
     if (side == 1) this->setState(this->tree->getRoot(), this->front_contour);
     else if (side == 2) {
@@ -14,7 +15,6 @@ Layout::Layout(ComponentList* comp_list, int side) {
         this->setState(this->tree->getRoot()->getRightchild(), this->back_contour);
     }
     else {cout << "unknown side" << endl; exit(0);} 
-
     this->component_num = comp_list->getSize();
 }
 
@@ -37,7 +37,7 @@ void Layout::setContour() {
 }
 
 void Layout::setState(TreeNode* root, Contour* contour) {
-    root->updateState(contour->getContour());
+    root->shiftUp(contour->getContour());
     contour->addBlock(root->getComponentState());
     if (root->getLeftchild()) {
         setState(root->getLeftchild(), contour);
