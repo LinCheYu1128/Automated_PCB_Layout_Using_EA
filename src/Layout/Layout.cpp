@@ -15,15 +15,7 @@ Layout::~Layout() {
     delete this->contour;
 }
 
-<<<<<<< HEAD
-float Layout::getFitness() {
-    return this->fitness;
-}
-
-void Layout::setComponent(string side) {
-=======
 void Layout::setComponent(int side) {
->>>>>>> f52d2a3388d715e43ca5329c86d0f7be7a975b05
     this->tree = new BinaryTree(this->comp_list);
     if (side == 1) { this->tree->setSingleSide(); }
     if (side == 2) { this->tree->setDoubleSide(); }

@@ -90,7 +90,7 @@ void ComponentList::setAllData() {
         getline(inFile, temp, ',' );
         comp_prop->setHeight(stod(temp));
         getline(inFile, temp, '\n' );
-        comp_prop->setVoltage(stod(temp));
+        comp_prop->setVoltage(stoi(temp));
 
         this->setData(comp_prop->getName(), comp_prop);
         this->setPinPosition(comp_prop->getName());

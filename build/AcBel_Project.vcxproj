@@ -83,7 +83,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -100,10 +100,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -126,7 +126,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -143,10 +143,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -169,7 +169,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -186,10 +186,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -212,7 +212,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -228,10 +228,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\GA;D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\includes\Layout;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -322,6 +322,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\src\GA\GA_Parameter.cpp" />
     <ClCompile Include="D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\src\GA\Crossover\Crossover.cpp" />
     <ClCompile Include="D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\src\GA\Mutation\Mutation.cpp" />
+    <ClCompile Include="D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\src\console.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\build\ZERO_CHECK.vcxproj">

@@ -40,6 +40,9 @@
     <ClCompile Include="D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\src\GA\Mutation\Mutation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="D:\0. Project\AcBelProject\AcBel_Project-main\AcBel_Project-main\CMakeLists.txt" />
