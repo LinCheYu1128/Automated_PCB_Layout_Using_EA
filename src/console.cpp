@@ -8,10 +8,12 @@ Console* Console::instance;
 int Console::mode;
 
 void Console::run() {
+
     GA* GA_optimizer = new GA();
     // vector<Layout*> parents = GA_optimizer->selectParent();
     GA_optimizer->crossover();
     delete GA_optimizer;
+
 
     // GA* GA_optimizer = new GA();
     // vector<Layout*> parents = GA_optimizer->selectParent();

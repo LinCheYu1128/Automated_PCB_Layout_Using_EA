@@ -34,7 +34,7 @@ class GA {
         void setPopulation();
         
 };
-vector<Layout*> leftSubtreeCrossover(vector<Layout*>Parents);
+Layout* leftSubtreeCrossover(vector<Layout*>Parents);
 void swapBranchMutation(Layout *input);
 void swapSubtreeMutation(Layout *input);
 void bitwiseMutation(Layout *input);
