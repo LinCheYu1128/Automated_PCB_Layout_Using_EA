@@ -11,6 +11,7 @@
 class Layout {
     private:
         ComponentList* comp_list;
+        int component_num;
 
         // Placement
         BinaryTree* tree;
@@ -23,8 +24,9 @@ class Layout {
         ~Layout();
         
         // getter
-        BinaryTree* getComponent();
+        BinaryTree* getTree();
         Contour* getContour();
+        int getComponentNum();
         float getFitness();
 
         // setter

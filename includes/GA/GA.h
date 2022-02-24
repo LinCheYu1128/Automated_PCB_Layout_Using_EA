@@ -32,6 +32,14 @@ class GA {
         // setter
         void setParameter(GA_Parameter* parameter);
         void setPopulation();
+        
 };
+void swapBranchMutation(Layout *input);
+void swapSubtreeMutation(Layout *input);
+void bitwiseMutation(Layout *input);
+void shiftSubtreeMutation(Layout *input);
+void insertMutation(Layout *input);
+void scrambleMutation(Layout *input);
+void swapNodeMutation(Layout *input);
 
 #endif

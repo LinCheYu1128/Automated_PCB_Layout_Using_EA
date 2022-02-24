@@ -7,6 +7,7 @@ Layout::Layout(ComponentList* comp_list, int side) {
     this->comp_list = comp_list;
     this->setComponent(side);
     this->setContour();
+    this->component_num = comp_list->getSize();
 }
 
 Layout::~Layout() {
