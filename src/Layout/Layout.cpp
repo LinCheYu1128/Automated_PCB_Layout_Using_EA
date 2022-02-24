@@ -13,7 +13,6 @@ Layout::Layout(ComponentList* comp_list, int side) {
     //----*
     this->printComponent();
     this->contour->printContour();
-=======
     this->component_num = comp_list->getSize();
 }
 

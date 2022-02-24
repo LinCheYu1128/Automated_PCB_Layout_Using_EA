@@ -74,7 +74,7 @@ void GA::crossover() {
 void GA::mutation() {
     // TODO
     int popSize = this->parameter->getPopSize();
-    int MutationRate = this->parameter->getMutationRate();
+    double MutationRate = this->parameter->getMutationRate();
 
     cout << "Conduct Nutation" << endl;
     for (int i = 0; i < popSize; i++){
