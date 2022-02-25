@@ -49,9 +49,9 @@ vector<Layout*> GA::selectParent() {
         
         sort(index_arr.begin(), index_arr.end());
 
-        for(int i = 0; i < k; i++)
-            cout << index_arr.at(i) << " ";
-        cout << endl;
+        // for(int i = 0; i < k; i++)
+        //     cout << index_arr.at(i) << " ";
+        // cout << endl;
         // Ignore repeating check. (YF)
         selected_parent.push_back(this->population.at(index_arr.front()));
 
@@ -61,6 +61,7 @@ vector<Layout*> GA::selectParent() {
             }
         }
     }
+    
     return selected_parent;
 }
 
