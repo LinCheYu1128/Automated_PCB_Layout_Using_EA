@@ -13,7 +13,7 @@ void Console::run() {
     
 
     // GA* GA_optimizer = new GA();
-    // vector<Layout*> parents = GA_optimizer->selectParent();
+    // vector<Layout*> parents = GA_optimizer->parentSelect();
     // delete GA_optimizer;
 
     // ComponentList* component_list = new ComponentList();

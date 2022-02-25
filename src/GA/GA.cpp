@@ -2,6 +2,7 @@
 // #include ".\Crossover\Crossover.cpp"
 #include "GA.h"
 #include "console.h"
+#include "Layout.h"
 #include <iostream>
 #include <algorithm>
 using namespace std;
@@ -30,7 +31,7 @@ GA::~GA() {
     this->offspring.clear();
 }
 
-vector<Layout*> GA::selectParent() {
+vector<Layout*> GA::parentSelect() {
     int popSize = this->parameter->getPopSize();
     int k = this->parameter->getTournamentNum();
     bool check = true;
@@ -69,12 +70,17 @@ vector<Layout*> GA::selectParent() {
 void GA::crossover() {
     // TODO
     cout << "Conduct Crossover" << endl;
-    vector<Layout*> Parents = this->selectParent();
+    vector<Layout*> Parents = this->parentSelect();
     this->leftSubtreeCrossover(Parents);
 }
 
 void GA::mutation() {
     // TODO
+}
+
+void GA::survivorSelect() {
+    sort(this->population.begin(), this->population.end(), SortPop);
+    this->population.erase(this->population.begin() + this->parameter->getPopSize(), this->population.end());
 }
 
 GA_Parameter* GA::getParameter() {
@@ -110,6 +116,10 @@ void GA::setPopulation() {
         // layout->printComponent();
         this->population.push_back(layout);
     }
+}
+
+bool SortPop(Layout *layout_1, Layout *layout_2) {
+    return layout_1->getFitness() < layout_2->getFitness();
 }
 
 vector<Layout*> GA::leftSubtreeCrossover(vector<Layout*>Parents){

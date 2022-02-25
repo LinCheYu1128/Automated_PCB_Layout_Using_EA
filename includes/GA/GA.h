@@ -18,9 +18,10 @@ class GA {
         ~GA();
 
         // GA process
-        vector<Layout*> selectParent();
+        vector<Layout*> parentSelect();
         void crossover();
         void mutation();
+        void survivorSelect();  // Has not test yet.
 
         // getter
         GA_Parameter* getParameter();
@@ -29,10 +30,13 @@ class GA {
         vector<Layout*> getOffspring();
         Layout* getBest(string attr);   // area / wirelength / PnS / all
         vector<Layout*> leftSubtreeCrossover(vector<Layout*>Parents);
+        
         // setter
         void setParameter(GA_Parameter* parameter);
         void setPopulation();
-        
+
+        // helper
+        bool SortPop(Layout const *layout_1, Layout const *layout_2);
 };
 void swapBranchMutation(Layout *input);
 void swapSubtreeMutation(Layout *input);
