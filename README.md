@@ -53,7 +53,6 @@
     * kPointCrossover
   * Mutation
     * Swap
-      * swapNodeMutation
       * swapBranchMutation
       * swapSubtreeMutation
     * Rotate
@@ -62,6 +61,7 @@
     * Shift
       * shiftSubtreeMutation
     * Array Type Modification
+      * swapNodeMutation
       * insert
       * scramble
 - [ ] Layout class

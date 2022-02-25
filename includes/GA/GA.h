@@ -28,10 +28,18 @@ class GA {
         vector<Layout*> getParent();
         vector<Layout*> getOffspring();
         Layout* getBest(string attr);   // area / wirelength / PnS / all
-
+        vector<Layout*> leftSubtreeCrossover(vector<Layout*>Parents);
         // setter
         void setParameter(GA_Parameter* parameter);
         void setPopulation();
+        
 };
+void swapBranchMutation(Layout *input);
+void swapSubtreeMutation(Layout *input);
+void bitwiseMutation(Layout *input);
+void shiftSubtreeMutation(Layout *input);
+void insertMutation(Layout *input);
+void scrambleMutation(Layout *input);
+void swapNodeMutation(Layout *input);
 
 #endif

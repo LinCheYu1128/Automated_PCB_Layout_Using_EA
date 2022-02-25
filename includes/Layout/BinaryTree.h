@@ -17,6 +17,7 @@ class BinaryTree {
         void delete_leaf_node(TreeNode* node);
         void delete_hasOneChild_node(TreeNode* node);
         void delete_hasBothChild_node(TreeNode* node);
+        TreeNode* traverseUpdateTree(TreeNode* node);
 
     public:
         // constructor, destructor
@@ -27,6 +28,7 @@ class BinaryTree {
         BinaryTree* copy();
         void swap(int id_1, int id_2);
         void delete_node(int ID);
+        void updateTree();
         TreeNode* findRightestNode(TreeNode* node);
 
         // getter

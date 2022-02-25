@@ -2,6 +2,7 @@
 #include "Component.h"
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 TreeNode::TreeNode(ComponentProperty* comp_prop) {
@@ -170,4 +171,33 @@ bool TreeNode::search(int ID) {
 
     cout << "node ID " << ID << " can't be searched at node " << this->getID() << endl;
     return false;
+}
+
+void TreeNode::updateNode() {
+    if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+        this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+        this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    } else {
+        this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+        this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    }
+}
+
+void TreeNode::shiftUp(vector<Point> contour) {
+    double x;
+    double max_y = 0;
+    ComponentState* comp = this->getComponentState();
+    if (this->getBranch() == "root") x = 0;
+    else {
+        ComponentState* parent = this->getParent()->getComponentState();
+        if (this->getBranch() == "left") x = parent->getPosition().x + parent->getLength();
+        else if (this->getBranch() == "right") x = parent->getPosition().x;
+        else {cout << "Branch invalid" << endl; exit(0);}
+    }
+    for (unsigned int i = 0; i < contour.size(); i++){
+        if (contour.at(i).x >= x && contour.at(i).x < x + comp->getLength()) {
+            max_y = max(contour.at(i).y, max_y);
+        }
+    }
+    comp->setPosition(x, max_y);
 }

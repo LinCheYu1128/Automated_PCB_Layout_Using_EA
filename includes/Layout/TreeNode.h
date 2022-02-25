@@ -27,6 +27,8 @@ class TreeNode {
         TreeNode* copy();
         void disconnect(string branch="all");
         bool search(int ID);
+        void updateNode();
+        void shiftUp(vector<Point>);
 
         // getter
         int getID();
