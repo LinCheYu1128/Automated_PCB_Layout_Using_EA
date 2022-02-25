@@ -4,6 +4,7 @@
 #include "console.h"
 #include "Layout.h"
 #include <iostream>
+#include <fstream>
 #include <algorithm>
 using namespace std;
 
@@ -104,6 +105,22 @@ Layout* GA::getBest(string attr) {
     return this->bestOffspring;
 }
 
+void GA::getOutputFile() {
+    ofstream ExpResult("FILENAME_AnytimeBehavior.csv");
+    ExpResult << "Total Generation" << "," << this->parameter->getGeneration() << "\n";
+    ExpResult << "Population Size" << "," << this->parameter->getPopSize() << "\n";
+    ExpResult << "Crossover Rate" << "," << this->parameter->getCrossoverRate() << "\n";
+    ExpResult << "Mutation Rate" << "," << this->parameter->getMutationRate() << "\n";
+    ExpResult << "Angle Mutation Rate" << "," << this->parameter->getAngleChangeRate() << "\n";
+    ExpResult << "Angle Bit Flip Rate" << "," << this->parameter->getSideChangeRate() << "\n";
+    ExpResult << "k Tournament Selection" << "," << this->parameter->getTournamentNum() << "\n";
+
+    // Wait expand
+    for(unsigned int i = 0; i < this->anytimeBehavior.size(); i++) {
+        ExpResult << this->anytimeBehavior.at(i) << "\n";
+    }
+}
+
 void GA::setParameter(GA_Parameter* parameter) {
     this->parameter = parameter;
 }
@@ -116,6 +133,10 @@ void GA::setPopulation() {
         // layout->printComponent();
         this->population.push_back(layout);
     }
+}
+
+void GA::pushBehavior() {
+    this->anytimeBehavior.push_back(this->bestOffspring->getFitness());
 }
 
 bool SortPop(Layout *layout_1, Layout *layout_2) {

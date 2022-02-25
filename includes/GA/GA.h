@@ -11,6 +11,7 @@ class GA {
         vector<Layout*> parent;
         vector<Layout*> offspring;
         Layout* bestOffspring;
+        vector<float> anytimeBehavior;
     
     public:
         // constructor, destructor
@@ -30,10 +31,12 @@ class GA {
         vector<Layout*> getOffspring();
         Layout* getBest(string attr);   // area / wirelength / PnS / all
         vector<Layout*> leftSubtreeCrossover(vector<Layout*>Parents);
-        
+        void getOutputFile();   // anytime behavior or anything needed in output file
+
         // setter
         void setParameter(GA_Parameter* parameter);
         void setPopulation();
+        void pushBehavior();
 
         // helper
         bool SortPop(Layout const *layout_1, Layout const *layout_2);
