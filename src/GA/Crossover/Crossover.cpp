@@ -14,6 +14,7 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
     while (BTreeA->getRoot()->getRightchild()){
         BTreeA->delete_node(BTreeA->getRoot()->getRightchild()->getID());
     }
+    cout << "left subtree : "<<endl;
     BTreeA->printBinaryTree();
     vector<int> ArraytoDelete;
     vector<TreeNode*> stack;
@@ -30,32 +31,31 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
             stack.push_back(node->getLeftchild());
         }
     }
-    cout << "remaining nod number = " << ArraytoDelete.size() << endl;
+    cout << "number of remaining nodes = " << ArraytoDelete.size() << endl;
     
     BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
+    cout << "origin BTreeB : "<<endl;
     BTreeB->printBinaryTree();
-    for(int item = 1; item<ArraytoDelete.size(); item++){
+    for(unsigned int item = 1; item<ArraytoDelete.size(); item++){
         BTreeB->delete_node(item);
-        cout << "delete node "<<item<<endl;
+        cout << "delete node "<<ArraytoDelete.at(item)<<endl;
         // BTreeB->printBinaryTree();
     }
+    cout << "after delete BTreeB : "<<endl;
     BTreeB->printBinaryTree();
     TreeNode* newroot = BTreeB->findRightestNode(BTreeB->getRoot());
-    cout << BTreeB->getRoot()->getID() << endl;
+    cout << "new root id : " << newroot->getID() << endl;
     if(newroot->getID()==0){
         return new Layout(BTreeA, component_list, 1);
     }
     else{
         BTreeB->changetoroot(newroot);
-        // cout << "delete node "<<0<<endl;
+        cout << "right subtree : "<<endl;
         BTreeB->printBinaryTree();
     }
-    // cout << BTreeA->getTreeNodeMap().size() << endl;
-    // Layout* offspring = new Layout(component_list, 1);
-    // offspring->getBinaryTree()->printBinaryTree();
-    // vector<int> left
-    // 
-    // parentB->printBinaryTree();
+    cout << "BTreeA tree map size = "<<BTreeA->getTreeNodeMap().size() << endl;
+    BTreeA->getRoot()->setRightChild(BTreeB->getRoot());
+    BTreeA->printBinaryTree();
     cout << "end crossover"<<endl;
     return new Layout(BTreeA, component_list, 1);
 }

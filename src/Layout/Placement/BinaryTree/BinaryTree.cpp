@@ -196,10 +196,16 @@ void BinaryTree::swap(int id_1, int id_2) {
 
 void BinaryTree::changetoroot(TreeNode* node){
     if(node->getRightchild()==nullptr && node->getLeftchild()==nullptr){
-        // cout << node->getBranch() << endl;
+        cout << node->getBranch() << endl;
         node->getParent()->disconnect(node->getBranch());
-        node->setLeftChild(this->getRoot()->getLeftchild());
-        node->setRightChild(this->getRoot()->getRightchild());
+        cout << "debug disconnect" << endl;
+        if(this->getRoot()->getLeftchild()){
+            node->setLeftChild(this->getRoot()->getLeftchild());
+        }
+        if(this->getRoot()->getRightchild()){
+            node->setRightChild(this->getRoot()->getRightchild());
+        }
+        cout << "debug setChild" << endl;
         this->setRoot(node);
     }
 }
