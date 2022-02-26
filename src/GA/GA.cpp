@@ -71,7 +71,10 @@ void GA::crossover() {
     
     // Parents.at(0)->printComponent();
     // Parents.at(1)->printComponent();
-    Layout *offspring = leftSubtreeCrossover(Parents);
+    // Layout *offspring = leftSubtreeCrossover(Parents);
+    // offspring->getBinaryTree()->printBinaryTree();
+    
+    Layout *offspring = kPointCrossover(Parents);
     offspring->getBinaryTree()->printBinaryTree();
 }
 

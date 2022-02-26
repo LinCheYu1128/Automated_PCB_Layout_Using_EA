@@ -35,6 +35,7 @@ class GA {
         
 };
 Layout* leftSubtreeCrossover(vector<Layout*>Parents);
+Layout* kPointCrossover(vector<Layout*>Parents);
 void swapBranchMutation(Layout *input);
 void swapSubtreeMutation(Layout *input);
 void bitwiseMutation(Layout *input);
