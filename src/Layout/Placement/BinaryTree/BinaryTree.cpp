@@ -194,6 +194,22 @@ void BinaryTree::swap(int id_1, int id_2) {
     }
 }
 
+void BinaryTree::changetoroot(TreeNode* node){
+    if(node->getRightchild()==nullptr && node->getLeftchild()==nullptr){
+        cout << node->getBranch() << endl;
+        node->getParent()->disconnect(node->getBranch());
+        cout << "debug disconnect" << endl;
+        if(this->getRoot()->getLeftchild()){
+            node->setLeftChild(this->getRoot()->getLeftchild());
+        }
+        if(this->getRoot()->getRightchild()){
+            node->setRightChild(this->getRoot()->getRightchild());
+        }
+        cout << "debug setChild" << endl;
+        this->setRoot(node);
+    }
+}
+
 void BinaryTree::delete_node(int ID) {
     if (this->TreeNode_map.find(ID) == this->TreeNode_map.end()) {
         Console::log("this node does not exist in this tree");
@@ -218,7 +234,6 @@ void BinaryTree::delete_node(int ID) {
     this->delete_leaf_node(node);
     this->delete_hasOneChild_node(node);
     this->delete_hasBothChild_node(node);
-
     this->TreeNode_map[node->getID()] = nullptr;
     node->disconnect();
 
