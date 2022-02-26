@@ -1,5 +1,4 @@
 #include "ComponentList.h"
-// #include ".\Crossover\Crossover.cpp"
 #include "GA.h"
 #include "console.h"
 #include "Layout.h"
@@ -73,6 +72,16 @@ void GA::crossover() {
     cout << "Conduct Crossover" << endl;
     vector<Layout*> Parents = this->parentSelect();
     this->leftSubtreeCrossover(Parents);
+
+    
+    // Parents.at(0)->printComponent();
+    // Parents.at(1)->printComponent();
+    // Layout *offspring = leftSubtreeCrossover(Parents);
+    // offspring->getBinaryTree()->printBinaryTree();
+    
+    Layout *offspring = kPointCrossover(Parents);
+    offspring->getBinaryTree()->printBinaryTree();
+
 }
 
 void GA::mutation() {
@@ -129,7 +138,7 @@ void GA::setPopulation() {
     ComponentList* component_list = new ComponentList();
 
     for (int i = 0; i < this->parameter->getPopSize(); i++) {
-        Layout* layout = new Layout(component_list, 2);
+        Layout* layout = new Layout(component_list, 1);
         // layout->printComponent();
         this->population.push_back(layout);
     }
@@ -147,3 +156,4 @@ vector<Layout*> GA::leftSubtreeCrossover(vector<Layout*>Parents){
     cout << "start crossover"<<endl;
     return Parents;
 }
+

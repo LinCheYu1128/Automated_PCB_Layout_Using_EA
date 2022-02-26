@@ -41,6 +41,8 @@ class GA {
         // helper
         bool SortPop(Layout const *layout_1, Layout const *layout_2);
 };
+Layout* leftSubtreeCrossover(vector<Layout*>Parents);
+Layout* kPointCrossover(vector<Layout*>Parents);
 void swapBranchMutation(Layout *input);
 void swapSubtreeMutation(Layout *input);
 void bitwiseMutation(Layout *input);
