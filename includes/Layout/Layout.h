@@ -21,14 +21,15 @@ class Layout {
 
     public:
         // constructor, destructor
+        Layout(BinaryTree* tree, ComponentList* comp_list, int side);
         Layout(ComponentList* comp_list, int side);
         ~Layout();
         
         // getter
-        BinaryTree* getBinaryTree();
+        BinaryTree* getBinaryTree(){return tree;};
         Contour* getContour();
-        int getComponentNum();
-        float getFitness();
+        int getComponentNum(){return component_num;};
+        float getFitness(){return fitness;};
 
         // setter
         void setBinaryTree(int side);

@@ -8,9 +8,12 @@ Console* Console::instance;
 int Console::mode;
 
 void Console::run() {
-    ComponentList* comp_list = new ComponentList();
-    Layout lay = Layout(comp_list, 2);
-    
+
+    GA* GA_optimizer = new GA();
+    // vector<Layout*> parents = GA_optimizer->selectParent();
+    GA_optimizer->crossover();
+    delete GA_optimizer;
+
 
     // GA* GA_optimizer = new GA();
     // vector<Layout*> parents = GA_optimizer->selectParent();
