@@ -1,6 +1,8 @@
 #ifndef LAYOUT_H
 #define LAYOUT_H
 
+#include <fstream>
+#include <stack>
 #include "BinaryTree.h"
 #include "Component.h"
 #include "ComponentList.h"
@@ -39,5 +41,7 @@ class Layout {
         // printer
         void printComponent();
 };
+
+void writeCsv(Layout layout);
 
 #endif

@@ -47,6 +47,10 @@ Layout::~Layout() {
     delete this->back_contour;
 }
 
+BinaryTree* Layout::getBinaryTree(){
+    return this->tree;
+}
+
 void Layout::setBinaryTree(int side) {
     this->tree = new BinaryTree(this->comp_list);
     if (side == 1) { this->tree->setSingleSide(); }
@@ -73,4 +77,37 @@ void Layout::setState(TreeNode* root, Contour* contour) {
 
 void Layout::printComponent() {
     this->tree->printBinaryTree();
+}
+
+void writeCsv(Layout layout){
+    BinaryTree* layout_tree = layout.getBinaryTree();
+    std::ofstream layout_data;
+    layout_data.open ("output.csv");
+    stack<TreeNode*> nodes;
+    nodes.push(layout_tree->getRoot());
+    while (nodes.size() > 0) {
+        TreeNode *current = nodes.top();
+        nodes.pop();
+        ComponentProperty* prop = current->getComponentProp();
+        ComponentState* state = current->getComponentState();
+        layout_data << prop->getName() << "," 
+                    << prop->getColor() << ","
+                    << prop->getLength() << ","
+                    << prop->getWidth() << ","
+                    << prop->getHeight() << ","
+                    << prop->getVoltage() << ","
+                    << state->getPosition().x << ","
+                    << state->getPosition().y << ","
+                    << state->getAngle() << ","
+                    << state->getSide() << ",";
+        if (current->getLeftchild()) layout_data << current->getLeftchild()->getComponentProp()->getName() << ",";
+        else layout_data << "null" << ",";
+        if (current->getRightchild()) layout_data << current->getRightchild()->getComponentProp()->getName() << ",";
+        else layout_data << "null" << ",";
+        layout_data << "\n";
+
+        if (current->getLeftchild()) nodes.push(current->getLeftchild());
+        if (current->getRightchild()) nodes.push(current->getRightchild()); 
+    }
+    layout_data.close();
 }
