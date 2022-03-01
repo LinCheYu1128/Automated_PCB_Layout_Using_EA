@@ -142,7 +142,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     return new Layout(BTreeB, component_list, 1);
 }
 
-vector<int> ExtractTree(BinaryTree* Tree){
+vector<int> ExtractTreeWithID(BinaryTree* Tree){
     vector<int> nodelist;
     vector<TreeNode*> stack;
     stack.push_back(Tree->getRoot());
@@ -162,9 +162,29 @@ vector<int> ExtractTree(BinaryTree* Tree){
     return nodelist;
 }
 
-bool checknodeexist(vector<int> list, int index){
+vector<TreeNode*> ExtractTreeWithTreeNode(BinaryTree* Tree){
+    vector<TreeNode*> nodelist;
+    vector<TreeNode*> stack;
+    stack.push_back(Tree->getRoot());
+    TreeNode* node;
+    while(!stack.empty()) {
+        node = stack.back();
+        stack.pop_back();
+        nodelist.push_back(node);
+        if (node->getRightchild() != nullptr) {
+            stack.push_back(node->getRightchild());
+        }
+        if (node->getLeftchild() != nullptr) {
+            stack.push_back(node->getLeftchild());
+        }
+    }
+    nodelist.erase(nodelist.begin(),nodelist.begin()+1);
+    return nodelist;
+}
+
+bool checknodeexist(vector<TreeNode*> list, int index){
     for(auto item: list){
-        if(item==index) return true;
+        if(item->getID()==index) return true;
     }
     return false;
 }
@@ -175,7 +195,7 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     BTreeA->printBinaryTree();
-    BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
+    BinaryTree *BTreeB = Parents.at(1)->getBinaryTree();
     BTreeB->printBinaryTree();
 
     int amount = BTreeA->getTreeNodeMap().size();
@@ -195,12 +215,12 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
     }
     cout << endl;
 
-    vector<int> nodelistA = ExtractTree(BTreeA);
-    vector<int> nodelistB = ExtractTree(BTreeB);
+    vector<TreeNode*> nodelistA = ExtractTreeWithTreeNode(BTreeA);
+    vector<int> nodelistB = ExtractTreeWithID(BTreeB);
 
     cout << "nodelistA = ";
     for(auto point: nodelistA){
-        cout << point << " ";
+        cout << point->getID() << " ";
     }
     cout << endl;
     cout << "nodelistB = ";
@@ -209,11 +229,18 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
     }
     cout << endl;
 
-    // for(auto point: nodelistA){
-    //     if()
-    //     cout << point << " ";
-    // }
+    for(unsigned int i = 0; i < nodelistA.size(); i++){
+        if(i<cutpoint.at(0)||i>cutpoint.at(1)){
+            nodelistA.at(i)->setID(0);
+        } 
+    }
 
+    cout << "nodelistA = ";
+    for(auto point: nodelistA){
+        cout << point->getID() << " ";
+    }
+    cout << endl;
+    
     if(checknodeexist(nodelistA, 1)) cout<<"yes"<<endl;
     else cout << "no" << endl;
 
