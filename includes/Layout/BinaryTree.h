@@ -42,6 +42,7 @@ class BinaryTree {
         void setSide(int side);
         void setSingleSide();
         void setDoubleSide();
+        void updateTreeNodeMap();
 
         // printer
         void printBinaryTree();

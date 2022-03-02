@@ -341,3 +341,21 @@ void BinaryTree::updateTree() {
         }
     }
 }
+
+void BinaryTree::updateTreeNodeMap(){
+    this->TreeNode_map.clear();
+    vector<TreeNode*> stack;
+    stack.push_back(this->root);
+    TreeNode* node;
+    while(!stack.empty()) {
+        node = stack.back();
+        stack.pop_back();
+        this->TreeNode_map.insert(std::pair<int, TreeNode*>(node->getID(), node));
+        if (node->getRightchild() != nullptr) {
+            stack.push_back(node->getRightchild());
+        }
+        if (node->getLeftchild() != nullptr) {
+            stack.push_back(node->getLeftchild());
+        }
+    }
+}

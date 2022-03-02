@@ -57,6 +57,7 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
     BTreeA->getRoot()->setRightChild(BTreeB->getRoot());
     BTreeA->printBinaryTree();
     cout << "end crossover"<<endl;
+    BTreeA->updateTreeNodeMap();
     return new Layout(BTreeA, component_list, 1);
 }
 
@@ -139,6 +140,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     // BTreeA->getRoot()->setRightChild(BTreeB->getRoot());
     // 
     // cout << "end crossover"<<endl;
+    BTreeB->updateTreeNodeMap();
     return new Layout(BTreeB, component_list, 1);
 }
 
@@ -265,5 +267,6 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
     
     // BTreeA->printBinaryTree();
     cout << "end crossover"<<endl;
+    BTreeA->updateTreeNodeMap();
     return new Layout(BTreeA, component_list, 1);
 }
