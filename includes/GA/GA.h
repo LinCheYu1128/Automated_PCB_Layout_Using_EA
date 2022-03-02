@@ -33,10 +33,13 @@ class GA {
         void setParameter(GA_Parameter* parameter);
         void setPopulation();
         
+        // 
 };
+int MyRandom (int i);
+void testMutation ();
 void swapBranchMutation(Layout *input);
 void swapSubtreeMutation(Layout *input);
-void bitwiseMutation(Layout *input);
+void bitwiseMutation(Layout *input, double prob);
 void shiftSubtreeMutation(Layout *input);
 void insertMutation(Layout *input);
 void scrambleMutation(Layout *input);

@@ -20,6 +20,10 @@ BinaryTree* Layout::getTree(){
     return this->tree;
 }
 
+int Layout::getComponentNum(){
+    return this->component_num;
+}
+
 void Layout::setComponent(int side) {
     this->tree = new BinaryTree(this->comp_list);
     if (side == 1) { this->tree->setSingleSide(); }

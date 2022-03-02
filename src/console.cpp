@@ -10,9 +10,7 @@ int Console::mode;
 void Console::run() {
 
     GA* GA_optimizer = new GA();
-    vector<Layout*> parents = GA_optimizer->selectParent();
-
-    delete GA_optimizer;
+    // vector<Layout*> parents = GA_optimizer->selectParent();
 
     // ComponentList* component_list = new ComponentList();
     // // component_list->printAllData();
@@ -31,6 +29,10 @@ void Console::run() {
     //     new_tree->delete_node(i);
     //     new_tree->printBinaryTree();
     // }
+
+    GA_optimizer->mutation();
+
+    delete GA_optimizer;
 }
 
 void Console::log(string message) {

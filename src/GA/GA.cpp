@@ -72,14 +72,27 @@ void GA::crossover() {
 }
 
 void GA::mutation() {
-    // TODO
-    int popSize = this->parameter->getPopSize();
-    int MutationRate = this->parameter->getMutationRate();
+    // // TODO
+    // int popSize = this->parameter->getPopSize();
+    // int MutationRate = this->parameter->getMutationRate();
 
-    cout << "Conduct Nutation" << endl;
-    for (int i = 0; i < popSize; i++){
-        // swapBranchMutation();
-    }
+    // cout << "Conduct Nutation" << endl;
+    // for (int i = 0; i < popSize; i++){
+    //     // swapBranchMutation();
+    // }
+
+    cout << "conduct mutation" << endl;
+
+    Layout* test_layout = this->getPopulation().at(1);
+
+    cout << "before mutation" << endl;
+    test_layout->getTree()->printBinaryTree();
+
+    bitwiseMutation(test_layout, 0.5);
+
+    cout << "after mutation" << endl;
+    test_layout->getTree()->printBinaryTree();
+    
 }
 
 GA_Parameter* GA::getParameter() {
@@ -111,7 +124,7 @@ void GA::setPopulation() {
     ComponentList* component_list = new ComponentList();
 
     for (int i = 0; i < this->parameter->getPopSize(); i++) {
-        Layout* layout = new Layout(component_list, 2);
+        Layout* layout = new Layout(component_list, 1);
         // layout->printComponent();
         this->population.push_back(layout);
     }

@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 #define RELEASE_MODE 1
 
 class Console {

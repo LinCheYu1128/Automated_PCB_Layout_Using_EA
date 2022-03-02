@@ -72,12 +72,21 @@ ComponentState* TreeNode::getComponentState() {
 
 void TreeNode::disconnect(string branch) {
     if (branch == "parent" || branch == "all") {
+        string mybranch = this->branch;
+        if(mybranch == "left"){
+            this->parent->leftchild = nullptr;
+        }else if((mybranch == "right")){
+            this->parent->rightchild = nullptr;
+        }
         this->parent = nullptr;
     }
+
     if (branch == "left" || branch == "all") {
+        this->leftchild->parent = nullptr;
         this->leftchild = nullptr;
     }
     if (branch == "right" || branch == "all") {
+        this->rightchild->parent = nullptr;
         this->rightchild = nullptr;
     }
 }
@@ -171,3 +180,4 @@ bool TreeNode::search(int ID) {
     cout << "node ID " << ID << " can't be searched at node " << this->getID() << endl;
     return false;
 }
+
