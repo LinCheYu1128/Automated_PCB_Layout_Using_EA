@@ -36,6 +36,7 @@ class GA {
         // setter
         void setParameter(GA_Parameter* parameter);
         void setPopulation();
+
         void pushBehavior();
 
         // helper
@@ -43,9 +44,12 @@ class GA {
 };
 Layout* leftSubtreeCrossover(vector<Layout*>Parents);
 Layout* kPointCrossover(vector<Layout*>Parents);
+
+int MyRandom (int i);
+void testMutation ();
 void swapBranchMutation(Layout *input);
 void swapSubtreeMutation(Layout *input);
-void bitwiseMutation(Layout *input);
+void bitwiseMutation(Layout *input, double prob);
 void shiftSubtreeMutation(Layout *input);
 void insertMutation(Layout *input);
 void scrambleMutation(Layout *input);

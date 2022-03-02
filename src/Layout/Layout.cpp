@@ -51,6 +51,17 @@ BinaryTree* Layout::getBinaryTree(){
     return this->tree;
 }
 
+
+BinaryTree* Layout::getTree(){
+    return this->tree;
+}
+
+int Layout::getComponentNum(){
+    return this->component_num;
+}
+
+void Layout::setComponent(int side) {
+
 void Layout::setBinaryTree(int side) {
     this->tree = new BinaryTree(this->comp_list);
     if (side == 1) { this->tree->setSingleSide(); }
@@ -111,3 +122,4 @@ void writeCsv(Layout layout){
     }
     layout_data.close();
 }
+

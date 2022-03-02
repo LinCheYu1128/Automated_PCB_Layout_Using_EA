@@ -85,12 +85,36 @@ void GA::crossover() {
 }
 
 void GA::mutation() {
+
+    // // TODO
+    // int popSize = this->parameter->getPopSize();
+    // int MutationRate = this->parameter->getMutationRate();
+
+    // cout << "Conduct Nutation" << endl;
+    // for (int i = 0; i < popSize; i++){
+    //     // swapBranchMutation();
+    // }
+
+    cout << "conduct mutation" << endl;
+
+    Layout* test_layout = this->getPopulation().at(1);
+
+    cout << "before mutation" << endl;
+    test_layout->getTree()->printBinaryTree();
+
+    bitwiseMutation(test_layout, 0.5);
+
+    cout << "after mutation" << endl;
+    test_layout->getTree()->printBinaryTree();
+    
+=======
     // TODO
 }
 
 void GA::survivorSelect() {
     sort(this->population.begin(), this->population.end(), SortPop);
     this->population.erase(this->population.begin() + this->parameter->getPopSize(), this->population.end());
+
 }
 
 GA_Parameter* GA::getParameter() {
