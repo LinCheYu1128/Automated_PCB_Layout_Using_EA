@@ -42,9 +42,13 @@ class GA {
         // helper
         bool SortPop(Layout const *layout_1, Layout const *layout_2);
 };
-Layout* leftSubtreeCrossover(vector<Layout*>Parents);
-Layout* kPointCrossover(vector<Layout*>Parents);
 
+//Crossover
+Layout* leftSubtreeCrossover(vector<Layout*>Parents);
+Layout* kPointCrossover(vector<Layout*>Parents, int k);
+Layout* randomSubtreeCrossover(vector<Layout*>Parents);
+
+//Mutation
 int MyRandom (int i);
 void testMutation ();
 void swapBranchMutation(Layout *input);
