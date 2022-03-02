@@ -78,7 +78,7 @@ void GA::crossover() {
     // offspring->getBinaryTree()->printBinaryTree();
 
     Layout *offspring = kPointCrossover(Parents,2);
-    // offspring->getBinaryTree()->printBinaryTree();
+    offspring->getBinaryTree()->printBinaryTree();
 }
 
 void GA::mutation() {
