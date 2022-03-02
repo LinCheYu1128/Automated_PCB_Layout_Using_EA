@@ -73,12 +73,21 @@ ComponentState* TreeNode::getComponentState() {
 
 void TreeNode::disconnect(string branch) {
     if (branch == "parent" || branch == "all") {
+        string mybranch = this->branch;
+        if(mybranch == "left"){
+            this->parent->leftchild = nullptr;
+        }else if((mybranch == "right")){
+            this->parent->rightchild = nullptr;
+        }
         this->parent = nullptr;
     }
+
     if (branch == "left" || branch == "all") {
+        this->leftchild->parent = nullptr;
         this->leftchild = nullptr;
     }
     if (branch == "right" || branch == "all") {
+        this->rightchild->parent = nullptr;
         this->rightchild = nullptr;
     }
 }
@@ -173,6 +182,7 @@ bool TreeNode::search(int ID) {
     return false;
 }
 
+
 void TreeNode::updateNode() {
     if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
         this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
@@ -201,3 +211,4 @@ void TreeNode::shiftUp(vector<Point> contour) {
     }
     comp->setPosition(x, max_y);
 }
+

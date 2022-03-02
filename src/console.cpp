@@ -9,14 +9,24 @@ int Console::mode;
 
 void Console::run() {
 
+
+    GA* GA_optimizer = new GA();
+    // vector<Layout*> parents = GA_optimizer->selectParent();
+
+    ComponentList* comp_list = new ComponentList();
+    Layout lay = Layout(comp_list, 2);
+    writeCsv(lay);
+
+
     GA* GA_optimizer = new GA();
     // vector<Layout*> parents = GA_optimizer->selectParent();
     GA_optimizer->crossover();
     delete GA_optimizer;
 
 
+
     // GA* GA_optimizer = new GA();
-    // vector<Layout*> parents = GA_optimizer->selectParent();
+    // vector<Layout*> parents = GA_optimizer->parentSelect();
     // delete GA_optimizer;
 
     // ComponentList* component_list = new ComponentList();
@@ -36,6 +46,10 @@ void Console::run() {
     //     new_tree->delete_node(i);
     //     new_tree->printBinaryTree();
     // }
+
+    GA_optimizer->mutation();
+
+    delete GA_optimizer;
 }
 
 void Console::log(string message) {

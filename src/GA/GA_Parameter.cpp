@@ -41,7 +41,7 @@ double GA_Parameter::getAngleChangeRate() {
 }
 
 double GA_Parameter::getSideChangeRate() {
-    return this->kSideeChangeRate;
+    return this->kSideChangeRate;
 }
 
 double GA_Parameter::getAreaUtilTarget() {
