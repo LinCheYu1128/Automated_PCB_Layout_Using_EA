@@ -118,7 +118,7 @@ void BinaryTree::setDoubleSide() {
     TreeNode* child_node;
 
     // origin
-    this->setRoot(new TreeNode(new ComponentProperty("Origin", "0", 2, 9, 0.1, 0)));
+    this->setRoot(new TreeNode(new ComponentProperty("Origin", "0", 0, 0, 0.1, 0)));
     this->root->setID(-1);
     this->TreeNode_map[-1] = this->root;
     // front_root
@@ -195,6 +195,22 @@ void BinaryTree::swap(int id_1, int id_2) {
     }
 }
 
+void BinaryTree::changetoroot(TreeNode* node){
+    if(node->getRightchild()==nullptr && node->getLeftchild()==nullptr){
+        cout << node->getBranch() << endl;
+        node->getParent()->disconnect(node->getBranch());
+        cout << "debug disconnect" << endl;
+        if(this->getRoot()->getLeftchild()){
+            node->setLeftChild(this->getRoot()->getLeftchild());
+        }
+        if(this->getRoot()->getRightchild()){
+            node->setRightChild(this->getRoot()->getRightchild());
+        }
+        cout << "debug setChild" << endl;
+        this->setRoot(node);
+    }
+}
+
 void BinaryTree::delete_node(int ID) {
     if (this->TreeNode_map.find(ID) == this->TreeNode_map.end()) {
         Console::log("this node does not exist in this tree");
@@ -219,7 +235,6 @@ void BinaryTree::delete_node(int ID) {
     this->delete_leaf_node(node);
     this->delete_hasOneChild_node(node);
     this->delete_hasBothChild_node(node);
-
     this->TreeNode_map[node->getID()] = nullptr;
     node->disconnect();
 
@@ -306,6 +321,7 @@ TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
 
     return node;
 }
+
 
 TreeNode* BinaryTree::findLeafNode(TreeNode* node) {
     if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
@@ -423,5 +439,26 @@ void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vecto
         if (temp->getLeftchild())
             node_stack.push(temp->getLeftchild());
         ptr++;
+    }
+}
+
+void BinaryTree::updateTree() {
+    if (root == nullptr) {
+        return;
+    }
+
+    vector<TreeNode*> stack;
+    stack.push_back(this->root);
+    TreeNode* node;
+    while(!stack.empty()) {
+        node = stack.back();
+        node->updateNode();
+        stack.pop_back();
+        if (node->getRightchild() != nullptr) {
+            stack.push_back(node->getRightchild());
+        }
+        if (node->getLeftchild() != nullptr) {
+            stack.push_back(node->getLeftchild());
+        }
     }
 }

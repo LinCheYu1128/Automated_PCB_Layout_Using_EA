@@ -1,6 +1,8 @@
 #ifndef LAYOUT_H
 #define LAYOUT_H
 
+#include <fstream>
+#include <stack>
 #include "BinaryTree.h"
 #include "Component.h"
 #include "ComponentList.h"
@@ -15,26 +17,31 @@ class Layout {
 
         // Placement
         BinaryTree* tree;
-        Contour* contour;
+        Contour* front_contour;
+        Contour* back_contour;
         float fitness;
 
     public:
         // constructor, destructor
+        Layout(BinaryTree* tree, ComponentList* comp_list, int side);
         Layout(ComponentList* comp_list, int side);
         ~Layout();
         
         // getter
-        BinaryTree* getTree();
+        BinaryTree* getBinaryTree(){return tree;};
         Contour* getContour();
-        int getComponentNum();
-        float getFitness();
+        int getComponentNum(){return component_num;};
+        float getFitness(){return fitness;};
 
         // setter
-        void setComponent(int side);
+        void setBinaryTree(int side);
         void setContour();
+        void setState(TreeNode*, Contour*);
 
         // printer
         void printComponent();
 };
+
+void writeCsv(Layout layout);
 
 #endif

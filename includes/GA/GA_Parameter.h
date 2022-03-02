@@ -14,7 +14,7 @@ class GA_Parameter {
         // mutation
         double kMutationRate = 0.9;
         double kAngleChangeRate = 0.5;
-        double kSideeChangeRate = 0.3;
+        double kSideChangeRate = 0.3;
         // evaluation
         double kAreaUtilTarget = 0.95;
 
