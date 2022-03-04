@@ -9,46 +9,10 @@ int Console::mode;
 
 void Console::run() {
 
-
     GA* GA_optimizer = new GA();
-    // vector<Layout*> parents = GA_optimizer->selectParent();
-
-    ComponentList* comp_list = new ComponentList();
-    Layout lay = Layout(comp_list, 2);
-    writeCsv(lay);
-
-
-    GA* GA_optimizer = new GA();
-    // vector<Layout*> parents = GA_optimizer->selectParent();
-    GA_optimizer->crossover();
-    delete GA_optimizer;
-
-
-
-    // GA* GA_optimizer = new GA();
-    // vector<Layout*> parents = GA_optimizer->parentSelect();
-    // delete GA_optimizer;
-
-    // ComponentList* component_list = new ComponentList();
-    // // component_list->printAllData();
-    
-    // log("construct tree");
-    // BinaryTree* tree = new BinaryTree(component_list);
-    // tree->setDoubleSide();
-    // tree->printBinaryTree();
-
-    // log("construct copy tree");
-    // BinaryTree* new_tree = tree->copy();
-    
-    // log("start delete node");
-    // map<int, TreeNode*> TreeNode_map = new_tree->getTreeNodeMap();
-    // for (int i = 0; i < 38; i++) {
-    //     new_tree->delete_node(i);
-    //     new_tree->printBinaryTree();
-    // }
-
-    GA_optimizer->mutation();
-
+    // cout << "test 1" << endl;
+    GA_optimizer->getPopulation().at(0)->setArea();
+    cout << "area: " << GA_optimizer->getPopulation().at(0)->getArea() << endl;
     delete GA_optimizer;
 }
 

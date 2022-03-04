@@ -108,14 +108,13 @@ void GA::mutation() {
     Layout* test_layout = this->getPopulation().at(1);
 
     cout << "before mutation" << endl;
-    test_layout->getTree()->printBinaryTree();
+    test_layout->getBinaryTree()->printBinaryTree();
 
     bitwiseMutation(test_layout, 0.5);
 
     cout << "after mutation" << endl;
-    test_layout->getTree()->printBinaryTree();
+    test_layout->getBinaryTree()->printBinaryTree();
     
-=======
     // TODO
 }
 
@@ -170,7 +169,7 @@ void GA::setPopulation() {
     ComponentList* component_list = new ComponentList();
 
     for (int i = 0; i < this->parameter->getPopSize(); i++) {
-        Layout* layout = new Layout(component_list, 1);
+        Layout* layout = new Layout(component_list, 2);
         // layout->printComponent();
         this->population.push_back(layout);
     }

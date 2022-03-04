@@ -9,7 +9,7 @@ Contour::Contour() {
     // cout << "build contour successfully!" << endl;
 }
 
-vector<Point> Contour::getContour(){
+vector<Point> Contour::getContourVector(){
     return this->contour;
 }
 

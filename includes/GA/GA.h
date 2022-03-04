@@ -39,9 +39,12 @@ class GA {
 
         void pushBehavior();
 
-        // helper
-        bool SortPop(Layout const *layout_1, Layout const *layout_2);
+        // // helper
+        // bool SortPop(Layout const *layout_1, Layout const *layout_2);
 };
+
+// helper
+bool SortPop(Layout *layout_1, Layout *layout_2);
 
 //Crossover
 Layout* leftSubtreeCrossover(vector<Layout*>Parents);
