@@ -41,6 +41,10 @@ map<string, ComponentProperty*> ComponentList::getAllData() {
     return this->comp_data_dictionary;
 }
 
+map<string, int> ComponentList::getCompIdMap(){
+    return this->comp_id_map;
+}
+
 void ComponentList::setData(string comp_name, ComponentProperty* comp_prop) {
     this->comp_data_dictionary[comp_name] = comp_prop;
     comp_data_vector.push_back(comp_prop);
@@ -75,12 +79,14 @@ void ComponentList::setPinPosition(string comp_name) {
 void ComponentList::setAllData() {
     ifstream inFile(comp_info.component_relativePath + comp_info.component_csvfile);
     string temp;
+    int id = 0;
 
     getline(inFile, temp, '\n');
     while (!inFile.eof()) {
         ComponentProperty* comp_prop = new ComponentProperty();
         getline(inFile, temp, ',' );
         comp_prop->setName(temp);
+        this->comp_id_map[temp] = id;
         getline(inFile, temp, ',' );
         comp_prop->setColor(temp);
         getline(inFile, temp, ',' );
@@ -94,6 +100,8 @@ void ComponentList::setAllData() {
 
         this->setData(comp_prop->getName(), comp_prop);
         this->setPinPosition(comp_prop->getName());
+
+        id ++;
     }
 }
 

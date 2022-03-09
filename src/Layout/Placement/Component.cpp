@@ -143,6 +143,10 @@ double ComponentState::getMargin() {
     return this->margin;
 }
 
+map<string, Point> ComponentState::getPinPosition(){
+    return this->pin_position;
+}
+
 void ComponentState::setSide(string side) {
     this->side = side;
 }

@@ -11,8 +11,10 @@ void Console::run() {
 
     GA* GA_optimizer = new GA();
     // cout << "test 1" << endl;
-    GA_optimizer->getPopulation().at(0)->setArea();
-    cout << "area: " << GA_optimizer->getPopulation().at(0)->getArea() << endl;
+    GA_optimizer->getPopulation().at(0)->setWireLength();
+    // cout << "test 2" << endl;
+    cout << "wire length: " << GA_optimizer->getPopulation().at(0)->getWireLength() << endl;
+    // cout << "test 3" << endl;
     delete GA_optimizer;
 }
 

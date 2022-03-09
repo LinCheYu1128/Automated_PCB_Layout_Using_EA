@@ -31,6 +31,10 @@ map<int, TreeNode*> BinaryTree::getTreeNodeMap() {
     return this->TreeNode_map;
 }
 
+ComponentList* BinaryTree::getComponentList(){
+    return this->comp_list;
+}
+
 BinaryTree* BinaryTree::copy() {
     BinaryTree* new_tree = new BinaryTree(this->comp_list);
     new_tree->setRoot(this->root->copy());
@@ -322,7 +326,6 @@ TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
     return node;
 }
 
-
 TreeNode* BinaryTree::findLeafNode(TreeNode* node) {
     if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
         return node;
@@ -480,4 +483,3 @@ void BinaryTree::updateTreeNodeMap(){
         }
     }
 }
-
