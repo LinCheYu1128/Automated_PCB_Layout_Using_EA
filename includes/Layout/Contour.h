@@ -12,7 +12,7 @@ class Contour {
         Contour();
 
         // getter
-        vector<Point> getContour();
+        vector<Point> getContourVector();
         int getSize();
         
         // setter

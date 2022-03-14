@@ -9,6 +9,7 @@
 #include "Contour.h"
 #include "TreeNode.h"
 #include "PlotBinaryTree.h"
+#include "NetList.h"
 
 class Layout {
     private:
@@ -19,7 +20,10 @@ class Layout {
         BinaryTree* tree;
         Contour* front_contour;
         Contour* back_contour;
-        float fitness;
+        double area;
+        double Pns;
+        double wirelength;
+        double fitness;
 
     public:
         // constructor, destructor
@@ -28,18 +32,32 @@ class Layout {
         ~Layout();
         
         // getter
-        BinaryTree* getBinaryTree(){return tree;};
-        Contour* getContour();
-        int getComponentNum(){return component_num;};
-        float getFitness(){return fitness;};
+        BinaryTree* getBinaryTree();
+        Contour* getContour(string side);
+        int getComponentNum();
+        double getFitness();
+        double getArea();
+        double getWireLength();
+        double getPns();
 
         // setter
         void setBinaryTree(int side);
         void setContour();
         void setState(TreeNode*, Contour*);
+        void setFitness();
+        void setArea();
+        void setWireLength();
+        void setPns();
 
         // printer
         void printComponent();
+
+        // utility
+        double evaluateArea(int side);
+        double evaluateTotalArea();
+        double calcuHPWL(vector< tuple<double, double> > comp_in_net);
+        double calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list);
+
 };
 
 void writeCsv(Layout layout);

@@ -10,6 +10,8 @@ using namespace std;
 GA::GA() {
     this->setParameter(new GA_Parameter());
     this->setPopulation();
+    this->evaluate("population");
+    this->setBestOffspring();
 }
 
 GA::~GA() {
@@ -41,9 +43,6 @@ vector<Layout*> GA::parentSelect() {
     vector<int> index_arr;
     index_arr.reserve(k);
 
-    Console::log("Pop size = " + to_string(popSize));
-    Console::log("k = " + to_string(k));
-    
     while (selected_parent.size() < 2) {
         index_arr.clear();
         for (int i = 0; i < k; i++)
@@ -68,61 +67,59 @@ vector<Layout*> GA::parentSelect() {
 }
 
 void GA::crossover() {
-    // TODO
+
     cout << "Conduct Crossover" << endl;
-    vector<Layout*> Parents = this->parentSelect();
-    this->leftSubtreeCrossover(Parents);
 
-    
-    // Parents.at(0)->printComponent();
-    // Parents.at(1)->printComponent();
-    // Layout *offspring = leftSubtreeCrossover(Parents);
-    // offspring->getBinaryTree()->printBinaryTree();
-    
-    // Layout *offspring = randomSubtreeCrossover(Parents);
-    // offspring->getBinaryTree()->printBinaryTree();
+    this->offspring.clear();
 
-    Layout *offspring = kPointCrossover(Parents,2);
-    offspring->getBinaryTree()->printBinaryTree();
+    for(unsigned i = 0; i < this->population.size(); i++) {
+        cout << "test 1" << endl;
+        vector<Layout*> Parents = this->parentSelect();
+        cout << "test 2" << endl;
+        Layout *child = leftSubtreeCrossover(Parents);
+        cout << "test 3" << endl;
+        offspring.push_back(child);
+        cout << "test 4" << endl;
+    }
 
-    // map<int, TreeNode*> map = offspring->getBinaryTree()->getTreeNodeMap();
-    // TreeNode*node = map.at(5);
-    // cout << "test "<< node->getID() << endl;
-
-
+    cout << "End Crossover" << endl;
 }
 
 void GA::mutation() {
 
-    // // TODO
-    // int popSize = this->parameter->getPopSize();
-    // int MutationRate = this->parameter->getMutationRate();
+    cout << "Conduct mutation" << endl;
 
-    // cout << "Conduct Nutation" << endl;
-    // for (int i = 0; i < popSize; i++){
-    //     // swapBranchMutation();
-    // }
-
-    cout << "conduct mutation" << endl;
-
-    Layout* test_layout = this->getPopulation().at(1);
-
-    cout << "before mutation" << endl;
-    test_layout->getTree()->printBinaryTree();
-
-    bitwiseMutation(test_layout, 0.5);
-
-    cout << "after mutation" << endl;
-    test_layout->getTree()->printBinaryTree();
+    for(unsigned i = 0; i < this->offspring.size(); i++) {
+        swapBranchMutation(this->offspring[i]);
+    }
     
-=======
-    // TODO
+    cout << "End mutation" << endl;
 }
 
 void GA::survivorSelect() {
     sort(this->population.begin(), this->population.end(), SortPop);
     this->population.erase(this->population.begin() + this->parameter->getPopSize(), this->population.end());
+}
 
+void GA::evaluate(string target){
+    if(target == "population"){
+        int populationsize = this->getPopulation().size();
+        for(int i = 0; i < populationsize; i++){
+            this->getPopulation()[i]->setFitness();
+        }
+    }else if(target == "offspring"){
+        int offspringsize = this->getOffspring().size();
+        for(int i = 0; i < offspringsize; i++){
+            this->getOffspring()[i]->setFitness();
+        }
+    }
+}
+
+void GA::updateBestOffspring(){
+    Layout* new_best = this->population[0];
+    if(new_best->getFitness() >= this->bestOffspring->getFitness()){
+        this->bestOffspring = new_best;
+    }
 }
 
 GA_Parameter* GA::getParameter() {
@@ -143,6 +140,10 @@ vector<Layout*> GA::getOffspring() {
 
 Layout* GA::getBest(string attr) {
     // area / wirelength / PnS / all
+    return this->bestOffspring;
+}
+
+Layout* GA::getBestOffspring() {
     return this->bestOffspring;
 }
 
@@ -170,10 +171,15 @@ void GA::setPopulation() {
     ComponentList* component_list = new ComponentList();
 
     for (int i = 0; i < this->parameter->getPopSize(); i++) {
-        Layout* layout = new Layout(component_list, 1);
+        Layout* layout = new Layout(component_list, 2);
         // layout->printComponent();
         this->population.push_back(layout);
     }
+}
+
+void GA::setBestOffspring() {
+    sort(this->population.begin(), this->population.end(), SortPop);
+    this->bestOffspring = population[0];
 }
 
 void GA::pushBehavior() {
@@ -183,9 +189,3 @@ void GA::pushBehavior() {
 bool SortPop(Layout *layout_1, Layout *layout_2) {
     return layout_1->getFitness() < layout_2->getFitness();
 }
-
-vector<Layout*> GA::leftSubtreeCrossover(vector<Layout*>Parents){
-    cout << "start crossover"<<endl;
-    return Parents;
-}
-

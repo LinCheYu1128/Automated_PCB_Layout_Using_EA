@@ -40,6 +40,7 @@ class BinaryTree {
         TreeNode* getRoot();
         int getSide();
         map<int, TreeNode*> getTreeNodeMap();
+        ComponentList* getComponentList();
 
         // setter
         void setRoot(TreeNode* node);

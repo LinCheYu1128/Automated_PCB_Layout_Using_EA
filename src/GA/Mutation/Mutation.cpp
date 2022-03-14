@@ -12,7 +12,7 @@ void swapBranchMutation(Layout *input){
 
     int componentsize = input->getComponentNum();
 
-    BinaryTree* inputtree = input->getTree();
+    BinaryTree* inputtree = input->getBinaryTree();
     map<int, TreeNode*> tempmap = inputtree->getTreeNodeMap();
 
     int targetId = rand() % componentsize;
@@ -20,7 +20,7 @@ void swapBranchMutation(Layout *input){
 
     while(targetnode->getLeftchild() == nullptr || targetnode->getRightchild() == nullptr){
         targetId = rand() % componentsize;
-        inputtree = input->getTree();
+        inputtree = input->getBinaryTree();
         tempmap = inputtree->getTreeNodeMap();
         targetnode = tempmap[targetId];
     }
@@ -41,7 +41,7 @@ void swapSubtreeMutation(Layout *input){
 
     int componentsize = input->getComponentNum();
 
-    BinaryTree* inputtree = input->getTree();
+    BinaryTree* inputtree = input->getBinaryTree();
     map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
 
     int s1 = rand() % componentsize;
@@ -66,7 +66,7 @@ void bitwiseMutation(Layout *input,  double prob){
 
     int componentsize = input->getComponentNum();
 
-    BinaryTree* inputtree = input->getTree();
+    BinaryTree* inputtree = input->getBinaryTree();
     map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
 
     for(int i=0; i < componentsize; i++){
@@ -96,7 +96,7 @@ void shiftSubtreeMutation(Layout *input){
 
     int componentsize = input->getComponentNum();
 
-    BinaryTree* inputtree = input->getTree();
+    BinaryTree* inputtree = input->getBinaryTree();
     map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
 
     int targetId = rand() % componentsize;
@@ -128,7 +128,7 @@ void shiftSubtreeMutation(Layout *input){
 void insertMutation(Layout *input){
     cout << "conduct insertMutation" << endl;
 
-    BinaryTree* inputtree = input->getTree();
+    BinaryTree* inputtree = input->getBinaryTree();
     map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
 
     if(inputtree->getSide() == 1){
@@ -243,7 +243,7 @@ void insertMutation(Layout *input){
 void scrambleMutation(Layout *input){
     cout << "conduct scrambleMutation" << endl;
 
-    BinaryTree* inputtree = input->getTree();
+    BinaryTree* inputtree = input->getBinaryTree();
     map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
 
     if(inputtree->getSide() == 1){
@@ -356,7 +356,7 @@ void scrambleMutation(Layout *input){
 void swapNodeMutation(Layout *input){
     cout << "conduct swapNodeMutation" << endl;
 
-    BinaryTree* inputtree = input->getTree();
+    BinaryTree* inputtree = input->getBinaryTree();
     map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
 
     if(inputtree->getSide() == 1){
