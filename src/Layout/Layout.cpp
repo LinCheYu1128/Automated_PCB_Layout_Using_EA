@@ -60,6 +60,10 @@ int Layout::getComponentNum(){
     return this->component_num;
 }
 
+double Layout::getFitness(){
+    return this->fitness;
+}
+
 Contour* Layout::getContour(string side){
     if (side == "front"){
         return this->front_contour;
@@ -74,6 +78,10 @@ double Layout::getArea() {
 
 double Layout::getWireLength(){
     return this->wirelength;
+}
+
+double Layout::getPns(){
+    return this->Pns;
 }
 
 void Layout::setBinaryTree(int side) {
@@ -97,6 +105,13 @@ void Layout::setState(TreeNode* root, Contour* contour) {
     if (root->getRightchild()) {
         setState(root->getRightchild(), contour);
     }
+}
+
+void Layout::setFitness(){
+    this->setArea();
+    this->setWireLength();
+    this->setPns();
+    this->fitness = this->area + this->wirelength + this->Pns;
 }
 
 void Layout::setArea() {
@@ -162,6 +177,37 @@ void Layout::setWireLength(){
     this->wirelength = total_net_length;
 }
 
+void Layout::setPns(){
+    vector< Point > primary_part;
+    vector< Point > secondary_part;
+    stack<TreeNode*> node_stack;
+    node_stack.push(this->getBinaryTree()->getRoot());
+
+    // cout << "---" << endl;
+    while (node_stack.empty() == false) {
+        TreeNode* temp = node_stack.top();
+
+        if (temp->getComponentProp()->getVoltage() == 1) {
+            // cout << temp->getComponentProp()->getName() << "'s voltage: ";
+            // cout << temp->getComponentProp()->getVoltage() << "-> ";
+            // cout << temp->getComponentState()->getPosition().x << endl;;
+            primary_part.push_back(temp->getComponentState()->getPosition());
+        }else if (temp->getComponentProp()->getVoltage() == -1){
+            // cout << temp->getComponentProp()->getName() << "'s voltage: ";
+            // cout << temp->getComponentProp()->getVoltage() << "-> ";
+            // cout << temp->getComponentState()->getPosition().x << endl;;
+            secondary_part.push_back(temp->getComponentState()->getPosition());
+        }
+
+        node_stack.pop();
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+    }
+    this->Pns = this->calcuTwoSide(primary_part, secondary_part);
+}
+
 double Layout::calcuHPWL(vector< tuple<double, double> > comp_in_net) {
     double bl_x, bl_y, tr_x, tr_y, WL;
     bl_x = get<0>(comp_in_net.at(0));
@@ -224,6 +270,20 @@ double Layout::evaluateTotalArea(){
         back_area = this->evaluateArea(side);
     }
     return front_area + back_area;
+}
+
+double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list){
+    double primary_x = 0.0;
+    double secondary_x = 0.0;
+
+    for(unsigned i = 0; i < prim_list.size(); i++){
+        primary_x += prim_list[i].x;
+    }
+    for(unsigned i = 0; i < sec_list.size(); i++){
+        secondary_x += sec_list[i].x;
+    }
+
+    return abs(primary_x / prim_list.size() - secondary_x / sec_list.size());
 }
 
 void writeCsv(Layout layout){

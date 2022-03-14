@@ -35,9 +35,10 @@ class Layout {
         BinaryTree* getBinaryTree();
         Contour* getContour(string side);
         int getComponentNum();
-        double getFitness(){return fitness;};
+        double getFitness();
         double getArea();
         double getWireLength();
+        double getPns();
 
         // setter
         void setBinaryTree(int side);
@@ -46,6 +47,7 @@ class Layout {
         void setFitness();
         void setArea();
         void setWireLength();
+        void setPns();
 
         // printer
         void printComponent();
@@ -54,6 +56,7 @@ class Layout {
         double evaluateArea(int side);
         double evaluateTotalArea();
         double calcuHPWL(vector< tuple<double, double> > comp_in_net);
+        double calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list);
 
 };
 

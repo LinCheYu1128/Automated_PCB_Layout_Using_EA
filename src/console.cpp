@@ -10,11 +10,19 @@ int Console::mode;
 void Console::run() {
 
     GA* GA_optimizer = new GA();
-    // cout << "test 1" << endl;
-    GA_optimizer->getPopulation().at(0)->setWireLength();
-    // cout << "test 2" << endl;
-    cout << "wire length: " << GA_optimizer->getPopulation().at(0)->getWireLength() << endl;
-    // cout << "test 3" << endl;
+    
+    int generation = GA_optimizer->getParameter()->getGeneration();
+    for(int i = 0; i < generation; i++){
+        GA_optimizer->crossover();
+        GA_optimizer->mutation();
+        GA_optimizer->evaluate("offspring");
+        GA_optimizer->getPopulation().insert(GA_optimizer->getPopulation().end(),GA_optimizer->getOffspring().begin(), GA_optimizer->getOffspring().end());
+        sort(GA_optimizer->getPopulation().begin(), GA_optimizer->getPopulation().end(), SortPop);
+        GA_optimizer->survivorSelect();
+        GA_optimizer->updateBestOffspring();
+        GA_optimizer->pushBehavior();
+    }
+    
     delete GA_optimizer;
 }
 
@@ -24,21 +32,3 @@ void Console::log(string message) {
     }
     return;
 }
-
-// GA* GA_optimizer = new GA();
-// log("complete GA_optimizer");
-// delete GA_optimizer;
-
-// // random select node to swap
-// cout << "start random select node to swap" << endl;
-// map<int, TreeNode*> TreeNode_map = tree->getTreeNodeMap();
-// int a = rand() % component_list->getSize();
-// int b = rand() % component_list->getSize();
-// cout << "initial random select node " << a << ", " << b << endl;
-// while (b == a || TreeNode_map.at(a)->search(b) || TreeNode_map.at(b)->search(a)) {
-//     b = rand() % component_list->getSize();
-//     cout << "random select node " << a << ", " << b << endl;
-// }
-// // swap node
-// tree->swap(a, b);
-// tree->printBinaryTree();
