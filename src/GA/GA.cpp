@@ -71,14 +71,14 @@ void GA::crossover() {
     
     // Parents.at(0)->printComponent();
     // Parents.at(1)->printComponent();
-    // Layout *offspring = leftSubtreeCrossover(Parents);
-    // offspring->getBinaryTree()->printBinaryTree();
+    Layout *offspring = leftSubtreeCrossover(Parents);
+    offspring->getBinaryTree()->printBinaryTree();
     
     // Layout *offspring = randomSubtreeCrossover(Parents);
     // offspring->getBinaryTree()->printBinaryTree();
 
-    Layout *offspring = kPointCrossover(Parents,2);
-    offspring->getBinaryTree()->printBinaryTree();
+    // Layout *offspring = kPointCrossover(Parents,2);
+    // offspring->getBinaryTree()->printBinaryTree();
     // map<int, TreeNode*> map = offspring->getBinaryTree()->getTreeNodeMap();
     // TreeNode*node = map.at(5);
     // cout << "test "<< node->getID() << endl;

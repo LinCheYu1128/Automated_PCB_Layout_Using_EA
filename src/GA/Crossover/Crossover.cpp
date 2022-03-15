@@ -37,7 +37,7 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
     cout << "origin BTreeB : "<<endl;
     BTreeB->printBinaryTree();
     for(unsigned int item = 1; item<ArraytoDelete.size(); item++){
-        BTreeB->delete_node(item);
+        BTreeB->delete_node(ArraytoDelete.at(item));
         cout << "delete node "<<ArraytoDelete.at(item)<<endl;
         // BTreeB->printBinaryTree();
     }
@@ -250,7 +250,7 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
     // TreeNode* node;
     for(auto point: nodelistA){
         if(point->getID()!=0) continue;
-        while(checknodeexist(nodelistA, nodelistB.at(j)->getID())){
+        while(checknodeexist                                                                                                                                                                                      (nodelistA, nodelistB.at(j)->getID())){
             j++;
         }
         CompProp = nodelistB.at(j)->getComponentProp();
