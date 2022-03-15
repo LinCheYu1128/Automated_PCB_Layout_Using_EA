@@ -10,32 +10,20 @@ int Console::mode;
 void Console::run() {
 
     GA* GA_optimizer = new GA();
-    // vector<Layout*> parents = GA_optimizer->selectParent();
-    GA_optimizer->crossover();
+    
+    int generation = GA_optimizer->getParameter()->getGeneration();
+    for(int i = 0; i < generation; i++){
+        GA_optimizer->crossover();
+        GA_optimizer->mutation();
+        GA_optimizer->evaluate("offspring");
+        GA_optimizer->getPopulation().insert(GA_optimizer->getPopulation().end(),GA_optimizer->getOffspring().begin(), GA_optimizer->getOffspring().end());
+        sort(GA_optimizer->getPopulation().begin(), GA_optimizer->getPopulation().end(), SortPop);
+        GA_optimizer->survivorSelect();
+        GA_optimizer->updateBestOffspring();
+        GA_optimizer->pushBehavior();
+    }
+    
     delete GA_optimizer;
-
-
-    // GA* GA_optimizer = new GA();
-    // vector<Layout*> parents = GA_optimizer->selectParent();
-    // delete GA_optimizer;
-
-    // ComponentList* component_list = new ComponentList();
-    // // component_list->printAllData();
-    
-    // log("construct tree");
-    // BinaryTree* tree = new BinaryTree(component_list);
-    // tree->setDoubleSide();
-    // tree->printBinaryTree();
-
-    // log("construct copy tree");
-    // BinaryTree* new_tree = tree->copy();
-    
-    // log("start delete node");
-    // map<int, TreeNode*> TreeNode_map = new_tree->getTreeNodeMap();
-    // for (int i = 0; i < 38; i++) {
-    //     new_tree->delete_node(i);
-    //     new_tree->printBinaryTree();
-    // }
 }
 
 void Console::log(string message) {
@@ -44,21 +32,3 @@ void Console::log(string message) {
     }
     return;
 }
-
-// GA* GA_optimizer = new GA();
-// log("complete GA_optimizer");
-// delete GA_optimizer;
-
-// // random select node to swap
-// cout << "start random select node to swap" << endl;
-// map<int, TreeNode*> TreeNode_map = tree->getTreeNodeMap();
-// int a = rand() % component_list->getSize();
-// int b = rand() % component_list->getSize();
-// cout << "initial random select node " << a << ", " << b << endl;
-// while (b == a || TreeNode_map.at(a)->search(b) || TreeNode_map.at(b)->search(a)) {
-//     b = rand() % component_list->getSize();
-//     cout << "random select node " << a << ", " << b << endl;
-// }
-// // swap node
-// tree->swap(a, b);
-// tree->printBinaryTree();

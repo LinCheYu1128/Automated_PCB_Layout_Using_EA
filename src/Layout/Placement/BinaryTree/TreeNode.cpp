@@ -173,6 +173,7 @@ bool TreeNode::search(int ID) {
     return false;
 }
 
+
 void TreeNode::updateNode() {
     if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
         this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
@@ -201,3 +202,4 @@ void TreeNode::shiftUp(vector<Point> contour) {
     }
     comp->setPosition(x, max_y);
 }
+

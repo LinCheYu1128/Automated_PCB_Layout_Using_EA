@@ -6,6 +6,7 @@
 #include <map>
 #include <random>
 #include <algorithm>
+#include <stack>
 using namespace std;
 
 BinaryTree::BinaryTree(ComponentList* comp_list) {
@@ -28,6 +29,10 @@ int BinaryTree::getSide() {
 
 map<int, TreeNode*> BinaryTree::getTreeNodeMap() {
     return this->TreeNode_map;
+}
+
+ComponentList* BinaryTree::getComponentList(){
+    return this->comp_list;
 }
 
 BinaryTree* BinaryTree::copy() {
@@ -236,7 +241,6 @@ void BinaryTree::delete_node(int ID) {
     this->delete_hasBothChild_node(node);
     this->TreeNode_map[node->getID()] = nullptr;
     node->disconnect();
-
     return;
 }
 
@@ -260,10 +264,10 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
     TreeNode* successor;
     if (node->getLeftchild() != nullptr && node->getRightchild() == nullptr) {
         successor = node->getLeftchild();
-        Console::log("delete hasLeftChild node " + to_string(node->getID()));
+        Console::log("delete has LeftChild node " + to_string(node->getID()));
     } else if (node->getLeftchild() == nullptr && node->getRightchild() != nullptr) {
         successor = node->getRightchild();
-        Console::log("delete hasRightChild node " + to_string(node->getID()));
+        Console::log("delete has RightChild node " + to_string(node->getID()));
     } else {
         return;
     }
@@ -281,7 +285,7 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
     if (node->getLeftchild() != nullptr && node->getRightchild() != nullptr) {
         // since node has both children, findRightestNode(node) != nullptr
         successor = findRightestNode(node);
-        Console::log("delete hasBothChild node " + to_string(node->getID()));
+        Console::log("delete has BothChild node " + to_string(node->getID()));
         Console::log("found successor node "  + to_string(successor->getID()));
         Console::log("successor old parent is "  + to_string(successor->getParent()->getID()));
         successor->getParent()->disconnect(successor->getBranch());
@@ -307,6 +311,7 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
     }
 }
 
+
 TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
     if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
         return node;
@@ -319,6 +324,126 @@ TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
     }
 
     return node;
+}
+
+
+TreeNode* BinaryTree::findLeafNode(TreeNode* node) {
+    if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
+        return node;
+    }
+    if(node->getRightchild() && node->getLeftchild()){
+        int lr = rand() % 2;
+        if(lr == 0){
+            node = findLeafNode(node->getLeftchild());
+        }else{
+            node = findLeafNode(node->getRightchild());
+        }
+    }else if(node->getLeftchild()){
+        node = findLeafNode(node->getLeftchild());
+    }else if(node->getRightchild()){
+        node = findLeafNode(node->getRightchild());
+    }
+
+    return node;
+}
+
+vector<TreeNode*> BinaryTree::ExtractTree(int extractID){
+    vector<TreeNode*> node_permu;
+    stack<TreeNode*> node_stack;
+
+    BinaryTree* dup_tree = this->copy();
+    
+    node_stack.push(dup_tree->TreeNode_map[extractID]);
+    
+    // Pre-order iterate
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        // cout << temp->component_.name << ' ';
+        node_permu.push_back(node_stack.top());
+        node_stack.pop();
+
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+    }
+    // cout <<endl;
+
+    return node_permu;
+}
+
+void BinaryTree::ModifyTree(vector<TreeNode*> node_permu){
+    stack<TreeNode*> node_stack;
+    node_stack.push(this->root);
+    int ptr = 0;
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        if (temp->getID() != node_permu.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu.at(ptr)->getComponentState()->getAngle()) {
+            temp->setID(node_permu.at(ptr)->getID());
+            temp->setBranch(node_permu.at(ptr)->getBranch());
+            temp->setComponentProp(node_permu.at(ptr)->getComponentProp());
+            temp->setComponentState(node_permu.at(ptr)->getComponentState());
+        }
+        node_stack.pop();
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+        ptr++;
+    }
+}
+
+void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vector<TreeNode*> node_permu_back) {
+    // BStarTree* new_tree = CopyTree(tree);
+    stack<TreeNode*> node_stack;
+
+    // Modify front tree
+    node_stack.push(this->root->getLeftchild());
+    int ptr = 0;
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        // cout << "origin: " << temp->getID() << " modify: " << node_permu_front.at(ptr)->getID() << endl;
+        // for(unsigned i=0; i < node_permu_front.size(); i++){
+        //     cout << node_permu_front[i]->getID() << " ";
+        // }
+        // cout << endl;
+        if (temp->getID() != node_permu_front.at(ptr)->getID()) {
+            temp->setID(node_permu_front[ptr]->getID());
+            temp->setBranch(node_permu_front[ptr]->getBranch());
+            temp->setComponentProp(node_permu_front[ptr]->getComponentProp());
+            temp->setComponentState(node_permu_front[ptr]->getComponentState());
+        }
+        node_stack.pop();
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+        ptr++;
+    }
+
+    // Modify back tree
+    node_stack.push(this->root->getRightchild());
+    ptr = 0;
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        // cout << "origin: " << temp->getID() << " modify: " << node_permu_back.at(ptr)->getID() << endl;
+        if (temp->getID() != node_permu_back.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu_back.at(ptr)->getComponentState()->getAngle()) {
+            temp->setID(node_permu_back.at(ptr)->getID());
+            temp->setBranch(node_permu_back.at(ptr)->getBranch());
+            temp->setComponentProp(node_permu_back.at(ptr)->getComponentProp());
+            temp->setComponentState(node_permu_back.at(ptr)->getComponentState());
+        }
+        node_stack.pop();
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+        ptr++;
+    }
 }
 
 void BinaryTree::updateTree() {

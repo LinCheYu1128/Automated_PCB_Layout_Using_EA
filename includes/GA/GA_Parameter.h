@@ -4,7 +4,7 @@
 class GA_Parameter {
     private:
         int kExpTime = 1;
-        int kGeneration = 1;
+        int kGeneration = 100;
         int kPopSize = 20;
         // parent selection
         int k_Tournament = 5;
@@ -14,7 +14,7 @@ class GA_Parameter {
         // mutation
         double kMutationRate = 0.9;
         double kAngleChangeRate = 0.5;
-        double kSideeChangeRate = 0.3;
+        double kSideChangeRate = 0.3;
         // evaluation
         double kAreaUtilTarget = 0.95;
 
