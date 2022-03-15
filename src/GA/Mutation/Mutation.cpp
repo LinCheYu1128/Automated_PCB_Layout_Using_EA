@@ -8,7 +8,7 @@ using namespace std;
 int MyRandom (int i) { return std::rand()%i;}
 
 void swapBranchMutation(Layout *input){
-    cout << "conduct swapBranchMutation" << endl;
+    // cout << "conduct swapBranchMutation" << endl;
 
     int componentsize = input->getComponentNum();
 

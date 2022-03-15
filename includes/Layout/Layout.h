@@ -44,6 +44,7 @@ class Layout {
         void setBinaryTree(int side);
         void setContour();
         void setState(TreeNode*, Contour*);
+        void updateLayout();
         void setFitness();
         void setArea();
         void setWireLength();

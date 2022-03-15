@@ -69,53 +69,68 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     BTreeA->printBinaryTree();
     int amount = BTreeA->getTreeNodeMap().size();
     cout << "amount " << amount<< endl;
-    TreeNode* picked_node = BTreeA->getTreeNodeMap().at(rand() % (amount-1));
-    while(picked_node->getID()<=0){
-       TreeNode* picked_node = BTreeA->getTreeNodeMap().at(rand() % (amount-1)); 
+
+    int picked_mode_id = rand() % (amount-1);
+    while(picked_mode_id <= 0){
+        picked_mode_id = rand() % (amount-1);
     }
-    cout << "picked_node: " << picked_node->getID() << endl;
+    TreeNode* picked_node = BTreeA->getTreeNodeMap().at(picked_mode_id);
+
+    // TreeNode* picked_node = BTreeA->getTreeNodeMap().at(rand() % (amount-1));
+    // while(picked_node->getID()<=0){
+    //    TreeNode* picked_node = BTreeA->getTreeNodeMap().at(rand() % (amount-1)); 
+    // }
+
+    cout << "picked_node: " << picked_mode_id << endl;
+
+    vector<TreeNode*> picked_node_list = BTreeA->ExtractTree(picked_mode_id);
     
-    vector<TreeNode*> picked_node_list;
-    vector<TreeNode*> stack;
-    stack.push_back(picked_node);
-    TreeNode* node;
-    while(!stack.empty()) {
-        node = stack.back();
-        stack.pop_back();
-        picked_node_list.push_back(node);
-        if (node->getRightchild() != nullptr) {
-            stack.push_back(node->getRightchild());
-        }
-        if (node->getLeftchild() != nullptr) {
-            stack.push_back(node->getLeftchild());
-        }
-    }
+    // vector<TreeNode*> picked_node_list;
+    // vector<TreeNode*> stack;
+
+    // stack.push_back(picked_node);
+    // TreeNode* node;
+    // while(!stack.empty()) {
+    //     node = stack.back();
+    //     stack.pop_back();
+    //     picked_node_list.push_back(node);
+    //     if (node->getRightchild() != nullptr) {
+    //         stack.push_back(node->getRightchild());
+    //     }
+    //     if (node->getLeftchild() != nullptr) {
+    //         stack.push_back(node->getLeftchild());
+    //     }
+    // }
     cout << "picked_node_list size: " << picked_node_list.size() << endl;
+
+    cout << "test a" << endl;
 
     BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
     for(auto item: picked_node_list){
-        cout << item->getID() << " ";
+        cout << item->getID() << endl;
         BTreeB->delete_node(item->getID());
     }
     cout << endl;
-    BTreeB->printBinaryTree();
 
-    vector<TreeNode*> target_list;
+    cout << "test b" << endl;
+    // BTreeB->printBinaryTree();
+
+    vector<TreeNode*> target_list = BTreeB->ExtractTree(BTreeB->getRoot()->getID());
     // vector<TreeNode*> stack;
-    stack.push_back(BTreeB->getRoot());
-    while(!stack.empty()) {
-        node = stack.back();
-        stack.pop_back();
-        if(!node->getLeftchild() || !node->getRightchild()){
-            target_list.push_back(node);
-        }
-        if (node->getRightchild() != nullptr) {
-            stack.push_back(node->getRightchild());
-        }
-        if (node->getLeftchild() != nullptr) {
-            stack.push_back(node->getLeftchild());
-        }
-    }
+    // stack.push_back(BTreeB->getRoot());
+    // while(!stack.empty()) {
+    //     node = stack.back();
+    //     stack.pop_back();
+    //     if(!node->getLeftchild() || !node->getRightchild()){
+    //         target_list.push_back(node);
+    //     }
+    //     if (node->getRightchild() != nullptr) {
+    //         stack.push_back(node->getRightchild());
+    //     }
+    //     if (node->getLeftchild() != nullptr) {
+    //         stack.push_back(node->getLeftchild());
+    //     }
+    // }
     cout << "target_list size: " << target_list.size() << endl;
     for(auto item: target_list){
         cout << item->getID() << " ";

@@ -107,6 +107,16 @@ void Layout::setState(TreeNode* root, Contour* contour) {
     }
 }
 
+void Layout::updateLayout(){
+    this->setContour();
+    if (this->tree->getSide() == 1) this->setState(this->tree->getRoot(), this->front_contour);
+    else if (this->tree->getSide() == 2) {
+        this->setState(this->tree->getRoot()->getLeftchild(), this->front_contour);
+        this->setState(this->tree->getRoot()->getRightchild(), this->back_contour);
+    }
+    else {cout << "unknown side" << endl; exit(0);} 
+}
+
 void Layout::setFitness(){
     this->setArea();
     this->setWireLength();
