@@ -13,16 +13,30 @@ void Console::run() {
     
     int generation = GA_optimizer->getParameter()->getGeneration();
     for(int i = 0; i < generation; i++){
+        cout << "generation: " << i << endl;
+        
+        vector<Layout*> population = GA_optimizer->getPopulation();
+        vector<Layout*> offspring = GA_optimizer->getOffspring();
+
         GA_optimizer->crossover();
         GA_optimizer->mutation();
+        // cout << "test 1" << endl;
         GA_optimizer->evaluate("offspring");
-        GA_optimizer->getPopulation().insert(GA_optimizer->getPopulation().end(),GA_optimizer->getOffspring().begin(), GA_optimizer->getOffspring().end());
-        sort(GA_optimizer->getPopulation().begin(), GA_optimizer->getPopulation().end(), SortPop);
+        // cout << "test 2" << endl;
+        population.insert(population.end(), offspring.begin(), offspring.end());
+        // cout << "test 3" << endl;
+        sort(population.begin(), population.end(), SortPop);
+        // cout << "test 4" << endl;
         GA_optimizer->survivorSelect();
+        // cout << "test 5" << endl;
         GA_optimizer->updateBestOffspring();
+        // cout << "test 6" << endl;
         GA_optimizer->pushBehavior();
+        // cout << "test 7" << endl;
     }
     
+    GA_optimizer->getOutputFile();
+
     delete GA_optimizer;
 }
 

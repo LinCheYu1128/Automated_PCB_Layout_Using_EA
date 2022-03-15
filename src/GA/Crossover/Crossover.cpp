@@ -87,7 +87,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     ComponentList* component_list = new ComponentList();
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
-    BTreeA->printBinaryTree();
+    // BTreeA->printBinaryTree();
     
     vector<TreeNode*> TreeList = ExtractTreeWithTreeNode(BTreeA);
     int amount = TreeList.size();
@@ -116,15 +116,20 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     }
     // cout << "picked_node_list size: " << picked_node_list.size() << endl;
 
+    // cout << "test a" << endl;
+
     BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
     for(auto item: picked_node_list){
-        cout << item->getID() << " ";
+        cout << item->getID() << endl;
         BTreeB->delete_node(item->getID());
     }
     // cout << endl;
     // BTreeB->printBinaryTree();
 
-    vector<TreeNode*> target_list;
+    // cout << "test b" << endl;
+    // BTreeB->printBinaryTree();
+
+    vector<TreeNode*> target_list = BTreeB->ExtractTree(BTreeB->getRoot()->getID());
     // vector<TreeNode*> stack;
     stack.push_back(BTreeB->getRoot());
     while(!stack.empty()) {

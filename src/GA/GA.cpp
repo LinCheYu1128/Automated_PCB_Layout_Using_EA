@@ -69,33 +69,33 @@ vector<Layout*> GA::parentSelect() {
 void GA::crossover() {
     // TODO
 
-    cout << "Conduct Crossover" << endl;
+    // cout << "Conduct Crossover" << endl;
 
     this->offspring.clear();
 
     for(unsigned i = 0; i < this->population.size(); i++) {
-        cout << "test 1" << endl;
+        // cout << "test 1" << endl;
         vector<Layout*> Parents = this->parentSelect();
-        cout << "test 2" << endl;
+        // cout << "test 2" << endl;
         Layout *child = randomSubtreeCrossover(Parents);
-        cout << "test 3" << endl;
+        // cout << "test 3" << endl;
         offspring.push_back(child);
-        cout << "test 4" << endl;
+        // cout << "test 4" << endl;
     }
 
-    cout << "End Crossover" << endl;
-
+    // cout << "End Crossover" << endl;
 }
 
 void GA::mutation() {
 
-    cout << "Conduct mutation" << endl;
+    // cout << "Conduct mutation" << endl;
 
     for(unsigned i = 0; i < this->offspring.size(); i++) {
         swapBranchMutation(this->offspring[i]);
+        this->offspring[i]->updateLayout();
     }
     
-    cout << "End mutation" << endl;
+    // cout << "End mutation" << endl;
 }
 
 void GA::survivorSelect() {
@@ -119,7 +119,7 @@ void GA::evaluate(string target){
 
 void GA::updateBestOffspring(){
     Layout* new_best = this->population[0];
-    if(new_best->getFitness() >= this->bestOffspring->getFitness()){
+    if(new_best->getFitness() <= this->bestOffspring->getFitness()){
         this->bestOffspring = new_best;
     }
 }
