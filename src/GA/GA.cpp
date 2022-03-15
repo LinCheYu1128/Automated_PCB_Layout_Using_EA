@@ -69,7 +69,7 @@ vector<Layout*> GA::parentSelect() {
 void GA::crossover() {
     // TODO
 
-    // cout << "Conduct Crossover" << endl;
+    cout << "Conduct Crossover" << endl;
 
     this->offspring.clear();
 
@@ -83,7 +83,7 @@ void GA::crossover() {
         // cout << "test 4" << endl;
     }
 
-    // cout << "End Crossover" << endl;
+    cout << "End Crossover" << endl;
 }
 
 void GA::mutation() {
