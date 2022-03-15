@@ -75,19 +75,19 @@ void TreeNode::disconnect(string branch) {
     if (branch == "parent" || branch == "all") {
         string mybranch = this->branch;
         if(mybranch == "left"){
-            this->parent->leftchild = nullptr;
+            if(this->parent) this->parent->leftchild = nullptr;
         }else if((mybranch == "right")){
-            this->parent->rightchild = nullptr;
+            if(this->parent) this->parent->rightchild = nullptr;
         }
         this->parent = nullptr;
     }
 
     if (branch == "left" || branch == "all") {
-        this->leftchild->parent = nullptr;
+        if(this->leftchild) this->leftchild->parent = nullptr;
         this->leftchild = nullptr;
     }
     if (branch == "right" || branch == "all") {
-        this->rightchild->parent = nullptr;
+        if(this->rightchild) this->rightchild->parent = nullptr;
         this->rightchild = nullptr;
     }
 }
@@ -122,7 +122,7 @@ void TreeNode::setRightChild(TreeNode* node) {
 
 void TreeNode::setParent(TreeNode* parent, string branch) {
     this->parent = parent;
-    parent->setChild(this, branch);
+    if(parent) parent->setChild(this, branch);
 }
 
 void TreeNode::setComponentProp(ComponentProperty* comp_prop) {

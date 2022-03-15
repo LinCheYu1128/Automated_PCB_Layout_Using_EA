@@ -240,8 +240,8 @@ void BinaryTree::delete_node(int ID) {
     this->delete_hasOneChild_node(node);
     this->delete_hasBothChild_node(node);
     this->TreeNode_map[node->getID()] = nullptr;
+    cout << "debug" << endl;
     node->disconnect();
-
     return;
 }
 
@@ -257,7 +257,7 @@ void BinaryTree::delete_leaf_node(TreeNode* node) {
         this->root = nullptr;
     } else {
         Console::log("delete node is " + node->getBranch());
-        node->getParent()->disconnect(node->getBranch());
+        if(node->getParent()) node->getParent()->disconnect(node->getBranch());
     }
 }
 
@@ -265,10 +265,10 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
     TreeNode* successor;
     if (node->getLeftchild() != nullptr && node->getRightchild() == nullptr) {
         successor = node->getLeftchild();
-        Console::log("delete hasLeftChild node " + to_string(node->getID()));
+        Console::log("delete has LeftChild node " + to_string(node->getID()));
     } else if (node->getLeftchild() == nullptr && node->getRightchild() != nullptr) {
         successor = node->getRightchild();
-        Console::log("delete hasRightChild node " + to_string(node->getID()));
+        Console::log("delete has RightChild node " + to_string(node->getID()));
     } else {
         return;
     }
@@ -277,7 +277,7 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
         Console::log("delete node is root");
         this->setRoot(successor);
     } else {
-        node->getParent()->setChild(successor, node->getBranch());
+        if(node->getParent()) node->getParent()->setChild(successor, node->getBranch());
     }
 }
 
@@ -286,10 +286,10 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
     if (node->getLeftchild() != nullptr && node->getRightchild() != nullptr) {
         // since node has both children, findRightestNode(node) != nullptr
         successor = findRightestNode(node);
-        Console::log("delete hasBothChild node " + to_string(node->getID()));
+        Console::log("delete has BothChild node " + to_string(node->getID()));
         Console::log("found successor node "  + to_string(successor->getID()));
-        Console::log("successor old parent is "  + to_string(successor->getParent()->getID()));
-        successor->getParent()->disconnect(successor->getBranch());
+        // Console::log("successor old parent is "  + to_string(successor->getParent()->getID()));
+        if(successor->getParent()) successor->getParent()->disconnect(successor->getBranch());
     } else {
         return;
     }
@@ -298,19 +298,22 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
         Console::log("delete node is root");
         this->setRoot(successor);
     } else {
+        // cout << "debug" << endl;
         successor->setParent(node->getParent(), node->getBranch());
-        Console::log("successor new parent is " + to_string(successor->getParent()->getID()));
+        // cout << "debugA" << endl;
+        // Console::log("successor new parent is " + to_string(successor->getParent()->getID()));
         // node must has left child, but right child may be successor        
         if (node->getLeftchild()) {
-            Console::log("node leftchild is " + to_string(node->getLeftchild()->getID()));
+            // Console::log("node leftchild is " + to_string(node->getLeftchild()->getID()));
             successor->setLeftChild(node->getLeftchild());
         }
         if (node->getRightchild()) {
             successor->setRightChild(node->getRightchild());
-            Console::log("node rightchild is " + to_string(node->getRightchild()->getID()));
+            // Console::log("node rightchild is " + to_string(node->getRightchild()->getID()));
         }
     }
 }
+
 
 TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
     if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
@@ -325,6 +328,7 @@ TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
 
     return node;
 }
+
 
 TreeNode* BinaryTree::findLeafNode(TreeNode* node) {
     if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
