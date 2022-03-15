@@ -67,6 +67,7 @@ vector<Layout*> GA::parentSelect() {
 }
 
 void GA::crossover() {
+    // TODO
 
     cout << "Conduct Crossover" << endl;
 
@@ -76,13 +77,14 @@ void GA::crossover() {
         cout << "test 1" << endl;
         vector<Layout*> Parents = this->parentSelect();
         cout << "test 2" << endl;
-        Layout *child = leftSubtreeCrossover(Parents);
+        Layout *child = randomSubtreeCrossover(Parents);
         cout << "test 3" << endl;
         offspring.push_back(child);
         cout << "test 4" << endl;
     }
 
     cout << "End Crossover" << endl;
+
 }
 
 void GA::mutation() {
