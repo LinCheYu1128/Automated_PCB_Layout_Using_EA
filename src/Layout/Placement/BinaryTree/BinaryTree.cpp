@@ -240,7 +240,7 @@ void BinaryTree::delete_node(int ID) {
     this->delete_hasOneChild_node(node);
     this->delete_hasBothChild_node(node);
     this->TreeNode_map[node->getID()] = nullptr;
-    cout << "debug" << endl;
+    // cout << "debug" << endl;
     node->disconnect();
     return;
 }

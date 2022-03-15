@@ -129,7 +129,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     // cout << "test b" << endl;
     // BTreeB->printBinaryTree();
 
-    vector<TreeNode*> target_list = BTreeB->ExtractTree(BTreeB->getRoot()->getID());
+    vector<TreeNode*> target_list;
     // vector<TreeNode*> stack;
     stack.push_back(BTreeB->getRoot());
     while(!stack.empty()) {
@@ -151,7 +151,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     // }
     // cout << endl;
 
-    TreeNode* target_node = target_list.at(rand() % (target_list.size()-1));
+    TreeNode* target_node = target_list.at(rand() % (target_list.size()));
     // cout << "target node = "<< target_node->getID()<< endl;
 
     if(!target_node->getLeftchild()){
