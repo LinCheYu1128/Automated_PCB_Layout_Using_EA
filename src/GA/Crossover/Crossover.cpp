@@ -120,8 +120,9 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
 
     BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
     for(auto item: picked_node_list){
-        cout << item->getID() << endl;
+        cout << item->getID();
         BTreeB->delete_node(item->getID());
+        cout << " delete complete" << endl;
     }
     // cout << endl;
     // BTreeB->printBinaryTree();
