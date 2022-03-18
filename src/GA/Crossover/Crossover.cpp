@@ -98,7 +98,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
        picked_node = TreeList.at(rand() % (amount-1)); 
     }
     // cout << "picked_node: " << picked_node->getID() << endl;
-    
+    // ******************* delete the pick node subtree *******************//
     vector<TreeNode*> picked_node_list;
     vector<TreeNode*> stack;
     stack.push_back(picked_node);
@@ -132,6 +132,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
 
     vector<TreeNode*> target_list;
     // vector<TreeNode*> stack;
+    // ****************** Choose the node to connect *********************//
     stack.push_back(BTreeB->getRoot());
     while(!stack.empty()) {
         node = stack.back();

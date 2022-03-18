@@ -8,11 +8,19 @@
 #include <map>
 using namespace std;
 
+// class Net{
+//     private:
+//     /* data */
+//     public:
+//         Net(/* args */);
+//         ~Net();
+// };
+
 class NetList {
     private:
         map< string, vector<string> > list_info;
         string net_path;
-        
+        // vector <Net*> netlist;
     public:
         // constructer, destructor
         NetList();
@@ -20,9 +28,12 @@ class NetList {
         
         // getter
         map< string, vector<string> > getNetList();
+        // vector< Net*>
         // setter
         void setNetList();
 
 };
+
+
 
 #endif
