@@ -10,6 +10,7 @@ using namespace std;
 
 typedef struct Component_Path {
     string component_csvfile;
+    string preplace_csvfile;
     string component_relativePath;
     string pinPosition_relativePath;
 }Component_Path;
@@ -18,11 +19,8 @@ class ComponentList {
     private:
         map<string, ComponentProperty*> comp_data_dictionary;
         vector<ComponentProperty*> comp_data_vector;
-        Component_Path comp_info = {
-            "component.csv",                     // component_csvfile
-            "..\\resources\\",                   // component_relativePath
-            "..\\resources\\pin position\\"      // pinPosition_relativePath
-        };
+        Component_Path comp_info;
+        vector<ComponentProperty*> preplace_comp_data;
     public:
         // constructer, destructor
         ComponentList(/*Component_Path comp_info*/);

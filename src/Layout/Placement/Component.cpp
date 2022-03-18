@@ -12,6 +12,7 @@ ComponentProperty::ComponentProperty(string name, string color, double length, d
     this->width = width;
     this->height = height;
     this->voltage = voltage;
+    this->preplace_location = {0, 0};
 }
 
 ComponentProperty* ComponentProperty::copy() {
@@ -60,6 +61,11 @@ int ComponentProperty::getVoltage() {
 }
 void ComponentProperty::setVoltage(int voltage) {
     this->voltage = voltage;
+}
+
+void ComponentProperty::setPreplaceLocation(double x, double y) {
+    this->preplace_location.x = x;
+    this->preplace_location.y = y;
 }
 
 map<string, Point> ComponentProperty::getDefaultPinPosition() {
