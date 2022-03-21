@@ -11,7 +11,6 @@ void Console::run() {
     ComponentList* comp_list = new ComponentList();
     Layout lay = Layout(comp_list, 2);
     
-
     // GA* GA_optimizer = new GA();
     // vector<Layout*> parents = GA_optimizer->selectParent();
     // delete GA_optimizer;
