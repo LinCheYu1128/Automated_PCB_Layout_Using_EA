@@ -21,6 +21,7 @@ class ComponentProperty {
         double height;
         int voltage;
         map<string, Point> default_pin_position;
+        Point preplace_location;
 
     public:
         // constructor, destructor
@@ -48,6 +49,7 @@ class ComponentProperty {
         void setOneDefaultPinPosition(string key, Point one_pin_position);
         void setAllDefaultPinPosition(map<string, Point> all_pin_position);
         void setAllInfo(ComponentProperty* comp_prop);
+        void setPreplaceLocation(double x, double y);
         
         // printer
         void printDefaultPinPosition();
@@ -89,7 +91,7 @@ class ComponentState {
         void setLength(double length);
         void setWidth(double width);
         void setMargin(double margin);
-        // void rotatePinPosition(int angle);
+        void rotate();
         void setAllInfo(ComponentState* comp_state);
 
         // printer

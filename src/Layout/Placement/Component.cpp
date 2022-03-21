@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <math.h>
 using namespace std;
 
 ComponentProperty::ComponentProperty(string name, string color, double length, double width, double height, int voltage) {
@@ -12,6 +13,7 @@ ComponentProperty::ComponentProperty(string name, string color, double length, d
     this->width = width;
     this->height = height;
     this->voltage = voltage;
+    this->preplace_location = {0, 0};
 }
 
 ComponentProperty* ComponentProperty::copy() {
@@ -60,6 +62,11 @@ int ComponentProperty::getVoltage() {
 }
 void ComponentProperty::setVoltage(int voltage) {
     this->voltage = voltage;
+}
+
+void ComponentProperty::setPreplaceLocation(double x, double y) {
+    this->preplace_location.x = x;
+    this->preplace_location.y = y;
 }
 
 map<string, Point> ComponentProperty::getDefaultPinPosition() {
@@ -199,6 +206,39 @@ void ComponentState::setMargin(double margin) {
 //         this->pin_position[iter->first] = make_tuple(pin_abs_position_X, pin_abs_position_Y);
 //     }
 // }
+
+void ComponentState::rotate() {
+    double PI = 3.1415926;
+    map<string, Point>::iterator iter;
+    if (this->angle == 90 || this->angle == 270) {
+        double temp = this->length;
+        this->length = this->width;
+        this->width = temp;
+        Point center_position = {this->leftdown_position.x + this->length/2, this->leftdown_position.y + this->width/2};
+
+        for (iter = this->pin_position.begin(); iter != this->pin_position.end(); iter++) {
+            Point new_pin = {0, 0};
+            double origin_pin_x = iter->second.x - center_position.x;
+            double origin_pin_y = iter->second.y - center_position.y;
+            new_pin.x = (cos(this->angle*PI/2) * origin_pin_x - sin(this->angle*PI/2) * origin_pin_y) + center_position.x;
+            new_pin.y = (sin(this->angle*PI/2) * origin_pin_x + cos(this->angle*PI/2) * origin_pin_y) + center_position.y;
+            iter->second = new_pin; 
+        }
+    }
+    else if (this->angle == 180){
+        for (iter = this->pin_position.begin(); iter != this->pin_position.end(); iter++) {
+            Point new_pin = {0, 0};
+            double origin_pin_x = iter->second.x;
+            double origin_pin_y = iter->second.y;
+            new_pin.x = cos(this->angle*PI/2) * origin_pin_x - sin(this->angle*PI/2) * origin_pin_y;
+            new_pin.y = sin(this->angle*PI/2) * origin_pin_x + cos(this->angle*PI/2) * origin_pin_y;
+            iter->second = new_pin; 
+        }
+    }
+    else {
+        // No rotation
+    }
+}
 
 void ComponentState::setAllInfo(ComponentState* comp_state) {      
     this->setSide(comp_state->getSide());

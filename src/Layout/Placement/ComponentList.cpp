@@ -9,10 +9,10 @@ using namespace std;
 ComponentList::ComponentList(/*Component_Path comp_info*/) {
     const Component_Path comp_info = {
         "component.csv",                     // component_csvfile
+        "preplace.csv",                      // preplace_csvfile
         "./../resources/",                   // component_relativePath
         "./../resources/pin position/"      // pinPosition_relativePath
     };
-
     this->comp_info = comp_info;
     this->setAllData();
 }
