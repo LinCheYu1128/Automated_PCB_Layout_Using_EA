@@ -36,7 +36,7 @@ Layout::Layout(ComponentList* comp_list, int side) {
         this->setState(this->tree->getRoot()->getLeftchild(), this->front_contour);
         this->setState(this->tree->getRoot()->getRightchild(), this->back_contour);
     }
-    else {cout << "unknown side" << endl; exit(0);} 
+    else {cout << "unknown side" << endl; exit(0);}
     this->component_num = comp_list->getSize();
 
     // cout << "front contour:" << endl;
@@ -50,6 +50,19 @@ Layout::~Layout() {
     delete this->tree;
     delete this->front_contour;
     delete this->back_contour;
+}
+
+Layout* Layout::copy(){
+
+    ComponentList* component_list = new ComponentList();
+    int side = this->getBinaryTree()->getSide();
+    BinaryTree* tree = this->getBinaryTree()->copy();
+
+    Layout* layout = new Layout(tree, component_list, side);
+
+    layout->setFitness();
+
+    return layout;
 }
 
 BinaryTree* Layout::getBinaryTree(){
@@ -96,19 +109,39 @@ void Layout::setContour() {
 }
 
 void Layout::setState(TreeNode* root, Contour* contour) {
+    // cout << "---------------------------------------------------" << endl;
+    // cout << root->getComponentProp()->getName() << endl;
+    // if(root->getLeftchild()){
+    //     cout << "left child: " << root->getLeftchild()->getComponentProp()->getName() << endl;
+    // }else{
+    //     cout << "left child: null" << endl;
+    // }
+    // if(root->getRightchild()){
+    //     cout << "right child: " << root->getRightchild()->getComponentProp()->getName() << endl;
+    // }else{
+    //     cout << "right child: null" << endl;
+    // }
+    // cout << "contour" ;
+    // contour->printContour();
     root->shiftUp(contour->getContourVector());
+    // cout << "block w: " << root->getComponentState()->getWidth() << endl;
+    // cout << "block l: " << root->getComponentState()->getLength() << endl;
+    // cout << "block position: (" << root->getComponentState()->getPosition().x << "," << root->getComponentState()->getPosition().y << ")" << endl;
     contour->addBlock(root->getComponentState());
 
     if (root->getLeftchild()) {
+        // cout << "search left ";
         setState(root->getLeftchild(), contour);
     }
     if (root->getRightchild()) {
+        // cout << "search right ";
         setState(root->getRightchild(), contour);
     }
 }
 
 void Layout::updateLayout(){
     this->setContour();
+    this->getBinaryTree()->updateTree();
     if (this->tree->getSide() == 1) this->setState(this->tree->getRoot(), this->front_contour);
     else if (this->tree->getSide() == 2) {
         this->setState(this->tree->getRoot()->getLeftchild(), this->front_contour);
@@ -121,7 +154,9 @@ void Layout::setFitness(){
     this->setArea();
     this->setWireLength();
     this->setPns();
-    this->fitness = this->area + this->wirelength + this->Pns;
+    // this->fitness = this->area + this->wirelength + this->Pns;
+    // this->fitness = this->area;
+    this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
 }
 
 void Layout::setArea() {
@@ -293,11 +328,18 @@ double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list)
         secondary_x += sec_list[i].x;
     }
 
-    return abs(primary_x / prim_list.size() - secondary_x / sec_list.size());
+    return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
 }
 
-void writeCsv(Layout layout){
-    BinaryTree* layout_tree = layout.getBinaryTree();
+void writeCsv(Layout* layout){
+    BinaryTree* layout_tree = layout->getBinaryTree();
+
+    vector<TreeNode*> temp = layout_tree->ExtractTree(layout_tree->getRoot()->getID());
+    for(unsigned i = 0; i < temp.size(); i++){
+        cout << temp[i]->getComponentProp()->getName() << " ";
+    }
+    cout << endl;
+
     std::ofstream layout_data;
     layout_data.open ("output.csv");
     stack<TreeNode*> nodes;
@@ -309,8 +351,8 @@ void writeCsv(Layout layout){
         ComponentState* state = current->getComponentState();
         layout_data << prop->getName() << "," 
                     << prop->getColor() << ","
-                    << prop->getLength() << ","
-                    << prop->getWidth() << ","
+                    << state->getLength() << ","
+                    << state->getWidth() << ","
                     << prop->getHeight() << ","
                     << prop->getVoltage() << ","
                     << state->getPosition().x << ","
@@ -323,8 +365,8 @@ void writeCsv(Layout layout){
         else layout_data << "null" << ",";
         layout_data << "\n";
 
+        if (current->getRightchild()) nodes.push(current->getRightchild());
         if (current->getLeftchild()) nodes.push(current->getLeftchild());
-        if (current->getRightchild()) nodes.push(current->getRightchild()); 
     }
     layout_data.close();
 }

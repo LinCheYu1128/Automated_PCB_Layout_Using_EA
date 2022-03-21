@@ -25,6 +25,7 @@ class GA {
         void survivorSelect();  // Has not test yet.
         void evaluate(string target);
         void updateBestOffspring();
+        void mergePopulationOffspring();
 
         // getter
         GA_Parameter* getParameter();
@@ -53,6 +54,7 @@ bool SortPop(Layout *layout_1, Layout *layout_2);
 Layout* leftSubtreeCrossover(vector<Layout*>Parents);
 Layout* kPointCrossover(vector<Layout*>Parents, int k);
 Layout* randomSubtreeCrossover(vector<Layout*>Parents);
+Layout* nothingCrossover(vector<Layout*>Parents);
 
 //Mutation
 int MyRandom (int i);

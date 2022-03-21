@@ -105,7 +105,7 @@ ComponentState::ComponentState() {
     clearPoint(this->center_position);
     this->length = 0;
     this->width = 0;
-    this->margin = 0;
+    this->margin = 1;
 }
 
 ComponentState* ComponentState::copy() {
