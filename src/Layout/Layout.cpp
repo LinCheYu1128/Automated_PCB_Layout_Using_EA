@@ -341,7 +341,7 @@ void writeCsv(Layout* layout){
     cout << endl;
 
     std::ofstream layout_data;
-    layout_data.open ("output.csv");
+    layout_data.open ("placement.csv");
     stack<TreeNode*> nodes;
     nodes.push(layout_tree->getRoot());
     while (nodes.size() > 0) {
@@ -357,6 +357,7 @@ void writeCsv(Layout* layout){
                     << prop->getVoltage() << ","
                     << state->getPosition().x << ","
                     << state->getPosition().y << ","
+                    << state->getMargin() << ","
                     << state->getAngle() << ","
                     << state->getSide() << ",";
         if (current->getLeftchild()) layout_data << current->getLeftchild()->getComponentProp()->getName() << ",";

@@ -91,7 +91,7 @@ class ComponentState {
         void setLength(double length);
         void setWidth(double width);
         void setMargin(double margin);
-        // void rotatePinPosition(int angle);
+        void rotate();
         void setAllInfo(ComponentState* comp_state);
 
         // printer
