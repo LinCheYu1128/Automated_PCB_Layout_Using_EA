@@ -27,23 +27,33 @@ class BinaryTree {
         // utility
         BinaryTree* copy();
         void swap(int id_1, int id_2);
+        void changetoroot(TreeNode* node);
         void delete_node(int ID);
         void updateTree();
         TreeNode* findRightestNode(TreeNode* node);
+        TreeNode* findLeafNode(TreeNode* node);
+        vector<TreeNode*> ExtractTree(int extractID);
+        void ModifyTree(vector<TreeNode*> node_permu);
+        void ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vector<TreeNode*> node_permu_back);
+        void varifyTree();
 
         // getter
         TreeNode* getRoot();
         int getSide();
         map<int, TreeNode*> getTreeNodeMap();
+        ComponentList* getComponentList();
 
         // setter
         void setRoot(TreeNode* node);
         void setSide(int side);
         void setSingleSide();
         void setDoubleSide();
+        void updateTreeNodeMap();
 
         // printer
         void printBinaryTree();
 };
+
+
 
 #endif

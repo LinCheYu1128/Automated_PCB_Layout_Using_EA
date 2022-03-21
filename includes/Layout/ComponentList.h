@@ -23,6 +23,7 @@ class ComponentList {
             "..\\resources\\",                   // component_relativePath
             "..\\resources\\pin position\\"      // pinPosition_relativePath
         };
+        map<string, int> comp_id_map;
     public:
         // constructer, destructor
         ComponentList(/*Component_Path comp_info*/);
@@ -33,6 +34,7 @@ class ComponentList {
         ComponentProperty* getDataByName(string comp_name);
         ComponentProperty* getDataByIndex(int index);
         map<string, ComponentProperty*> getAllData();
+        map<string, int> getCompIdMap();
         
         // setter
         void setData(string comp_name, ComponentProperty* comp_prop);

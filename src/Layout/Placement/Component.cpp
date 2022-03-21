@@ -105,7 +105,7 @@ ComponentState::ComponentState() {
     clearPoint(this->center_position);
     this->length = 0;
     this->width = 0;
-    this->margin = 0;
+    this->margin = 1;
 }
 
 ComponentState* ComponentState::copy() {
@@ -141,6 +141,10 @@ double ComponentState::getWidth() {
 
 double ComponentState::getMargin() {
     return this->margin;
+}
+
+map<string, Point> ComponentState::getPinPosition(){
+    return this->pin_position;
 }
 
 void ComponentState::setSide(string side) {

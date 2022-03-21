@@ -6,10 +6,10 @@ using namespace std;
 Contour::Contour() {
     Point p = {0,0};
     this->contour.push_back(p);
-    cout << "build contour successfully!" << endl;
+    // cout << "build contour successfully!" << endl;
 }
 
-vector<Point> Contour::getContour(){
+vector<Point> Contour::getContourVector(){
     return this->contour;
 }
 
@@ -27,7 +27,7 @@ void Contour::printContour(){
 void Contour::addBlock(ComponentState* Block){
     Point p = Block->getPosition();
     Point front = {p.x, p.y + Block->getWidth()};
-    int bp; // begin point
+    int bp = 0; // begin point
     for (unsigned int i = 0; i < this->contour.size(); i++){
         if (this->contour.at(i).x >= p.x ){
             if (this->contour.at(i).x > p.x + Block->getLength()) {
@@ -35,7 +35,7 @@ void Contour::addBlock(ComponentState* Block){
                 Point back = {p.x + Block->getLength(), contour.at(i-1).y};
                 this->contour.insert(this->contour.begin() + i, {front, back});
                 return;
-                }
+            }
             else {bp = i; break;}
         }
     }

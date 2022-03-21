@@ -8,30 +8,62 @@ Console* Console::instance;
 int Console::mode;
 
 void Console::run() {
-    ComponentList* comp_list = new ComponentList();
-    Layout lay = Layout(comp_list, 2);
-    
-    // GA* GA_optimizer = new GA();
-    // vector<Layout*> parents = GA_optimizer->selectParent();
-    // delete GA_optimizer;
 
-    // ComponentList* component_list = new ComponentList();
-    // // component_list->printAllData();
+    GA* GA_optimizer = new GA();
     
-    // log("construct tree");
-    // BinaryTree* tree = new BinaryTree(component_list);
-    // tree->setDoubleSide();
-    // tree->printBinaryTree();
+    int generation = GA_optimizer->getParameter()->getGeneration();
+    for(int i = 0; i < generation; i++){
+        // if(i % 10 == 9){
+        //     cout << "generation: " << i << endl;
+        // }
+        cout << "generation: " << i << endl;
 
-    // log("construct copy tree");
-    // BinaryTree* new_tree = tree->copy();
+        GA_optimizer->crossover();
+        // GA_optimizer->evaluate("offspring");
+        // for(unsigned i = 0; i < GA_optimizer->getOffspring().size(); i++){
+        //     cout << "offspring " << i << ": " << GA_optimizer->getOffspring()[i]->getFitness() << endl;
+        // }
+        GA_optimizer->mutation();
+        // cout << "test 1" << endl;
+        GA_optimizer->evaluate("offspring");
+        // for(unsigned i = 0; i < GA_optimizer->getOffspring().size(); i++){
+        //     cout << "offspring " << i << ": " << GA_optimizer->getOffspring()[i]->getFitness() << endl;
+        // }
+        // cout << "test 2" << endl;
+        GA_optimizer->mergePopulationOffspring();
+        // for (unsigned i = 0; i < GA_optimizer->getPopulation().size(); i++){
+        //     cout << GA_optimizer->getPopulation()[i]->getFitness() << endl;
+        // }
+        // cout << "test 4" << endl;
+        GA_optimizer->survivorSelect();
+        // for(unsigned i = 0; i < GA_optimizer->getPopulation().size(); i++){
+        //     cout << "population " << i << ": " << GA_optimizer->getPopulation()[i]->getFitness() << endl;
+        // }  
+        // cout << "test 5" << endl;
+        GA_optimizer->updateBestOffspring();
+        // cout << "test 6" << endl;
+        GA_optimizer->pushBehavior();
+        // cout << "test 7" << endl;
+    }
     
-    // log("start delete node");
-    // map<int, TreeNode*> TreeNode_map = new_tree->getTreeNodeMap();
-    // for (int i = 0; i < 38; i++) {
-    //     new_tree->delete_node(i);
-    //     new_tree->printBinaryTree();
+    // GA_optimizer->getOutputFile();
+
+    // cout << "test 1" << endl;
+    // cout << GA_optimizer->getOffspring()[3] << endl;
+    // vector<TreeNode*> temp = GA_optimizer->getOffspring()[1]->getBinaryTree()->ExtractTree(GA_optimizer->getOffspring()[1]->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp.size(); i++){
+    //     cout << temp[i]->getComponentProp()->getName() << " ";
     // }
+    // cout << endl;
+    // writeCsv(GA_optimizer->getOffspring()[1]);
+    // writeCsv(GA_optimizer->getPopulation()[0]);
+    writeCsv(GA_optimizer->getBestOffspring());
+    cout << "area " << GA_optimizer->getBestOffspring()->getArea() << endl;
+    cout << "WL " << GA_optimizer->getBestOffspring()->getWireLength() << endl;
+    cout << "pns " << GA_optimizer->getBestOffspring()->getPns() << endl;
+    // writeCsv(GA_optimizer->getBestOffspring());
+    // cout << "test 2" << endl;
+    delete GA_optimizer;
 }
 
 void Console::log(string message) {
@@ -40,21 +72,3 @@ void Console::log(string message) {
     }
     return;
 }
-
-// GA* GA_optimizer = new GA();
-// log("complete GA_optimizer");
-// delete GA_optimizer;
-
-// // random select node to swap
-// cout << "start random select node to swap" << endl;
-// map<int, TreeNode*> TreeNode_map = tree->getTreeNodeMap();
-// int a = rand() % component_list->getSize();
-// int b = rand() % component_list->getSize();
-// cout << "initial random select node " << a << ", " << b << endl;
-// while (b == a || TreeNode_map.at(a)->search(b) || TreeNode_map.at(b)->search(a)) {
-//     b = rand() % component_list->getSize();
-//     cout << "random select node " << a << ", " << b << endl;
-// }
-// // swap node
-// tree->swap(a, b);
-// tree->printBinaryTree();
