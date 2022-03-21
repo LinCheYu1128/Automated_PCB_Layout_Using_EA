@@ -28,7 +28,7 @@ TreeNode* TreeNode::copy() {
     TreeNode* new_node = new TreeNode(this->comp_prop);
     new_node->setID(this->id);
     new_node->setBranch(this->branch);
-    new_node->setComponentState(this->getComponentState());
+    new_node->setComponentState(this->getComponentState()->copy());
     return new_node;
 }
 
@@ -73,12 +73,21 @@ ComponentState* TreeNode::getComponentState() {
 
 void TreeNode::disconnect(string branch) {
     if (branch == "parent" || branch == "all") {
+        string mybranch = this->branch;
+        if(mybranch == "left"){
+            if(this->parent) this->parent->leftchild = nullptr;
+        }else if((mybranch == "right")){
+            if(this->parent) this->parent->rightchild = nullptr;
+        }
         this->parent = nullptr;
     }
+
     if (branch == "left" || branch == "all") {
+        if(this->leftchild) this->leftchild->parent = nullptr;
         this->leftchild = nullptr;
     }
     if (branch == "right" || branch == "all") {
+        if(this->rightchild) this->rightchild->parent = nullptr;
         this->rightchild = nullptr;
     }
 }
@@ -113,7 +122,7 @@ void TreeNode::setRightChild(TreeNode* node) {
 
 void TreeNode::setParent(TreeNode* parent, string branch) {
     this->parent = parent;
-    parent->setChild(this, branch);
+    if(parent) parent->setChild(this, branch);
 }
 
 void TreeNode::setComponentProp(ComponentProperty* comp_prop) {
@@ -155,11 +164,11 @@ void TreeNode::printTreeNode() {
 }
 
 bool TreeNode::search(int ID) {
-    cout << "start search " << ID << endl;
+    // cout << "start search " << ID << endl;
     TreeNode* temp = this;
     
     if (temp->getID() == ID) {
-        cout << "node ID " << ID << " has been searched at node " << this->getID() << endl;
+        // cout << "node ID " << ID << " has been searched at node " << this->getID() << endl;
         return true;
     }
     if (temp->getLeftchild() && temp->getLeftchild()->search(ID)) {
@@ -169,9 +178,10 @@ bool TreeNode::search(int ID) {
         return true;
     }
 
-    cout << "node ID " << ID << " can't be searched at node " << this->getID() << endl;
+    // cout << "node ID " << ID << " can't be searched at node " << this->getID() << endl;
     return false;
 }
+
 
 void TreeNode::updateNode() {
     if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
@@ -201,3 +211,4 @@ void TreeNode::shiftUp(vector<Point> contour) {
     }
     comp->setPosition(x, max_y);
 }
+

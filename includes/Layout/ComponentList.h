@@ -19,8 +19,12 @@ class ComponentList {
     private:
         map<string, ComponentProperty*> comp_data_dictionary;
         vector<ComponentProperty*> comp_data_vector;
-        Component_Path comp_info;
-        vector<ComponentProperty*> preplace_comp_data;
+        Component_Path comp_info = {
+            "component.csv",                     // component_csvfile
+            "..\\resources\\",                   // component_relativePath
+            "..\\resources\\pin position\\"      // pinPosition_relativePath
+        };
+        map<string, int> comp_id_map;
     public:
         // constructer, destructor
         ComponentList(/*Component_Path comp_info*/);
@@ -31,6 +35,7 @@ class ComponentList {
         ComponentProperty* getDataByName(string comp_name);
         ComponentProperty* getDataByIndex(int index);
         map<string, ComponentProperty*> getAllData();
+        map<string, int> getCompIdMap();
         
         // setter
         void setData(string comp_name, ComponentProperty* comp_prop);

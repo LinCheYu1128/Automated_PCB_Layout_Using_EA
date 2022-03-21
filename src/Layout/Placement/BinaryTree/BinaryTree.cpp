@@ -6,6 +6,7 @@
 #include <map>
 #include <random>
 #include <algorithm>
+#include <stack>
 using namespace std;
 
 BinaryTree::BinaryTree(ComponentList* comp_list) {
@@ -30,10 +31,15 @@ map<int, TreeNode*> BinaryTree::getTreeNodeMap() {
     return this->TreeNode_map;
 }
 
+ComponentList* BinaryTree::getComponentList(){
+    return this->comp_list;
+}
+
 BinaryTree* BinaryTree::copy() {
     BinaryTree* new_tree = new BinaryTree(this->comp_list);
     new_tree->setRoot(this->root->copy());
     new_tree->copyByTraverseTree(this->root, new_tree->getRoot());
+    new_tree->setSide(this->side);
     return new_tree;
 }
 
@@ -136,7 +142,7 @@ void BinaryTree::setDoubleSide() {
         parent_node = this->TreeNode_map[parent_pos];
         child_node = random_construct_tree(parent_node, new_comp);
 
-        child_node->setID(i);
+        child_node->setID(comp_list_index[i]);
         this->TreeNode_map[i] = child_node;
         existed_nodes_num += 1;
     }
@@ -194,6 +200,22 @@ void BinaryTree::swap(int id_1, int id_2) {
     }
 }
 
+void BinaryTree::changetoroot(TreeNode* node){
+    if(node->getRightchild()==nullptr && node->getLeftchild()==nullptr){
+        cout << node->getBranch() << endl;
+        node->getParent()->disconnect(node->getBranch());
+        cout << "debug disconnect" << endl;
+        if(this->getRoot()->getLeftchild()){
+            node->setLeftChild(this->getRoot()->getLeftchild());
+        }
+        if(this->getRoot()->getRightchild()){
+            node->setRightChild(this->getRoot()->getRightchild());
+        }
+        cout << "debug setChild" << endl;
+        this->setRoot(node);
+    }
+}
+
 void BinaryTree::delete_node(int ID) {
     if (this->TreeNode_map.find(ID) == this->TreeNode_map.end()) {
         Console::log("this node does not exist in this tree");
@@ -218,10 +240,9 @@ void BinaryTree::delete_node(int ID) {
     this->delete_leaf_node(node);
     this->delete_hasOneChild_node(node);
     this->delete_hasBothChild_node(node);
-
     this->TreeNode_map[node->getID()] = nullptr;
+    // cout << "debug" << endl;
     node->disconnect();
-
     return;
 }
 
@@ -237,7 +258,7 @@ void BinaryTree::delete_leaf_node(TreeNode* node) {
         this->root = nullptr;
     } else {
         Console::log("delete node is " + node->getBranch());
-        node->getParent()->disconnect(node->getBranch());
+        if(node->getParent()) node->getParent()->disconnect(node->getBranch());
     }
 }
 
@@ -245,10 +266,10 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
     TreeNode* successor;
     if (node->getLeftchild() != nullptr && node->getRightchild() == nullptr) {
         successor = node->getLeftchild();
-        Console::log("delete hasLeftChild node " + to_string(node->getID()));
+        Console::log("delete has LeftChild node " + to_string(node->getID()));
     } else if (node->getLeftchild() == nullptr && node->getRightchild() != nullptr) {
         successor = node->getRightchild();
-        Console::log("delete hasRightChild node " + to_string(node->getID()));
+        Console::log("delete has RightChild node " + to_string(node->getID()));
     } else {
         return;
     }
@@ -257,7 +278,7 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
         Console::log("delete node is root");
         this->setRoot(successor);
     } else {
-        node->getParent()->setChild(successor, node->getBranch());
+        if(node->getParent()) node->getParent()->setChild(successor, node->getBranch());
     }
 }
 
@@ -266,10 +287,10 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
     if (node->getLeftchild() != nullptr && node->getRightchild() != nullptr) {
         // since node has both children, findRightestNode(node) != nullptr
         successor = findRightestNode(node);
-        Console::log("delete hasBothChild node " + to_string(node->getID()));
+        Console::log("delete has BothChild node " + to_string(node->getID()));
         Console::log("found successor node "  + to_string(successor->getID()));
-        Console::log("successor old parent is "  + to_string(successor->getParent()->getID()));
-        successor->getParent()->disconnect(successor->getBranch());
+        // Console::log("successor old parent is "  + to_string(successor->getParent()->getID()));
+        if(successor->getParent()) successor->getParent()->disconnect(successor->getBranch());
     } else {
         return;
     }
@@ -278,16 +299,18 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
         Console::log("delete node is root");
         this->setRoot(successor);
     } else {
+        // cout << "debug" << endl;
         successor->setParent(node->getParent(), node->getBranch());
-        Console::log("successor new parent is " + to_string(successor->getParent()->getID()));
+        // cout << "debugA" << endl;
+        // Console::log("successor new parent is " + to_string(successor->getParent()->getID()));
         // node must has left child, but right child may be successor        
         if (node->getLeftchild()) {
-            Console::log("node leftchild is " + to_string(node->getLeftchild()->getID()));
+            // Console::log("node leftchild is " + to_string(node->getLeftchild()->getID()));
             successor->setLeftChild(node->getLeftchild());
         }
         if (node->getRightchild()) {
             successor->setRightChild(node->getRightchild());
-            Console::log("node rightchild is " + to_string(node->getRightchild()->getID()));
+            // Console::log("node rightchild is " + to_string(node->getRightchild()->getID()));
         }
     }
 }
@@ -306,6 +329,156 @@ TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
     return node;
 }
 
+TreeNode* BinaryTree::findLeafNode(TreeNode* node) {
+    if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
+        return node;
+    }
+    if(node->getRightchild() && node->getLeftchild()){
+        int lr = rand() % 2;
+        if(lr == 0){
+            node = findLeafNode(node->getLeftchild());
+        }else{
+            node = findLeafNode(node->getRightchild());
+        }
+    }else if(node->getLeftchild()){
+        node = findLeafNode(node->getLeftchild());
+    }else if(node->getRightchild()){
+        node = findLeafNode(node->getRightchild());
+    }
+
+    return node;
+}
+
+vector<TreeNode*> BinaryTree::ExtractTree(int extractID){
+    vector<TreeNode*> node_permu;
+    stack<TreeNode*> node_stack;
+
+    BinaryTree* dup_tree = this->copy();
+    
+    node_stack.push(dup_tree->TreeNode_map[extractID]);
+    
+    // Pre-order iterate
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        // cout << temp->component_.name << ' ';
+        node_permu.push_back(node_stack.top());
+        node_stack.pop();
+
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+    }
+    // cout <<endl;
+
+    return node_permu;
+}
+
+void BinaryTree::ModifyTree(vector<TreeNode*> node_permu){
+    stack<TreeNode*> node_stack;
+    node_stack.push(this->root);
+    int ptr = 0;
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        if (temp->getID() != node_permu.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu.at(ptr)->getComponentState()->getAngle()) {
+            temp->setID(node_permu.at(ptr)->getID());
+            temp->setBranch(node_permu.at(ptr)->getBranch());
+            temp->setComponentProp(node_permu.at(ptr)->getComponentProp());
+            temp->setComponentState(node_permu.at(ptr)->getComponentState());
+        }
+        node_stack.pop();
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+        ptr++;
+    }
+}
+
+void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vector<TreeNode*> node_permu_back) {
+    // BStarTree* new_tree = CopyTree(tree);
+    stack<TreeNode*> node_stack;
+
+    // Modify front tree
+    node_stack.push(this->root->getLeftchild());
+    int ptr = 0;
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        // cout << "origin: " << temp->getID() << " modify: " << node_permu_front.at(ptr)->getID() << endl;
+        // for(unsigned i=0; i < node_permu_front.size(); i++){
+        //     cout << node_permu_front[i]->getID() << " ";
+        // }
+        // cout << endl;
+        if (temp->getID() != node_permu_front.at(ptr)->getID()) {
+            temp->setID(node_permu_front[ptr]->getID());
+            temp->setBranch(node_permu_front[ptr]->getBranch());
+            temp->setComponentProp(node_permu_front[ptr]->getComponentProp());
+            temp->setComponentState(node_permu_front[ptr]->getComponentState());
+        }
+        node_stack.pop();
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+        ptr++;
+    }
+
+    // Modify back tree
+    node_stack.push(this->root->getRightchild());
+    ptr = 0;
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        // cout << "origin: " << temp->getID() << " modify: " << node_permu_back.at(ptr)->getID() << endl;
+        if (temp->getID() != node_permu_back.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu_back.at(ptr)->getComponentState()->getAngle()) {
+            temp->setID(node_permu_back.at(ptr)->getID());
+            temp->setBranch(node_permu_back.at(ptr)->getBranch());
+            temp->setComponentProp(node_permu_back.at(ptr)->getComponentProp());
+            temp->setComponentState(node_permu_back.at(ptr)->getComponentState());
+        }
+        node_stack.pop();
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+        ptr++;
+    }
+}
+
+void BinaryTree::varifyTree(){
+    if(this->side != 1 || this->side != 2){
+        cout << "side is not correct" << endl;
+        exit(0);
+    }
+    if(this->root == nullptr){
+        cout << "root does not exit" << endl;
+        exit(0);
+    }
+
+    stack<TreeNode*> node_stack;
+    node_stack.push(root);
+    int ptr = 0;
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        if(temp->getID() < -3 || temp->getID() > 35){
+            cout << "node ID is not correct" << endl;
+            exit(0);
+        }else{
+
+        }
+        node_stack.pop();
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+        ptr++;
+    }
+}
+
 void BinaryTree::updateTree() {
     if (root == nullptr) {
         return;
@@ -318,6 +491,24 @@ void BinaryTree::updateTree() {
         node = stack.back();
         node->updateNode();
         stack.pop_back();
+        if (node->getRightchild() != nullptr) {
+            stack.push_back(node->getRightchild());
+        }
+        if (node->getLeftchild() != nullptr) {
+            stack.push_back(node->getLeftchild());
+        }
+    }
+}
+
+void BinaryTree::updateTreeNodeMap(){
+    this->TreeNode_map.clear();
+    vector<TreeNode*> stack;
+    stack.push_back(this->root);
+    TreeNode* node;
+    while(!stack.empty()) {
+        node = stack.back();
+        stack.pop_back();
+        this->TreeNode_map.insert(std::pair<int, TreeNode*>(node->getID(), node));
         if (node->getRightchild() != nullptr) {
             stack.push_back(node->getRightchild());
         }

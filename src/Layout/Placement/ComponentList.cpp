@@ -41,36 +41,9 @@ map<string, ComponentProperty*> ComponentList::getAllData() {
     return this->comp_data_dictionary;
 }
 
-// void ComponentList::setPreplace() {
-//     ifstream inFile(comp_info.component_relativePath + comp_info.preplace_csvfile);
-//     string temp;
-//     Point temp_p;
-
-//     getline(inFile, temp, '\n');
-//     while (!inFile.eof()) {
-//         ComponentProperty* comp_prop = new ComponentProperty();
-//         getline(inFile, temp, ',' );
-//         comp_prop->setName(temp);
-//         getline(inFile, temp, ',' );
-//         comp_prop->setColor(temp);
-//         getline(inFile, temp, ',' );
-//         comp_prop->setLength(stod(temp));
-//         getline(inFile, temp, ',' );
-//         comp_prop->setWidth(stod(temp));
-//         getline(inFile, temp, ',' );
-//         comp_prop->setHeight(stod(temp));
-//         getline(inFile, temp, ',' );
-//         comp_prop->setVoltage(stoi(temp));
-//         getline(inFile, temp, ',' );
-//         temp_p.x = stod(temp);
-//         getline(inFile, temp, '\n' );
-//         temp_p.y = stod(temp);
-//         comp_prop->setPreplaceLocation(temp_p.x, temp_p.y);
-
-//         this->setData(comp_prop->getName(), comp_prop);
-//         this->setPinPosition(comp_prop->getName());
-//     }
-// }
+map<string, int> ComponentList::getCompIdMap(){
+    return this->comp_id_map;
+}
 
 void ComponentList::setData(string comp_name, ComponentProperty* comp_prop) {
     this->comp_data_dictionary[comp_name] = comp_prop;
@@ -106,12 +79,14 @@ void ComponentList::setPinPosition(string comp_name) {
 void ComponentList::setAllData() {
     ifstream inFile(comp_info.component_relativePath + comp_info.component_csvfile);
     string temp;
+    int id = 0;
 
     getline(inFile, temp, '\n');
     while (!inFile.eof()) {
         ComponentProperty* comp_prop = new ComponentProperty();
         getline(inFile, temp, ',' );
         comp_prop->setName(temp);
+        this->comp_id_map[temp] = id;
         getline(inFile, temp, ',' );
         comp_prop->setColor(temp);
         getline(inFile, temp, ',' );
@@ -125,6 +100,8 @@ void ComponentList::setAllData() {
 
         this->setData(comp_prop->getName(), comp_prop);
         this->setPinPosition(comp_prop->getName());
+
+        id ++;
     }
 }
 

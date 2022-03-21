@@ -67,6 +67,7 @@ class ComponentState {
         double margin;
         map<string, Point> pin_position;
 
+
     public:
         // constructor, destructor
         ComponentState();
