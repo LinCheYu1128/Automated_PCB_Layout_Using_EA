@@ -1,77 +1,61 @@
 .sidenav {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 160px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
-  left: 0;
-  background-color: #111; /* Black */
-  /* overflow-x: hidden; Disable horizontal scroll */
-  padding-top: 20px;
+    background-color: #111;
 }
 
-/* The navigation menu links */
 .sidenav a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
 }
 
-/* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
-  color: #f1f1f1;
+    color: #f1f1f1;
 }
 
-/* The dropdown container */
 .dropdown {
-  /* overflow: hidden; */
-  position: relative;
+    /* overflow: hidden; */
+    position: relative;
 }
 
-/* Dropdown button */
 .dropdown .dropbtn {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  background-color: inherit;
-  font-family: inherit; /* Important for vertical align on mobile phones */
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: inherit;
+    font-family: inherit;
 }
 
-/* Dropdown content (hidden by default) */
 .dropdown-content {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
 }
 
-/* Links inside the dropdown */
 .dropdown-content a {
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
 }
 
-/* Add a grey background color to dropdown links on hover */
 .dropdown-content a:hover {
-  background-color: #ddd;
+    background-color: #ddd;
 }
 
-/* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
-  display: block;
+    display: block;
 }

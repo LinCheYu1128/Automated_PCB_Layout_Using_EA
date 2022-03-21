@@ -14,58 +14,46 @@
 <script src="https://d3js.org/d3.v3.min.js"></script>
 
 <body>
-    <div class="sidenav">
-        <div class="dropdown">
-            <button class="dropbtn">File
-                <i class="fa fa-caret-down"></i>
-            </button>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Examples
-                <i class="fa fa-caret-down"></i>
-            </button>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">View
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <button class="dropbtn 2D_PageOpen" id="default_PageOpen">2D</a>
-                <button class="dropbtn 3D_PageOpen">3D</a>
-                <button class="dropbtn Tree_PageOpen">Tree</a>
+    <div class="wrapper">
+        <div class="sidenav box1">
+            <div class="dropdown">
+                <button class="dropbtn">File
+                    <i class="fa fa-caret-down"></i>
+                </button>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Examples
+                    <i class="fa fa-caret-down"></i>
+                </button>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">View
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <button class="dropbtn 2D_PageOpen" id="default_PageOpen">2D</a>
+                    <button class="dropbtn 3D_PageOpen">3D</a>
+                    <button class="dropbtn Tree_PageOpen">Tree</a>
+                </div>
             </div>
         </div>
+        <div id="2D" class="box-container tabcontent box2">
+            <!-- <div id="Layout_single"></div> -->
+            <div class="box" id="Layout_front"></div>
+            <div class="box" id="Layout_back"></div>
+        </div>
+        <div id="3D" class="box-container tabcontent box2"></div>
+        <div id="Tree" class="box-container tabcontent box2"></div>
     </div>
-    <input type="file" id="csvFile">
-    <div id="2D" class="box-container tabcontent">
-        <div id="Layout_single"></div>
-        <div class="box" id="Layout_front"></div>
-        <div class="box" id="Layout_back"></div>
-    </div>
-    <div id="3D" class="box-container tabcontent"></div>
-    <div id="Tree" class="box-container tabcontent"></div>
 
+    <script type="module" src="js/files/csvParser.js"></script>
+    <script type="module" src="js/files/inputFile.js"></script>
     <script type="module" src="js/svg canvas.js"></script>
     <script type="module" src="js/svg controller.js"></script>
     <script type="module" src="js/drawTree.js"></script>
-    <script type="module" src="js/drawLayout.js"></script>
+    <script type="module" src="js/Layout.js"></script>
     <script type="module" src="js/openPage.js"></script>
-    <script type="module" src="js/files/csvParser.js"></script>
-    <script type="module" src="js/files/inputFile.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
-
-
-<!-- <body>
-    <div id="Layout_container" class="box-container">
-        <div id="Layout_front" class="box"></div>
-        <div id="Layout_back" class="box"></div>
-    </div>
-
-    <script type="text/javascript" src="front_data.js"></script>
-    <script type="text/javascript" src="back_data.js"></script>
-    <script type="module" src="geometry.js"></script>
-    <script type="module" src="svg canvas.js"></script>
-    <script type="module" src="main.js"></script>
-</body> -->
 
 </html>

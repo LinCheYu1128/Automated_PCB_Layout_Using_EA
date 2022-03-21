@@ -1,13 +1,10 @@
 function openPage(page) {
-    // Hide all elements with class="tabcontent" by default */
-    var i, tabcontent, tablinks;
+    var i, tabcontent;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
       tabcontent[i].style.display = "none";
     }
-  
-    // Show the specific tab content
-    // console.log(document.getElementsByClassName('2D_PageOpen')[0]);
+
     document.getElementById(page).style.display = "flex";
 }
 

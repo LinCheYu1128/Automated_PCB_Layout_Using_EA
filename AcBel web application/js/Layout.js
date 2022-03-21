@@ -1,16 +1,19 @@
 import {Canvas} from "./svg canvas.js";
-import {drawTree} from "./drawTree.js";
+import {drawTree} from "./drawTree.js"
 
-export function drawLayout(arrData) {
-    let mapData = ArrayToMap(arrData);
-    console.log(mapData)
-    // let layout = new Canvas("single", mapData);
-    let front_layout = new Canvas("front", mapData);
-    let back_layout = new Canvas("back", mapData);
-    drawTree({divID: 'Tree', width: 1500, height: 800, padding: 50, treeData: MapToTree(mapData, arrData)});
-}
+export class Layout {
+    constructor(placement_csv, pin_csv, net_csv) {
+        let placement_mapData = Placement_ArrayToMap(placement_csv);
+        let pin_mapData = Pin_ArrayToMap(pin_csv);
+        let net_mapData = Net_ArrayToMap(net_csv);
+        let layout_front = new Canvas("front", {"placement_data": placement_mapData, "pin_data": pin_mapData, "net_data": net_mapData});
+        let layout_back = new Canvas("back", {"placement_data": placement_mapData, "pin_data": pin_mapData, "net_data": net_mapData});
 
-function ArrayToMap(arrData) {
+        drawTree({divID: 'Tree', width: 1500, height: 800, padding: 50, treeData: MapToTree(placement_mapData, placement_csv)});
+    }
+};
+
+function Placement_ArrayToMap(arrData) {
     let mapData = {};
     let component;
     for (let i = 0; i < arrData.length; i++) {
@@ -23,8 +26,37 @@ function ArrayToMap(arrData) {
             "position": [Number(component[6]), Number(component[7])],
             "side": component[8],
             "angle": Number(component[9]),
+            "margin": 1,
             "leftChild": component[10],
             "rightChild": component[11],
+        }
+    }
+    return mapData;
+}
+
+function Pin_ArrayToMap(arrData) {
+    let mapData = {};
+    let pin_id;
+    for (let i = 0; i < arrData.length; i++) {
+        pin_id = arrData[i];
+        mapData[pin_id[0]] = {
+            "name": pin_id[0],
+            "size": [Number(pin_id[1]), Number(pin_id[2])],
+            "position": [Number(pin_id[3]), Number(pin_id[4])],
+        }
+    }
+    return mapData;
+}
+
+function Net_ArrayToMap(arrData) {
+    let mapData = {};
+    let pin_id;
+    for (let i = 0; i < arrData.length; i++) {
+        pin_id = arrData[i];
+        mapData[pin_id[0]] = {
+            "name": pin_id[0],
+            "begin": pin_id[1],
+            "end": pin_id[2],
         }
     }
     return mapData;
