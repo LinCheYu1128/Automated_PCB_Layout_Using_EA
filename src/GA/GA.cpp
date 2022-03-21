@@ -169,7 +169,7 @@ void GA::updateBestOffspring(){
 
 void GA::mergePopulationOffspring(){
     population.insert(population.end(), offspring.begin(), offspring.end());
-    sort(this->population.begin(), this->population.end(), SortPop);
+    // sort(this->population.begin(), this->population.end(), SortPop);
     // offspring.clear();
 }
 
