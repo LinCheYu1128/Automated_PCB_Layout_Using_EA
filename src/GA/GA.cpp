@@ -122,7 +122,9 @@ void GA::mutation() {
             cout << "something wrong" << endl;
             break;
         }
-        this->offspring[i]->updateLayout();
+        // this->offspring[i]->updateLayout();
+
+
         // offspring[i]->getBinaryTree()->printBinaryTree();
         // // cout << offspring[i] << endl;
         // vector<TreeNode*> temp = offspring[i]->getBinaryTree()->ExtractTree(offspring[i]->getBinaryTree()->getRoot()->getID());

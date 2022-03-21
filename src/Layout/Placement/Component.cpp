@@ -112,7 +112,7 @@ ComponentState::ComponentState() {
     clearPoint(this->center_position);
     this->length = 0;
     this->width = 0;
-    this->margin = 1;
+    this->margin = 0.2;
 }
 
 ComponentState* ComponentState::copy() {
@@ -232,7 +232,7 @@ void ComponentState::rotate() {
             double origin_pin_y = iter->second.y;
             new_pin.x = cos(this->angle*PI/2) * origin_pin_x - sin(this->angle*PI/2) * origin_pin_y;
             new_pin.y = sin(this->angle*PI/2) * origin_pin_x + cos(this->angle*PI/2) * origin_pin_y;
-            iter->second = new_pin; 
+            iter->second = new_pin;
         }
     }
     else {

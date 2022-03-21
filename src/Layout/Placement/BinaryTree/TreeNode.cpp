@@ -204,11 +204,14 @@ void TreeNode::shiftUp(vector<Point> contour) {
         else if (this->getBranch() == "right") x = parent->getPosition().x;
         else {cout << "Branch invalid" << endl; exit(0);}
     }
+
+    comp->rotate();
+
     for (unsigned int i = 0; i < contour.size(); i++){
         if (contour.at(i).x >= x && contour.at(i).x < x + comp->getLength()) {
             max_y = max(contour.at(i).y, max_y);
         }
     }
+    
     comp->setPosition(x, max_y);
 }
-

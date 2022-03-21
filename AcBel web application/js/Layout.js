@@ -24,11 +24,11 @@ function Placement_ArrayToMap(arrData) {
             "size": [Number(component[2]), Number(component[3]), Number(component[4])],
             "voltage": Number(component[5]),
             "position": [Number(component[6]), Number(component[7])],
-            "side": component[8],
-            "angle": Number(component[9]),
-            "margin": 1,
-            "leftChild": component[10],
-            "rightChild": component[11],
+            "margin": Number(component[8]),
+            "side": component[9],
+            "angle": Number(component[10]),
+            "leftChild": component[11],
+            "rightChild": component[12],
         }
     }
     return mapData;
