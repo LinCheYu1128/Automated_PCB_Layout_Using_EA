@@ -20,8 +20,6 @@ void Console::run() {
         cout << endl;
     }
     netlist->outputTwoPinNetList();
-    
-
     // GA* GA_optimizer = new GA();
     
     // int generation = GA_optimizer->getParameter()->getGeneration();
@@ -58,26 +56,23 @@ void Console::run() {
     //     GA_optimizer->updateBestOffspring();
     //     // cout << "test 6" << endl;
     //     GA_optimizer->pushBehavior();
+
+    //     writeCsv(GA_optimizer->getBestOffspring());
+    //     writePin(GA_optimizer->getBestOffspring());
     // }
     
-    // // GA_optimizer->getOutputFile();
-
-    // // cout << "test 1" << endl;
-    // // cout << GA_optimizer->getOffspring()[3] << endl;
-    // // vector<TreeNode*> temp = GA_optimizer->getOffspring()[1]->getBinaryTree()->ExtractTree(GA_optimizer->getOffspring()[1]->getBinaryTree()->getRoot()->getID());
-    // // for(unsigned i = 0; i < temp.size(); i++){
-    // //     cout << temp[i]->getComponentProp()->getName() << " ";
-    // // }
-    // // cout << endl;
-    // // writeCsv(GA_optimizer->getOffspring()[1]);
-    // // writeCsv(GA_optimizer->getPopulation()[0]);
-    // writeCsv(GA_optimizer->getBestOffspring());
-    // writePin(GA_optimizer->getBestOffspring());
+    
     // cout << "area " << GA_optimizer->getBestOffspring()->getArea() << endl;
     // cout << "WL " << GA_optimizer->getBestOffspring()->getWireLength() << endl;
     // cout << "pns " << GA_optimizer->getBestOffspring()->getPns() << endl;
+
     // // writeCsv(GA_optimizer->getBestOffspring());
-    // // cout << "test 2" << endl;
+    // // writePin(GA_optimizer->getBestOffspring());
+    // // cout << "area " << GA_optimizer->getBestOffspring()->getArea() << endl;
+    // // cout << "WL " << GA_optimizer->getBestOffspring()->getWireLength() << endl;
+    // // cout << "pns " << GA_optimizer->getBestOffspring()->getPns() << endl;
+    // // // writeCsv(GA_optimizer->getBestOffspring());
+    // // // cout << "test 2" << endl;
     // delete GA_optimizer;
 
 }

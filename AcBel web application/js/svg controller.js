@@ -21,11 +21,11 @@ export class SVG_Controller {
     }
 
     drag(e) {
-        console.log("mouse Drag", this.moving);
+        // console.log("mouse Drag", this.moving);
         // console.log("111", this.svg)({"svg": this.svg})
         if (this.moving === true) {
             //	1. 取得一開始的 viewBox 值，原本是字串，拆成陣列，方便之後運算
-            console.log(this.svg.getAttribute('viewBox'))
+            // console.log(this.svg.getAttribute('viewBox'))
             let startViewBox = this.svg.getAttribute('viewBox').split(' ').map( n => parseFloat(n));
 
             //	2. 取得滑鼠當前 viewport 中 client 座標值
@@ -63,7 +63,7 @@ export class SVG_Controller {
             //	7. 設定新的 viewBox 值
             let moveToViewBox = `${startViewBox[0] + delta.dx} ${startViewBox[1] + delta.dy} ${startViewBox[2]} ${startViewBox[3]}`;
             this.svg.setAttribute('viewBox', moveToViewBox);
-            console.log(moveToViewBox);
+            // console.log(moveToViewBox);
         }
     }
     //	滑鼠點擊結束（拖曳結束）

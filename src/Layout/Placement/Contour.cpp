@@ -26,13 +26,13 @@ void Contour::printContour(){
 
 void Contour::addBlock(ComponentState* Block){
     Point p = Block->getPosition();
-    Point front = {p.x, p.y + Block->getWidth()};
+    Point front = {p.x, p.y + Block->getWidth() /*+ 2*Block->getMargin()*/};
     int bp = 0; // begin point
     for (unsigned int i = 0; i < this->contour.size(); i++){
         if (this->contour.at(i).x >= p.x ){
-            if (this->contour.at(i).x > p.x + Block->getLength()) {
+            if (this->contour.at(i).x > p.x + Block->getLength() /*+ 2*Block->getMargin()*/) {
                 // in single contour
-                Point back = {p.x + Block->getLength(), contour.at(i-1).y};
+                Point back = {p.x + Block->getLength() /*+ 2*Block->getMargin()*/, contour.at(i-1).y};
                 this->contour.insert(this->contour.begin() + i, {front, back});
                 return;
             }
@@ -40,16 +40,16 @@ void Contour::addBlock(ComponentState* Block){
         }
     }
     for (unsigned int j = bp; j < this->contour.size(); j++){
-        if (this->contour.at(j).x > p.x + Block->getLength()) {
+        if (this->contour.at(j).x > p.x + Block->getLength() /*+ 2*Block->getMargin()*/) {
             // across different contour
-            Point back = {p.x + Block->getLength(), contour.at(j-1).y};
+            Point back = {p.x + Block->getLength() /*+ 2*Block->getMargin()*/, contour.at(j-1).y};
             this->contour.erase(this->contour.begin() + bp, this->contour.begin() + j);
             this->contour.insert(this->contour.begin() + bp, {front, back});
             return;
         }
     }
     // exceed current contour
-    Point back = {p.x + Block->getLength(), 0};
+    Point back = {p.x + Block->getLength() /*+ 2*Block->getMargin()*/, 0};
     this->contour.erase(this->contour.begin() + bp, this->contour.end());
     this->contour.insert(this->contour.end(), {front, back});
 }
