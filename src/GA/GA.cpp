@@ -164,14 +164,14 @@ void GA::evaluate(string target){
 
 void GA::updateBestOffspring(){
     // should use copy function
-    cout << "pop 1 fitness: " << this->population[0]->getFitness() << endl;
-    cout << "before best fitness: " << this->bestOffspring->getFitness() << endl;
+    // cout << "pop 1 fitness: " << this->population[0]->getFitness() << endl;
+    // cout << "before best fitness: " << this->bestOffspring->getFitness() << endl;
     Layout* new_best = this->population[0];
     if(new_best->getFitness() <= this->bestOffspring->getFitness()){
-        cout << "update" << endl;
+        // cout << "update" << endl;
         this->bestOffspring = new_best->copy();
     }
-    cout << "after best fitness: " << this->bestOffspring->getFitness() << endl;
+    // cout << "after best fitness: " << this->bestOffspring->getFitness() << endl;
     cout << this->bestOffspring << endl;
 }
 

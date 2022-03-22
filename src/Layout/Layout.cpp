@@ -154,7 +154,7 @@ void Layout::setFitness(){
     this->setArea();
     this->setWireLength();
     this->setPns();
-    this->fitness = this->area/1000 * 0.6 + this->Pns/40 * 0.4;
+    this->fitness = this->area/1200 * 0.6 + this->Pns/40 * 0.4;
     // this->fitness = this->area;
     // this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
 }
