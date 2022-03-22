@@ -70,7 +70,7 @@ void ComponentList::setPinPosition(string comp_name) {
         point.x = stod(token_list[1]);
         point.y = stod(token_list[2]);
         // cout << key << " " << point.x << " " << point.y << endl;
-        comp_data_dictionary[comp_name]->setOneDefaultPinPosition(key, point);
+        this->comp_data_dictionary[comp_name]->setOneDefaultPinPosition(key, point);
     }
 
     pin_file.close();

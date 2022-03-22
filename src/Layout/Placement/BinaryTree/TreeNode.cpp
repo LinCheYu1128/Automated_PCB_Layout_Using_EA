@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <math.h>
 using namespace std;
 
 TreeNode::TreeNode(ComponentProperty* comp_prop) {
@@ -196,6 +197,7 @@ void TreeNode::updateNode() {
 void TreeNode::shiftUp(vector<Point> contour) {
     double x;
     double max_y = 0;
+    
     ComponentState* comp = this->getComponentState();
     if (this->getBranch() == "root") x = 0;
     else {
@@ -205,7 +207,7 @@ void TreeNode::shiftUp(vector<Point> contour) {
         else {cout << "Branch invalid" << endl; exit(0);}
     }
 
-    comp->rotate();
+    this->rotate();
 
     for (unsigned int i = 0; i < contour.size(); i++){
         if (contour.at(i).x >= x && contour.at(i).x < x + comp->getLength()) {
@@ -214,4 +216,44 @@ void TreeNode::shiftUp(vector<Point> contour) {
     }
     
     comp->setPosition(x, max_y);
+}
+
+void TreeNode::rotate() {
+    double PI = 3.1415926;
+    if (this->comp_state->getAngle() == 90 || this->comp_state->getAngle() == 270) {
+        this->comp_state->setLength(this->comp_prop->getWidth());
+        this->comp_state->setWidth(this->comp_prop->getLength());
+        Point center_position = {this->comp_state->getPosition().x + this->comp_state->getLength()/2, this->comp_state->getPosition().y + this->comp_state->getWidth()/2};
+        this->comp_state->setPinPosition(this->comp_prop->getDefaultPinPosition());
+        map <string, Point> temp = this->comp_prop->getDefaultPinPosition();
+
+        for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+            Point new_pin = {0, 0};
+            double origin_pin_x = iter->second.x - center_position.x;
+            double origin_pin_y = iter->second.y - center_position.y;
+            new_pin.x = (cos(this->comp_state->getAngle()*PI/2) * origin_pin_x - sin(this->comp_state->getAngle()*PI/2) * origin_pin_y) + center_position.x;
+            new_pin.y = (sin(this->comp_state->getAngle()*PI/2) * origin_pin_x + cos(this->comp_state->getAngle()*PI/2) * origin_pin_y) + center_position.y;
+            this->comp_state->getPinPosition()[iter->first] = new_pin; 
+        }
+    }
+    else if (this->comp_state->getAngle() == 180){
+        this->comp_state->setLength(this->comp_prop->getLength());
+        this->comp_state->setWidth(this->comp_prop->getWidth());
+        this->comp_state->setPinPosition(this->comp_prop->getDefaultPinPosition());
+        map <string, Point> temp = this->comp_prop->getDefaultPinPosition();
+        
+        for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+            Point new_pin = {0, 0};
+            double origin_pin_x = iter->second.x;
+            double origin_pin_y = iter->second.y;
+            new_pin.x = cos(this->comp_state->getAngle()*PI/2) * origin_pin_x - sin(this->comp_state->getAngle()*PI/2) * origin_pin_y;
+            new_pin.y = sin(this->comp_state->getAngle()*PI/2) * origin_pin_x + cos(this->comp_state->getAngle()*PI/2) * origin_pin_y;
+            this->comp_state->getPinPosition()[iter->first] = new_pin; 
+        }
+    }
+    else {
+        this->comp_state->setLength(this->comp_prop->getLength());
+        this->comp_state->setWidth(this->comp_prop->getWidth());
+        this->comp_state->setPinPosition(this->comp_prop->getDefaultPinPosition());
+    }
 }
