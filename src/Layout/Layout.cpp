@@ -8,7 +8,7 @@ Layout::Layout(BinaryTree* tree, ComponentList* comp_list, int side){
     this->comp_list = comp_list;
     this->tree = tree;
     this->setContour();
-    this->tree->updateTree();
+    // this->tree->updateTree();
 
     if (side == 1) this->setState(this->tree->getRoot(), this->front_contour);
     else if (side == 2) {
@@ -29,7 +29,7 @@ Layout::Layout(ComponentList* comp_list, int side) {
     this->setBinaryTree(side);
     this->setContour();
 
-    this->tree->updateTree();
+    // this->tree->updateTree();
 
     if (side == 1) this->setState(this->tree->getRoot(), this->front_contour);
     else if (side == 2) {
@@ -341,7 +341,7 @@ void writeCsv(Layout* layout){
     cout << endl;
 
     std::ofstream layout_data;
-    layout_data.open ("output.csv");
+    layout_data.open ("placement.csv");
     stack<TreeNode*> nodes;
     nodes.push(layout_tree->getRoot());
     while (nodes.size() > 0) {
@@ -351,12 +351,13 @@ void writeCsv(Layout* layout){
         ComponentState* state = current->getComponentState();
         layout_data << prop->getName() << "," 
                     << prop->getColor() << ","
-                    << state->getLength() + state->getMargin() << ","
-                    << state->getWidth() + state->getMargin() << ","
+                    << state->getLength() << ","
+                    << state->getWidth() << ","
                     << prop->getHeight() << ","
                     << prop->getVoltage() << ","
                     << state->getPosition().x << ","
                     << state->getPosition().y << ","
+                    << state->getMargin() << ","
                     << state->getAngle() << ","
                     << state->getSide() << ",";
         if (current->getLeftchild()) layout_data << current->getLeftchild()->getComponentProp()->getName() << ",";
@@ -390,11 +391,13 @@ void writePin(Layout* layout) {
         nodes.pop();
         ComponentProperty* prop = current->getComponentProp();
         ComponentState* state = current->getComponentState();
+
         map<string, Point> temp_contain = current->getComponentState()->getPinPosition();
         for (iter = temp_contain.begin(); iter != temp_contain.end(); iter++) {
-            pin_data << prop->getName() << "-" << iter->first << ","
-                     << 1 << ","
-                     << 1 << ","
+            pin_data << prop->getName() << ","
+                     << iter->first << ","
+                     << 0.2 << ","
+                     << 0.2 << ","
                      << iter->second.x + state->getPosition().x << ","
                      << iter->second.y + state->getPosition().y << "\n";
         }

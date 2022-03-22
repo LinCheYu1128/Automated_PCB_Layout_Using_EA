@@ -113,7 +113,7 @@ ComponentState::ComponentState() {
     clearPoint(this->center_position);
     this->length = 0;
     this->width = 0;
-    this->margin = 0.2;
+    this->margin = 0.5;
 }
 
 ComponentState* ComponentState::copy() {
@@ -126,7 +126,7 @@ string ComponentState::getSide() {
     return this->side;
 }
 
-int ComponentState::getAngle() {
+double ComponentState::getAngle() {
     return this->angle;
 }
 
@@ -140,11 +140,11 @@ Point ComponentState::getPosition() {
 }
 
 double ComponentState::getLength() {
-    return this->length;
+    return this->length + 2*this->margin;
 }
 
 double ComponentState::getWidth() {
-    return this->width;
+    return this->width + 2*this->margin;
 }
 
 double ComponentState::getMargin() {
@@ -159,7 +159,7 @@ void ComponentState::setSide(string side) {
     this->side = side;
 }
 
-void ComponentState::setAngle(int angle) {
+void ComponentState::setAngle(double angle) {
     this->angle = angle;
     // this->rotatePinPosition(angle);
 }
@@ -185,6 +185,11 @@ void ComponentState::setMargin(double margin) {
 
 void ComponentState::setPinPosition(map<string, Point> input_position) {
     this->pin_position = input_position;
+}
+
+void ComponentState::setOnePin(string key, Point value) {
+    this->pin_position[key].x = value.x;
+    this->pin_position[key].y = value.y;
 }
 
 // void ComponentState::rotatePinPosition(int angle) {
@@ -219,6 +224,14 @@ void ComponentState::setAllInfo(ComponentState* comp_state) {
     this->setLength(comp_state->getLength());
     this->setWidth(comp_state->getWidth());
     this->setMargin(comp_state->getMargin());
+}
+
+void ComponentState::printPinPosition() {
+    auto iter = this->pin_position.begin();
+    while (iter != this->pin_position.end()) {
+        cout << "[ pin " << iter->first << " | x: " << iter->second.x << ", y: " << iter->second.y << "]" << endl;
+        ++iter;
+    }
 }
 
 void clearPoint(Point& point) {
