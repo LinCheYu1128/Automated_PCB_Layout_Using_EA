@@ -4,8 +4,8 @@
 class GA_Parameter {
     private:
         int kExpTime = 1;
-        int kGeneration = 60;
-        int kPopSize = 150;
+        int kGeneration = 100;
+        int kPopSize = 100;
         // parent selection
         int k_Tournament = 5;
         // crossover

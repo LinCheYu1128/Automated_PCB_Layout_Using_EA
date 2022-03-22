@@ -281,16 +281,55 @@ void Layout::printComponent() {
     this->tree->printBinaryTree();
 }
 
+// double Layout::evaluateArea(int side){
+//     double MAX_X = 0;
+//     double MAX_Y = 0;
+
+//     if (side == 0){
+//         for (int i = 0; i < this->getContour("front")->getSize(); i++) {
+//             MAX_X = max(MAX_X, this->getContour("front")->getContourVector().at(i).x);
+//             MAX_Y = max(MAX_Y, this->getContour("front")->getContourVector().at(i).y);
+//         }
+//     }else if (side == 1){
+//         for (int i = 0; i < this->getContour("back")->getSize(); i++) {
+//             MAX_X = max(MAX_X, this->getContour("bcak")->getContourVector().at(i).x);
+//             MAX_Y = max(MAX_Y, this->getContour("back")->getContourVector().at(i).y);
+//         }
+//     }
+//     return MAX_X * MAX_Y;
+// }
+
+// double Layout::evaluateTotalArea(){
+    
+//     double front_area = 0;
+//     double back_area = 0;
+    
+//     if (this->getBinaryTree()->getSide() == 1){
+//         int side = 0;
+//         front_area = this->evaluateArea(side);
+//         back_area = 0;
+//     }else if (this->getBinaryTree()->getSide() == 2){
+//         int side = 0;
+//         front_area = this->evaluateArea(side);
+//         side = 1;
+//         back_area = this->evaluateArea(side);
+//     }
+//     return front_area + back_area;
+// }
 double Layout::evaluateArea(int side){
     double MAX_X = 0;
     double MAX_Y = 0;
 
-    if (side == 0){
+    if (side == 1){
         for (int i = 0; i < this->getContour("front")->getSize(); i++) {
             MAX_X = max(MAX_X, this->getContour("front")->getContourVector().at(i).x);
             MAX_Y = max(MAX_Y, this->getContour("front")->getContourVector().at(i).y);
         }
-    }else if (side == 1){
+    }else if (side == 2){
+        for (int i = 0; i < this->getContour("front")->getSize(); i++) {
+            MAX_X = max(MAX_X, this->getContour("front")->getContourVector().at(i).x);
+            MAX_Y = max(MAX_Y, this->getContour("front")->getContourVector().at(i).y);
+        }
         for (int i = 0; i < this->getContour("back")->getSize(); i++) {
             MAX_X = max(MAX_X, this->getContour("bcak")->getContourVector().at(i).x);
             MAX_Y = max(MAX_Y, this->getContour("back")->getContourVector().at(i).y);
@@ -300,21 +339,14 @@ double Layout::evaluateArea(int side){
 }
 
 double Layout::evaluateTotalArea(){
-    
-    double front_area = 0;
-    double back_area = 0;
+    double area = 0;
     
     if (this->getBinaryTree()->getSide() == 1){
-        int side = 0;
-        front_area = this->evaluateArea(side);
-        back_area = 0;
+        area = this->evaluateArea(this->getBinaryTree()->getSide());
     }else if (this->getBinaryTree()->getSide() == 2){
-        int side = 0;
-        front_area = this->evaluateArea(side);
-        side = 1;
-        back_area = this->evaluateArea(side);
+        area = this->evaluateArea(this->getBinaryTree()->getSide());
     }
-    return front_area + back_area;
+    return area;
 }
 
 double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list){
@@ -328,7 +360,8 @@ double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list)
         secondary_x += sec_list[i].x;
     }
 
-    return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
+    // return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
+    return primary_x / prim_list.size() + (secondary_x / sec_list.size() - 29.2);
 }
 
 void writeCsv(Layout* layout){

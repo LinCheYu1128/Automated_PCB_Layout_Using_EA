@@ -46,6 +46,8 @@ void Console::run() {
         // cout << "test 6" << endl;
         GA_optimizer->pushBehavior();
 
+        cout << "best fitness: " << GA_optimizer->getPopulation()[0]->getFitness() << endl;
+
         writeCsv(GA_optimizer->getBestOffspring());
         writePin(GA_optimizer->getBestOffspring());
     }
