@@ -28,7 +28,8 @@ vector<TreeNode*> ExtractTreeWithTreeNode(BinaryTree* Tree){
 
 Layout*leftSubtreeCrossover(vector<Layout*>Parents){
     // cout << "start crossover"<<endl;
-    ComponentList* component_list = new ComponentList();
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     BTreeA->printBinaryTree();
@@ -84,7 +85,8 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
 
 Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     // cout << "start crossover"<<endl;
-    ComponentList* component_list = new ComponentList();
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     // BTreeA->printBinaryTree();
@@ -204,7 +206,8 @@ bool checknodeexist(vector<TreeNode*> list, int index){
 
 Layout*kPointCrossover(vector<Layout*>Parents, int k){
     // cout << "start crossover"<<endl;
-    ComponentList* component_list = new ComponentList();
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     // BTreeA->printBinaryTree();
