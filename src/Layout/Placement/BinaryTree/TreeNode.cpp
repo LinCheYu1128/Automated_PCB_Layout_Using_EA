@@ -13,8 +13,8 @@ TreeNode::TreeNode(ComponentProperty* comp_prop) {
     this->leftchild = nullptr;
     this->rightchild = nullptr;
     this->comp_prop = new ComponentProperty();
-    this->comp_state = new ComponentState();
     this->setComponentProp(comp_prop);
+    this->comp_state = new ComponentState(this->comp_prop->getVoltage());
 }
 
 TreeNode::~TreeNode() {

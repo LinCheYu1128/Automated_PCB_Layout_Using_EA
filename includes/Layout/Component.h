@@ -65,12 +65,13 @@ class ComponentState {
         double length;
         double width;
         double margin;
+        int voltage;
         map<string, Point> pin_position;
 
 
     public:
         // constructor, destructor
-        ComponentState();
+        ComponentState(int voltage);
         ~ComponentState() {};
 
         ComponentState* copy();

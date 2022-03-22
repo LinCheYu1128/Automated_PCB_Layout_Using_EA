@@ -154,9 +154,9 @@ void Layout::setFitness(){
     this->setArea();
     this->setWireLength();
     this->setPns();
-    // this->fitness = this->area + this->wirelength + this->Pns;
+    this->fitness = this->area/1000 * 0.6 + this->Pns/40 * 0.4;
     // this->fitness = this->area;
-    this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
+    // this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
 }
 
 void Layout::setArea() {
@@ -334,11 +334,11 @@ double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list)
 void writeCsv(Layout* layout){
     BinaryTree* layout_tree = layout->getBinaryTree();
 
-    vector<TreeNode*> temp = layout_tree->ExtractTree(layout_tree->getRoot()->getID());
-    for(unsigned i = 0; i < temp.size(); i++){
-        cout << temp[i]->getComponentProp()->getName() << " ";
-    }
-    cout << endl;
+    // vector<TreeNode*> temp = layout_tree->ExtractTree(layout_tree->getRoot()->getID());
+    // for(unsigned i = 0; i < temp.size(); i++){
+    //     cout << temp[i]->getComponentProp()->getName() << " ";
+    // }
+    // cout << endl;
 
     std::ofstream layout_data;
     layout_data.open ("placement.csv");
@@ -376,11 +376,11 @@ void writePin(Layout* layout) {
     BinaryTree* layout_tree = layout->getBinaryTree();
     map<string, Point>::iterator iter;
 
-    vector<TreeNode*> temp = layout_tree->ExtractTree(layout_tree->getRoot()->getID());
-    for(unsigned i = 0; i < temp.size(); i++){
-        cout << temp[i]->getComponentProp()->getName() << " ";
-    }
-    cout << endl;
+    // vector<TreeNode*> temp = layout_tree->ExtractTree(layout_tree->getRoot()->getID());
+    // for(unsigned i = 0; i < temp.size(); i++){
+    //     cout << temp[i]->getComponentProp()->getName() << " ";
+    // }
+    // cout << endl;
     
     std::ofstream pin_data;
     pin_data.open ("pin.csv");

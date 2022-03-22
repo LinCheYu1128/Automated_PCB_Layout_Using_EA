@@ -105,7 +105,7 @@ void ComponentProperty::printDefaultPinPosition() {
     }
 }
 
-ComponentState::ComponentState() {
+ComponentState::ComponentState(int voltage) {
     this->side = "";
     this->angle = 0;
     clearPoint(this->leftdown_position);
@@ -113,11 +113,14 @@ ComponentState::ComponentState() {
     clearPoint(this->center_position);
     this->length = 0;
     this->width = 0;
-    this->margin = 0.5;
+    this->margin = 0.2;
+    this->voltage = voltage;
+    if (voltage == 1) this->margin = this->margin + 1.3;
+    else if (voltage == -1) this->margin = this->margin + 0.125;
 }
 
 ComponentState* ComponentState::copy() {
-    ComponentState* new_comp_state = new ComponentState();
+    ComponentState* new_comp_state = new ComponentState(this->voltage);
     new_comp_state->setAllInfo(this);
     return new_comp_state;
 }
