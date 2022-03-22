@@ -228,17 +228,12 @@ void TreeNode::rotate() {
         map <string, Point> temp = this->comp_prop->getDefaultPinPosition();
 
         for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-            cout << "LD Pos:" << this->comp_state->getPosition().x << ", " << this->comp_state->getPosition().y << endl;
-            cout << "Ce Pos:" << center_position.x << ", " << center_position.y << endl;
-            cout << this->comp_state->getPinPosition()[iter->first].x << ", " << this->comp_state->getPinPosition()[iter->first].y << endl;
             Point new_pin = {0, 0};
             double origin_pin_x = iter->second.x - center_position.x;
             double origin_pin_y = iter->second.y - center_position.y;
-            cout << "Or Pos:" << origin_pin_x << ", " << origin_pin_y << endl;
             new_pin.x = (cos(this->comp_state->getAngle()*PI/180.0) * origin_pin_x - sin(this->comp_state->getAngle()*PI/180.0) * origin_pin_y) + center_position.x;
             new_pin.y = (sin(this->comp_state->getAngle()*PI/180.0) * origin_pin_x + cos(this->comp_state->getAngle()*PI/180.0) * origin_pin_y) + center_position.y;
             this->comp_state->setOnePin(iter->first, new_pin);
-            cout << this->comp_state->getPinPosition()[iter->first].x << ", " << this->comp_state->getPinPosition()[iter->first].y  << "| " << endl;
         }
     }
     else if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180){
