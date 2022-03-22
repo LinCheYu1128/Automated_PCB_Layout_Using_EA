@@ -17,10 +17,10 @@ TreeNode::TreeNode(ComponentProperty* comp_prop) {
 }
 
 TreeNode::~TreeNode() {
-    delete this->leftchild;
-    delete this->rightchild;
     delete this->comp_prop;
     delete this->comp_state;
+    delete this->leftchild;
+    delete this->rightchild;
 }
 
 TreeNode* TreeNode::copy() {
@@ -184,12 +184,30 @@ bool TreeNode::search(int ID) {
 
 
 void TreeNode::updateNode() {
-    if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
-        this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-        this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-    } else {
-        this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-        this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    if(this->comp_prop->getVoltage() == 1){
+        if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+            this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+            this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+        } else {
+            this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+            this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+        }
+    }else if(this->comp_prop->getVoltage() == -1){
+        if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+            this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+            this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+        } else {
+            this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+            this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+        }
+    }else{
+        if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+            this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+            this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+        } else {
+            this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+            this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+        }
     }
 }
 
