@@ -19,6 +19,7 @@ void Console::run() {
         }
         cout << endl;
     }
+    netlist->outputTwoPinNetList();
     
 
     // GA* GA_optimizer = new GA();
