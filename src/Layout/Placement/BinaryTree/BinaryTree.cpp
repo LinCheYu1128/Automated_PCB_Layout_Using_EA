@@ -15,7 +15,7 @@ BinaryTree::BinaryTree(ComponentList* comp_list) {
 }
 
 BinaryTree::~BinaryTree() {
-    delete this->comp_list;
+    // delete this->comp_list;
     delete this->root;
 }
 

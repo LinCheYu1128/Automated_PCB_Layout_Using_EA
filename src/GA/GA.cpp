@@ -142,9 +142,9 @@ void GA::mutation() {
 
 void GA::survivorSelect() {
     sort(this->population.begin(), this->population.end(), SortPop);
-    // for (unsigned int i = 0; i < this->parent.size(); i++) {
-    //     delete this->parent[i];
-    // }
+    for (unsigned int i = 0; i < this->offspring.size(); i++) {
+        delete this->population[this->parameter->getPopSize() + i];
+    }
     this->population.erase(this->population.begin() + this->parameter->getPopSize(), this->population.end());
 }
 

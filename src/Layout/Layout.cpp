@@ -46,7 +46,7 @@ Layout::Layout(ComponentList* comp_list, int side) {
 }
 
 Layout::~Layout() {
-    delete this->comp_list;
+    // delete this->comp_list;
     delete this->tree;
     delete this->front_contour;
     delete this->back_contour;
