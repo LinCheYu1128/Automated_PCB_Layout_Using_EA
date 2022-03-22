@@ -197,7 +197,7 @@ void TreeNode::updateNode() {
 void TreeNode::shiftUp(vector<Point> contour) {
     double x;
     double max_y = 0;
-    
+
     ComponentState* comp = this->getComponentState();
     if (this->getBranch() == "root") x = 0;
     else {
@@ -219,7 +219,7 @@ void TreeNode::shiftUp(vector<Point> contour) {
 }
 
 void TreeNode::rotate() {
-    double PI = 3.1415926;
+    double PI = 3.141592653589793;
     if (this->comp_state->getAngle() == 90 || this->comp_state->getAngle() == 270) {
         this->comp_state->setLength(this->comp_prop->getWidth());
         this->comp_state->setWidth(this->comp_prop->getLength());
@@ -228,15 +228,20 @@ void TreeNode::rotate() {
         map <string, Point> temp = this->comp_prop->getDefaultPinPosition();
 
         for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+            cout << "LD Pos:" << this->comp_state->getPosition().x << ", " << this->comp_state->getPosition().y << endl;
+            cout << "Ce Pos:" << center_position.x << ", " << center_position.y << endl;
+            cout << this->comp_state->getPinPosition()[iter->first].x << ", " << this->comp_state->getPinPosition()[iter->first].y << endl;
             Point new_pin = {0, 0};
             double origin_pin_x = iter->second.x - center_position.x;
             double origin_pin_y = iter->second.y - center_position.y;
-            new_pin.x = (cos(this->comp_state->getAngle()*PI/2) * origin_pin_x - sin(this->comp_state->getAngle()*PI/2) * origin_pin_y) + center_position.x;
-            new_pin.y = (sin(this->comp_state->getAngle()*PI/2) * origin_pin_x + cos(this->comp_state->getAngle()*PI/2) * origin_pin_y) + center_position.y;
-            this->comp_state->getPinPosition()[iter->first] = new_pin; 
+            cout << "Or Pos:" << origin_pin_x << ", " << origin_pin_y << endl;
+            new_pin.x = (cos(this->comp_state->getAngle()*PI/180.0) * origin_pin_x - sin(this->comp_state->getAngle()*PI/180.0) * origin_pin_y) + center_position.x;
+            new_pin.y = (sin(this->comp_state->getAngle()*PI/180.0) * origin_pin_x + cos(this->comp_state->getAngle()*PI/180.0) * origin_pin_y) + center_position.y;
+            this->comp_state->setOnePin(iter->first, new_pin);
+            cout << this->comp_state->getPinPosition()[iter->first].x << ", " << this->comp_state->getPinPosition()[iter->first].y  << "| " << endl;
         }
     }
-    else if (this->comp_state->getAngle() == 180){
+    else if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180){
         this->comp_state->setLength(this->comp_prop->getLength());
         this->comp_state->setWidth(this->comp_prop->getWidth());
         this->comp_state->setPinPosition(this->comp_prop->getDefaultPinPosition());
@@ -252,8 +257,7 @@ void TreeNode::rotate() {
         }
     }
     else {
-        this->comp_state->setLength(this->comp_prop->getLength());
-        this->comp_state->setWidth(this->comp_prop->getWidth());
-        this->comp_state->setPinPosition(this->comp_prop->getDefaultPinPosition());
+        cout << "unknown angle." << endl;
+        exit(0);
     }
 }

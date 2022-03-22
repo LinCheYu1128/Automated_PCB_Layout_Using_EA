@@ -187,6 +187,10 @@ void ComponentState::setPinPosition(map<string, Point> input_position) {
     this->pin_position = input_position;
 }
 
+void ComponentState::setOnePin(string key, Point value) {
+    this->pin_position[key] = value;
+}
+
 // void ComponentState::rotatePinPosition(int angle) {
 //     map<string, Point> pin_position = this->pin_position;
 //     map<string, Point>::iterator iter;

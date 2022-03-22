@@ -38,13 +38,15 @@ void Console::run() {
         // }
         // cout << "test 4" << endl;
         GA_optimizer->survivorSelect();
-        // for(unsigned i = 0; i < GA_optimizer->getPopulation().size(); i++){
-        //     cout << "population " << i << ": " << GA_optimizer->getPopulation()[i]->getFitness() << endl;
-        // }  
+        for(unsigned i = 0; i < GA_optimizer->getPopulation().size(); i++){
+            cout << "population " << i << ": " << GA_optimizer->getPopulation()[i]->getFitness() << endl;
+        }  
         // cout << "test 5" << endl;
         GA_optimizer->updateBestOffspring();
         // cout << "test 6" << endl;
         GA_optimizer->pushBehavior();
+        cout << GA_optimizer->getBestOffspring() << endl;
+        cout << "fitness: " << GA_optimizer->getBestOffspring()->getFitness() << endl;
     }
     
     // GA_optimizer->getOutputFile();

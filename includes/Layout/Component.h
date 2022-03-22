@@ -92,6 +92,7 @@ class ComponentState {
         void setWidth(double width);
         void setMargin(double margin);
         void setPinPosition(map<string, Point> input_position);
+        void setOnePin(string key, Point value);
         void setAllInfo(ComponentState* comp_state);
 
         // printer
