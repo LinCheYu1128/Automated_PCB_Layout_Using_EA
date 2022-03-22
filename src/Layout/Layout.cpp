@@ -351,8 +351,8 @@ void writeCsv(Layout* layout){
         ComponentState* state = current->getComponentState();
         layout_data << prop->getName() << "," 
                     << prop->getColor() << ","
-                    << state->getLength() << ","
-                    << state->getWidth() << ","
+                    << state->getLength() + state->getMargin() << ","
+                    << state->getWidth() + state->getMargin() << ","
                     << prop->getHeight() << ","
                     << prop->getVoltage() << ","
                     << state->getPosition().x << ","
@@ -391,13 +391,13 @@ void writePin(Layout* layout) {
         nodes.pop();
         ComponentProperty* prop = current->getComponentProp();
         ComponentState* state = current->getComponentState();
-        map<string, Point> temp_contain = current->getComponentProp()->getDefaultPinPosition();
+        map<string, Point> temp_contain = current->getComponentState()->getPinPosition();
         for (iter = temp_contain.begin(); iter != temp_contain.end(); iter++) {
             pin_data << prop->getName() << "-" << iter->first << ","
                      << 1 << ","
                      << 1 << ","
-                     << iter->second.x << ","
-                     << iter->second.y << "\n";
+                     << iter->second.x + state->getPosition().x << ","
+                     << iter->second.y + state->getPosition().y << "\n";
         }
 
         if (current->getRightchild()) nodes.push(current->getRightchild());
