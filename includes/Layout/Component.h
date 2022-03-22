@@ -91,7 +91,7 @@ class ComponentState {
         void setLength(double length);
         void setWidth(double width);
         void setMargin(double margin);
-        void rotate();
+        void setPinPosition(map<string, Point> input_position);
         void setAllInfo(ComponentState* comp_state);
 
         // printer

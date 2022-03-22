@@ -12,6 +12,8 @@ void Console::run() {
     GA* GA_optimizer = new GA();
     
     int generation = GA_optimizer->getParameter()->getGeneration();
+    
+
     for(int i = 0; i < generation; i++){
         // if(i % 10 == 9){
         //     cout << "generation: " << i << endl;
@@ -43,7 +45,6 @@ void Console::run() {
         GA_optimizer->updateBestOffspring();
         // cout << "test 6" << endl;
         GA_optimizer->pushBehavior();
-        // cout << "test 7" << endl;
     }
     
     // GA_optimizer->getOutputFile();
@@ -58,6 +59,7 @@ void Console::run() {
     // writeCsv(GA_optimizer->getOffspring()[1]);
     // writeCsv(GA_optimizer->getPopulation()[0]);
     writeCsv(GA_optimizer->getBestOffspring());
+    writePin(GA_optimizer->getBestOffspring());
     cout << "area " << GA_optimizer->getBestOffspring()->getArea() << endl;
     cout << "WL " << GA_optimizer->getBestOffspring()->getWireLength() << endl;
     cout << "pns " << GA_optimizer->getBestOffspring()->getPns() << endl;

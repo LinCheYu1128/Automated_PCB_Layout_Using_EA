@@ -64,5 +64,6 @@ class Layout {
 };
 
 void writeCsv(Layout* layout);
+void writePin(Layout* layout);
 
 #endif

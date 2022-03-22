@@ -371,3 +371,37 @@ void writeCsv(Layout* layout){
     layout_data.close();
 }
 
+void writePin(Layout* layout) {
+    BinaryTree* layout_tree = layout->getBinaryTree();
+    map<string, Point>::iterator iter;
+
+    vector<TreeNode*> temp = layout_tree->ExtractTree(layout_tree->getRoot()->getID());
+    for(unsigned i = 0; i < temp.size(); i++){
+        cout << temp[i]->getComponentProp()->getName() << " ";
+    }
+    cout << endl;
+    
+    std::ofstream pin_data;
+    pin_data.open ("pin.csv");
+    stack<TreeNode*> nodes;
+    nodes.push(layout_tree->getRoot());
+    while (nodes.size() > 0) {
+        TreeNode *current = nodes.top();
+        nodes.pop();
+        ComponentProperty* prop = current->getComponentProp();
+        ComponentState* state = current->getComponentState();
+        map<string, Point> temp_contain = current->getComponentProp()->getDefaultPinPosition();
+        for (iter = temp_contain.begin(); iter != temp_contain.end(); iter++) {
+            pin_data << prop->getName() << "-" << iter->first << ","
+                     << 1 << ","
+                     << 1 << ","
+                     << iter->second.x << ","
+                     << iter->second.y << "\n";
+        }
+
+        if (current->getRightchild()) nodes.push(current->getRightchild());
+        if (current->getLeftchild()) nodes.push(current->getLeftchild());
+
+    }
+    pin_data.close();
+}
