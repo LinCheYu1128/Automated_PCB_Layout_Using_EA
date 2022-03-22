@@ -86,22 +86,24 @@ void GA::crossover() {
     // cout << "End Crossover" << endl;
 }
 
-void GA::mutation() {
+void GA::mutation(int gen) {
 
     // cout << "Conduct mutation" << endl;
 
     for(unsigned i = 0; i < this->offspring.size(); i++) {
         // offspring[i]->getBinaryTree()->printBinaryTree();
         // int mode = 3;
-        int mode = rand() % 7;
+        int mode ;
+        if(gen < 80) mode = rand() % 7;
+        else mode = rand() % 2;
         // offspring[i]->getBinaryTree()->printBinaryTree();
         switch (mode)
         {
         case 0:
-            swapBranchMutation(this->offspring[i]);//save
+            swapNodeMutation(this->offspring[i]);//nono
             break;
         case 1:
-            swapSubtreeMutation(this->offspring[i]);//nono
+            insertMutation(this->offspring[i]);//nono
             break;
         case 2:
             bitwiseMutation(this->offspring[i],0.2);//save
@@ -110,13 +112,13 @@ void GA::mutation() {
             shiftSubtreeMutation(this->offspring[i]);//nono
             break;
         case 4:
-            insertMutation(this->offspring[i]);//nono
+            swapBranchMutation(this->offspring[i]);//save
             break;
         case 5:
             scrambleMutation(this->offspring[i]);//nono
             break;
         case 6:
-            swapNodeMutation(this->offspring[i]);//nono
+            swapSubtreeMutation(this->offspring[i]);//nono
             break;
         default:
             cout << "something wrong" << endl;

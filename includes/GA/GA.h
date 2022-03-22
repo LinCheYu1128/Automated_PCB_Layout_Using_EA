@@ -21,7 +21,7 @@ class GA {
         // GA process
         vector<Layout*> parentSelect();
         void crossover();
-        void mutation();
+        void mutation(int gen);
         void survivorSelect();  // Has not test yet.
         void evaluate(string target);
         void updateBestOffspring();

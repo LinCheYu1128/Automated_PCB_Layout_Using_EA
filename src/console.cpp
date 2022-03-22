@@ -25,7 +25,7 @@ void Console::run() {
         // for(unsigned i = 0; i < GA_optimizer->getOffspring().size(); i++){
         //     cout << "offspring " << i << ": " << GA_optimizer->getOffspring()[i]->getFitness() << endl;
         // }
-        GA_optimizer->mutation();
+        GA_optimizer->mutation(i);
         // cout << "test 1" << endl;
         GA_optimizer->evaluate("offspring");
         // for(unsigned i = 0; i < GA_optimizer->getOffspring().size(); i++){

@@ -53,12 +53,11 @@ Layout::~Layout() {
 }
 
 Layout* Layout::copy(){
-
-    ComponentList* component_list = new ComponentList();
+    // ComponentList* component_list = new ComponentList();
     int side = this->getBinaryTree()->getSide();
     BinaryTree* tree = this->getBinaryTree()->copy();
 
-    Layout* layout = new Layout(tree, component_list, side);
+    Layout* layout = new Layout(tree, this->comp_list, side);
 
     layout->setFitness();
 
@@ -152,9 +151,9 @@ void Layout::updateLayout(){
 
 void Layout::setFitness(){
     this->setArea();
-    this->setWireLength();
+    // this->setWireLength();
     this->setPns();
-    this->fitness = this->area/1000 * 0.6 + this->Pns/40 * 0.4;
+    this->fitness = this->area /*/1000 * 0.5*/ + this->Pns*3 /* /1000 * 0.5*/;
     // this->fitness = this->area;
     // this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
 }
@@ -319,6 +318,7 @@ void Layout::printComponent() {
 double Layout::evaluateArea(int side){
     double MAX_X = 0;
     double MAX_Y = 0;
+    double penalty = 0;
 
     if (side == 1){
         for (int i = 0; i < this->getContour("front")->getSize(); i++) {
@@ -335,7 +335,11 @@ double Layout::evaluateArea(int side){
             MAX_Y = max(MAX_Y, this->getContour("back")->getContourVector().at(i).y);
         }
     }
-    return MAX_X * MAX_Y;
+    
+    if (MAX_X >= 29.2 + 2) {penalty += 10000;}
+    if (MAX_Y >= 32.5 + 2) {penalty += 10000;}
+
+    return MAX_X * MAX_Y + penalty;
 }
 
 double Layout::evaluateTotalArea(){
@@ -349,6 +353,21 @@ double Layout::evaluateTotalArea(){
     return area;
 }
 
+// double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list){
+//     double primary_x = 0.0;
+//     double secondary_x = 0.0;
+
+//     for(unsigned i = 0; i < prim_list.size(); i++){
+//         primary_x += prim_list[i].x;
+//     }
+//     for(unsigned i = 0; i < sec_list.size(); i++){
+//         secondary_x += sec_list[i].x;
+//     }
+
+//     // return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
+//     return primary_x / prim_list.size() + (secondary_x / sec_list.size() - 29.2);
+// }
+
 double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list){
     double primary_x = 0.0;
     double secondary_x = 0.0;
@@ -361,7 +380,7 @@ double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list)
     }
 
     // return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
-    return primary_x / prim_list.size() + (secondary_x / sec_list.size() - 29.2);
+    return primary_x /*- secondary_x*/;
 }
 
 void writeCsv(Layout* layout){
