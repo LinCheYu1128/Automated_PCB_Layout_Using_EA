@@ -10,6 +10,7 @@ using namespace std;
 
 typedef struct Component_Path {
     string component_csvfile;
+    string preplace_csvfile;
     string component_relativePath;
     string pinPosition_relativePath;
 }Component_Path;

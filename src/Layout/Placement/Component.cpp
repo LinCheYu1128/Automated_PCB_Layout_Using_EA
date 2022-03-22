@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <math.h>
 using namespace std;
 
 ComponentProperty::ComponentProperty(string name, string color, double length, double width, double height, int voltage) {
@@ -12,6 +13,7 @@ ComponentProperty::ComponentProperty(string name, string color, double length, d
     this->width = width;
     this->height = height;
     this->voltage = voltage;
+    this->preplace_location = {0, 0};
 }
 
 ComponentProperty* ComponentProperty::copy() {
@@ -62,6 +64,11 @@ void ComponentProperty::setVoltage(int voltage) {
     this->voltage = voltage;
 }
 
+void ComponentProperty::setPreplaceLocation(double x, double y) {
+    this->preplace_location.x = x;
+    this->preplace_location.y = y;
+}
+
 map<string, Point> ComponentProperty::getDefaultPinPosition() {
     return this->default_pin_position;
 }
@@ -72,6 +79,7 @@ void ComponentProperty::setOneDefaultPinPosition(string key, Point one_pin_posit
 }
 
 void ComponentProperty::setAllDefaultPinPosition(map<string, Point> all_pin_position) {
+    this->default_pin_position.clear();
     auto iter = all_pin_position.begin();
     while (iter != all_pin_position.end()) {
         this->setOneDefaultPinPosition(iter->first, iter->second);
@@ -105,7 +113,7 @@ ComponentState::ComponentState() {
     clearPoint(this->center_position);
     this->length = 0;
     this->width = 0;
-    this->margin = 0;
+    this->margin = 0.2;
 }
 
 ComponentState* ComponentState::copy() {
@@ -173,6 +181,10 @@ void ComponentState::setWidth(double width) {
 
 void ComponentState::setMargin(double margin) {
     this->margin = margin;
+}
+
+void ComponentState::setPinPosition(map<string, Point> input_position) {
+    this->pin_position = input_position;
 }
 
 // void ComponentState::rotatePinPosition(int angle) {

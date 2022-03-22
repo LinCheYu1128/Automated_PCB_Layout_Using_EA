@@ -39,6 +39,7 @@ BinaryTree* BinaryTree::copy() {
     BinaryTree* new_tree = new BinaryTree(this->comp_list);
     new_tree->setRoot(this->root->copy());
     new_tree->copyByTraverseTree(this->root, new_tree->getRoot());
+    new_tree->setSide(this->side);
     return new_tree;
 }
 
@@ -141,7 +142,7 @@ void BinaryTree::setDoubleSide() {
         parent_node = this->TreeNode_map[parent_pos];
         child_node = random_construct_tree(parent_node, new_comp);
 
-        child_node->setID(i);
+        child_node->setID(comp_list_index[i]);
         this->TreeNode_map[i] = child_node;
         existed_nodes_num += 1;
     }
@@ -314,7 +315,6 @@ void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
     }
 }
 
-
 TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
     if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
         return node;
@@ -328,7 +328,6 @@ TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
 
     return node;
 }
-
 
 TreeNode* BinaryTree::findLeafNode(TreeNode* node) {
     if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
@@ -439,6 +438,37 @@ void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vecto
             temp->setBranch(node_permu_back.at(ptr)->getBranch());
             temp->setComponentProp(node_permu_back.at(ptr)->getComponentProp());
             temp->setComponentState(node_permu_back.at(ptr)->getComponentState());
+        }
+        node_stack.pop();
+        if (temp->getRightchild())
+            node_stack.push(temp->getRightchild());
+        if (temp->getLeftchild())
+            node_stack.push(temp->getLeftchild());
+        ptr++;
+    }
+}
+
+void BinaryTree::varifyTree(){
+    if(this->side != 1 || this->side != 2){
+        cout << "side is not correct" << endl;
+        exit(0);
+    }
+    if(this->root == nullptr){
+        cout << "root does not exit" << endl;
+        exit(0);
+    }
+
+    stack<TreeNode*> node_stack;
+    node_stack.push(root);
+    int ptr = 0;
+    while (node_stack.empty() == false)
+    {
+        TreeNode* temp = node_stack.top();
+        if(temp->getID() < -3 || temp->getID() > 35){
+            cout << "node ID is not correct" << endl;
+            exit(0);
+        }else{
+
         }
         node_stack.pop();
         if (temp->getRightchild())

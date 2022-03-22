@@ -30,6 +30,8 @@ class Layout {
         Layout(BinaryTree* tree, ComponentList* comp_list, int side);
         Layout(ComponentList* comp_list, int side);
         ~Layout();
+
+        Layout* copy();
         
         // getter
         BinaryTree* getBinaryTree();
@@ -61,6 +63,7 @@ class Layout {
 
 };
 
-void writeCsv(Layout layout);
+void writeCsv(Layout* layout);
+void writePin(Layout* layout);
 
 #endif

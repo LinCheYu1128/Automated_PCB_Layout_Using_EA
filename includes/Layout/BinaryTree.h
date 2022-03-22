@@ -35,6 +35,7 @@ class BinaryTree {
         vector<TreeNode*> ExtractTree(int extractID);
         void ModifyTree(vector<TreeNode*> node_permu);
         void ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vector<TreeNode*> node_permu_back);
+        void varifyTree();
 
         // getter
         TreeNode* getRoot();
