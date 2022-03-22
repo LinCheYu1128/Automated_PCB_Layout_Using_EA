@@ -29,6 +29,7 @@ class TreeNode {
         bool search(int ID);
         void updateNode();
         void shiftUp(vector<Point>);
+        void rotate();
 
         // getter
         int getID();
