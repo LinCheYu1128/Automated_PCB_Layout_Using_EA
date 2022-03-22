@@ -59,25 +59,26 @@ class ComponentProperty {
 class ComponentState {
     private:
         string side;
-        int angle;
+        double angle;
         Point leftdown_position;
         Point center_position;
         double length;
         double width;
         double margin;
+        int voltage;
         map<string, Point> pin_position;
 
 
     public:
         // constructor, destructor
-        ComponentState();
+        ComponentState(int voltage);
         ~ComponentState() {};
 
         ComponentState* copy();
 
         // getter
         string getSide();
-        int getAngle();
+        double getAngle();
         Point getPosition();
         double getLength();
         double getWidth();
@@ -86,7 +87,7 @@ class ComponentState {
         
         // setter
         void setSide(string side);
-        void setAngle(int angle);
+        void setAngle(double angle);
         void setPosition(double x, double y);
         void setLength(double length);
         void setWidth(double width);
@@ -96,6 +97,7 @@ class ComponentState {
         void setAllInfo(ComponentState* comp_state);
 
         // printer
+        void printPinPosition();
 
 };
 

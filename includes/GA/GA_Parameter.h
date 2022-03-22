@@ -13,7 +13,7 @@ class GA_Parameter {
         int kCrossoverTime = kPopSize / 2;
         // mutation
         double kMutationRate = 0.9;
-        double kAngleChangeRate = 0.5;
+        double kAngleChangeRate = 0.1;
         double kSideChangeRate = 0.3;
         // evaluation
         double kAreaUtilTarget = 0.95;

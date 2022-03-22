@@ -45,8 +45,11 @@ void Console::run() {
         GA_optimizer->updateBestOffspring();
         // cout << "test 6" << endl;
         GA_optimizer->pushBehavior();
-        // cout << GA_optimizer->getBestOffspring() << endl;
-        cout << "fitness: " << GA_optimizer->getBestOffspring()->getFitness() << endl;
+
+        cout << "best fitness: " << GA_optimizer->getPopulation()[0]->getFitness() << endl;
+
+        writeCsv(GA_optimizer->getBestOffspring());
+        writePin(GA_optimizer->getBestOffspring());
     }
     
     // GA_optimizer->getOutputFile();
@@ -60,8 +63,7 @@ void Console::run() {
     // cout << endl;
     // writeCsv(GA_optimizer->getOffspring()[1]);
     // writeCsv(GA_optimizer->getPopulation()[0]);
-    writeCsv(GA_optimizer->getBestOffspring());
-    writePin(GA_optimizer->getBestOffspring());
+    
     cout << "area " << GA_optimizer->getBestOffspring()->getArea() << endl;
     cout << "WL " << GA_optimizer->getBestOffspring()->getWireLength() << endl;
     cout << "pns " << GA_optimizer->getBestOffspring()->getPns() << endl;

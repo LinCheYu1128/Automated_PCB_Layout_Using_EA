@@ -35,6 +35,7 @@ export class Canvas {
             "stroke_alignment": "outer",
             "stroke_width": 1,
         });
+
         this.drawPlacement();
     }
 
@@ -45,15 +46,6 @@ export class Canvas {
         j = 0;
         for (i = -50; i < 50; i++) {this.create2DLine({"polyline":`${i}, ${j} ${i}, ${j+50}`, stroke_width: 0.01});}
     }
-
-    // drawPlacement() {
-    //     console.log(this.placement_data);
-    //     for (let [key, value] of Object.entries(this.placement_data)) {
-    //         this.create2DGeometry({"component": this.placement_data[key]});
-    //         this.createText({"component": this.placement_data[key]});
-    //         // this.grid.addObstacle(this.placement_data[key]["size"], this.placement_data[key]["position"]);
-    //     }
-    // }
 
     drawPlacement() {
         let name;
@@ -69,19 +61,29 @@ export class Canvas {
         while (stack.length != 0) {
             name = stack.pop();
             if (name == "null") {continue;}
-            this.create2DGeometry({"component": placement_data[name]});
+            this.create2DGeometry({"component": placement_data[name], "fill": placement_data[name]["color"]});
             this.createText({"component": placement_data[name]});
+            console.log(name);
+            this.drawPin(name);
             stack.push(placement_data[name]["leftChild"]);
             stack.push(placement_data[name]["rightChild"]);
         }
     }
 
-    create2DGeometry({component, alignment="bottom_left", stroke_alignment="center", stroke_width=0, polygon=null}) {
+    drawPin(name) {
+        console.log(this.pin_data[name]);
+        for (let [key, value] of Object.entries(this.pin_data[name])) {
+            this.create2DGeometry({"component": this.pin_data[name][key], "stroke_width": 0, "alignment": "center", "fill": "#111111"});
+            // this.createText({"component": this.pin_data[name][key], "name": this.pin_data[name][key]["name"]}); /*.slice(-1)*/
+        }
+    }
+
+    create2DGeometry({component, alignment="bottom_left", stroke_alignment="center", stroke_width=0, polygon=null, fill="#666666"}) {
         if (polygon) {
             let poly = document.createElementNS("http://www.w3.org/2000/svg", 'polygon');
             poly.setAttribute('points', polygon);
             poly.setAttribute('fill', "none");
-            poly.style['stroke'] = "0x197531".replace("0x", "#");
+            poly.style['stroke'] = "#197531";
             poly.style['stroke-width'] = stroke_width;
             this.svg.appendChild(poly);
             return;
@@ -106,7 +108,7 @@ export class Canvas {
             rect.setAttribute('width', component["size"][0]-2*component["margin"] + 2*stroke_width*stroke_alignment_ratio);
             rect.setAttribute('height', component["size"][1]-2*component["margin"] + 2*stroke_width*stroke_alignment_ratio);
         }
-        rect.setAttribute('fill', component["color"]);
+        rect.setAttribute('fill', fill);
         rect.style['stroke'] = component["border_color"];
         rect.style['stroke-width'] = stroke_width;
         this.svg.appendChild(rect);
