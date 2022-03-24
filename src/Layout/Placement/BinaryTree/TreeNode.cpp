@@ -239,11 +239,11 @@ void TreeNode::shiftUp(vector<Point> contour) {
 void TreeNode::rotate() {
     double PI = 3.1415926;
     if (this->comp_state->getAngle() == 90 || this->comp_state->getAngle() == 270) {
-        this->comp_state->setLength(this->comp_prop->getWidth());
-        this->comp_state->setWidth(this->comp_prop->getLength());
+        this->comp_state->setLength(this->comp_prop->getWidth() + 2*comp_state->getMargin());
+        this->comp_state->setWidth(this->comp_prop->getLength() + 2*comp_state->getMargin());
     } else {
-        this->comp_state->setLength(this->comp_prop->getLength());
-        this->comp_state->setWidth(this->comp_prop->getWidth());
+        this->comp_state->setLength(this->comp_prop->getLength() + 2*comp_state->getMargin());
+        this->comp_state->setWidth(this->comp_prop->getWidth() + 2*comp_state->getMargin());
     }
     Point center_position = {this->comp_state->getLength()/2, this->comp_state->getWidth()/2};
     this->comp_state->setPinPosition(this->comp_prop->getDefaultPinPosition());

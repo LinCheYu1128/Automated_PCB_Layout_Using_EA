@@ -77,7 +77,8 @@ void GA::crossover() {
         // cout << "test 1" << endl;
         vector<Layout*> Parents = this->parentSelect();
         // cout << "test 2" << endl;
-        Layout *child = kPointCrossover(Parents,2);
+        Layout *child = kPointCrossover(Parents, 3);
+        // Layout *child = Parents[0]->copy();
         // cout << "test 3" << endl;
         offspring.push_back(child);
         // cout << "test 4" << endl;
@@ -94,7 +95,7 @@ void GA::mutation(int gen) {
         // offspring[i]->getBinaryTree()->printBinaryTree();
         // int mode = 3;
         int mode ;
-        if(gen < 80) mode = rand() % 7;
+        if(gen < 800) mode = rand() % 7;
         else mode = rand() % 2;
         // offspring[i]->getBinaryTree()->printBinaryTree();
         switch (mode)
@@ -169,6 +170,8 @@ void GA::updateBestOffspring(){
     Layout* new_best = this->population[0];
     if(new_best->getFitness() <= this->bestOffspring->getFitness()){
         this->bestOffspring = new_best->copy();
+        new_best->setFitness();
+        this->bestOffspring->setFitness();
     }
 }
 

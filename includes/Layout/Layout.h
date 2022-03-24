@@ -20,10 +20,10 @@ class Layout {
         BinaryTree* tree;
         Contour* front_contour;
         Contour* back_contour;
-        double area;
-        double Pns;
-        double wirelength;
-        double fitness;
+        double area = 0;
+        double Pns = 0;
+        double wirelength = 0;
+        double fitness = 0;
 
     public:
         // constructor, destructor
@@ -63,7 +63,7 @@ class Layout {
 
 };
 
-void writeCsv(Layout* layout);
-void writePin(Layout* layout);
+void writeCsv(Layout* layout, string filename="placement.csv");
+void writePin(Layout* layout, string filename="pin.csv");
 
 #endif
