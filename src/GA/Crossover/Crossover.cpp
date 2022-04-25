@@ -28,7 +28,8 @@ vector<TreeNode*> ExtractTreeWithTreeNode(BinaryTree* Tree){
 
 Layout*leftSubtreeCrossover(vector<Layout*>Parents){
     // cout << "start crossover"<<endl;
-    ComponentList* component_list = new ComponentList();
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     BTreeA->printBinaryTree();
@@ -84,7 +85,8 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
 
 Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     // cout << "start crossover"<<endl;
-    ComponentList* component_list = new ComponentList();
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     // BTreeA->printBinaryTree();
@@ -207,8 +209,8 @@ bool checknodeexist(vector<TreeNode*> list, int index){
 
 Layout*kPointCrossover(vector<Layout*>Parents, int k){
     // cout << "start crossover"<<endl;
-    ComponentList* component_list = new ComponentList();
-
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     // BTreeA->printBinaryTree();
     BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
@@ -216,16 +218,16 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
 
     int amount = BTreeA->getTreeNodeMap().size();
     // cout << "amount = " << amount << endl;
-    vector<unsigned int> cutpoint;
-    cutpoint.push_back(1 + rand() % (amount - 4));
-    cutpoint.push_back(1 + rand() % (amount - 4));
-    while(cutpoint.at(0)==cutpoint.at(1)){
-        cutpoint.clear();
-        cutpoint.push_back(1 + rand() % (amount - 4));
-        cutpoint.push_back(1 + rand() % (amount - 4));
-    }
-    // cout << "Project Finished";
-    sort(cutpoint.begin(),cutpoint.end());
+    // vector<unsigned int> cutpoint;
+    // cutpoint.push_back(1 + rand() % (amount - 4));
+    // cutpoint.push_back(1 + rand() % (amount - 4));
+    // while(cutpoint.at(0)==cutpoint.at(1)){
+    //     cutpoint.clear();
+    //     cutpoint.push_back(1 + rand() % (amount - 4));
+    //     cutpoint.push_back(1 + rand() % (amount - 4));
+    // }
+    // // cout << "Project Finished";
+    // sort(cutpoint.begin(),cutpoint.end());
     // for(auto point: cutpoint){
     //     cout << point << " ";
     // }
@@ -245,11 +247,27 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
     // }
     // cout << endl;
 
-    for(unsigned int i = 0; i < nodelistA.size(); i++){
-        if(i<cutpoint.at(0)||i>cutpoint.at(1)){
-            nodelistA.at(i)->setID(-4);
+    // for(unsigned int i = 0; i < nodelistA.size(); i++){
+    //     if(i<cutpoint.at(0)||i>cutpoint.at(1)){
+    //         nodelistA.at(i)->setID(-4);
+    //     } 
+    // }
+    
+    vector<unsigned int> cutpoint;
+    for (int i = 0; i < amount; i++){
+        cutpoint.push_back(i);
+    }
+    random_shuffle(cutpoint.begin(), cutpoint.end());
+    cutpoint.erase(cutpoint.begin()+k, cutpoint.end());
+    sort(cutpoint.begin(),cutpoint.end());
+    for (unsigned int i = 0; i < nodelistA.size(); i++){
+        for (int t = 0; t < k-1; t++) {
+            if(t%2 == 0 && (i < cutpoint.at(t) || i > cutpoint.at(t+1))){
+                nodelistA.at(i)->setID(-4);
+            }
         } 
     }
+
     // cout << "nodelistA = ";
     // for(auto point: nodelistA){
     //     cout << point->getID() << " ";
@@ -290,7 +308,8 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
 }
 
 Layout* nothingCrossover(vector<Layout*>Parents){
-    ComponentList* component_list = new ComponentList();
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     return new Layout(BTreeA, component_list, BTreeA->getSide());

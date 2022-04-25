@@ -15,7 +15,7 @@ BinaryTree::BinaryTree(ComponentList* comp_list) {
 }
 
 BinaryTree::~BinaryTree() {
-    delete this->comp_list;
+    // delete this->comp_list;
     delete this->root;
 }
 
@@ -352,7 +352,7 @@ TreeNode* BinaryTree::findLeafNode(TreeNode* node) {
 vector<TreeNode*> BinaryTree::ExtractTree(int extractID){
     vector<TreeNode*> node_permu;
     stack<TreeNode*> node_stack;
-
+    
     BinaryTree* dup_tree = this->copy();
     
     node_stack.push(dup_tree->TreeNode_map[extractID]);

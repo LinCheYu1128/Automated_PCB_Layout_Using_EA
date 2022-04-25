@@ -46,22 +46,18 @@ Layout::Layout(ComponentList* comp_list, int side) {
 }
 
 Layout::~Layout() {
-    delete this->comp_list;
+    // delete this->comp_list;
     delete this->tree;
     delete this->front_contour;
     delete this->back_contour;
 }
 
 Layout* Layout::copy(){
-
-    ComponentList* component_list = new ComponentList();
+    // ComponentList* component_list = new ComponentList();
     int side = this->getBinaryTree()->getSide();
     BinaryTree* tree = this->getBinaryTree()->copy();
-
-    Layout* layout = new Layout(tree, component_list, side);
-
+    Layout* layout = new Layout(tree, this->comp_list, side);
     layout->setFitness();
-
     return layout;
 }
 
@@ -131,11 +127,11 @@ void Layout::setState(TreeNode* root, Contour* contour) {
 
     if (root->getLeftchild()) {
         // cout << "search left ";
-        setState(root->getLeftchild(), contour);
+        this->setState(root->getLeftchild(), contour);
     }
     if (root->getRightchild()) {
         // cout << "search right ";
-        setState(root->getRightchild(), contour);
+        this->setState(root->getRightchild(), contour);
     }
 }
 
@@ -152,9 +148,9 @@ void Layout::updateLayout(){
 
 void Layout::setFitness(){
     this->setArea();
-    this->setWireLength();
+    // this->setWireLength();
     this->setPns();
-    this->fitness = this->area/1000 * 0.6 + this->Pns/40 * 0.4;
+    this->fitness = this->area + this->Pns*1000;
     // this->fitness = this->area;
     // this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
 }
@@ -281,57 +277,104 @@ void Layout::printComponent() {
     this->tree->printBinaryTree();
 }
 
+// double Layout::evaluateArea(int side){
+//     double MAX_X = 0;
+//     double MAX_Y = 0;
+
+//     if (side == 0){
+//         for (int i = 0; i < this->getContour("front")->getSize(); i++) {
+//             MAX_X = max(MAX_X, this->getContour("front")->getContourVector().at(i).x);
+//             MAX_Y = max(MAX_Y, this->getContour("front")->getContourVector().at(i).y);
+//         }
+//     }else if (side == 1){
+//         for (int i = 0; i < this->getContour("back")->getSize(); i++) {
+//             MAX_X = max(MAX_X, this->getContour("bcak")->getContourVector().at(i).x);
+//             MAX_Y = max(MAX_Y, this->getContour("back")->getContourVector().at(i).y);
+//         }
+//     }
+//     return MAX_X * MAX_Y;
+// }
+
+// double Layout::evaluateTotalArea(){
+    
+//     double front_area = 0;
+//     double back_area = 0;
+    
+//     if (this->getBinaryTree()->getSide() == 1){
+//         int side = 0;
+//         front_area = this->evaluateArea(side);
+//         back_area = 0;
+//     }else if (this->getBinaryTree()->getSide() == 2){
+//         int side = 0;
+//         front_area = this->evaluateArea(side);
+//         side = 1;
+//         back_area = this->evaluateArea(side);
+//     }
+//     return front_area + back_area;
+// }
 double Layout::evaluateArea(int side){
     double MAX_X = 0;
     double MAX_Y = 0;
+    double penalty = 0;
 
-    if (side == 0){
+    if (side == 1){
         for (int i = 0; i < this->getContour("front")->getSize(); i++) {
             MAX_X = max(MAX_X, this->getContour("front")->getContourVector().at(i).x);
             MAX_Y = max(MAX_Y, this->getContour("front")->getContourVector().at(i).y);
         }
-    }else if (side == 1){
+    }else if (side == 2){
+        for (int i = 0; i < this->getContour("front")->getSize(); i++) {
+            MAX_X = max(MAX_X, this->getContour("front")->getContourVector().at(i).x);
+            MAX_Y = max(MAX_Y, this->getContour("front")->getContourVector().at(i).y);
+        }
         for (int i = 0; i < this->getContour("back")->getSize(); i++) {
             MAX_X = max(MAX_X, this->getContour("bcak")->getContourVector().at(i).x);
             MAX_Y = max(MAX_Y, this->getContour("back")->getContourVector().at(i).y);
         }
     }
-    return MAX_X * MAX_Y;
+    
+    if (MAX_X >= 29.2 + 1) {penalty += 10000*MAX_X;}
+    if (MAX_Y >= 32.5 + 1) {penalty += 10000*MAX_Y;}
+
+    return MAX_X * MAX_Y + penalty;
 }
 
 double Layout::evaluateTotalArea(){
-    
-    double front_area = 0;
-    double back_area = 0;
-    
-    if (this->getBinaryTree()->getSide() == 1){
-        int side = 0;
-        front_area = this->evaluateArea(side);
-        back_area = 0;
-    }else if (this->getBinaryTree()->getSide() == 2){
-        int side = 0;
-        front_area = this->evaluateArea(side);
-        side = 1;
-        back_area = this->evaluateArea(side);
-    }
-    return front_area + back_area;
+    int side = this->getBinaryTree()->getSide();
+    return this->evaluateArea(side);
 }
+
+// double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list){
+//     double primary_x = 0.0;
+//     double secondary_x = 0.0;
+
+//     for(unsigned i = 0; i < prim_list.size(); i++){
+//         primary_x += prim_list[i].x;
+//     }
+//     for(unsigned i = 0; i < sec_list.size(); i++){
+//         secondary_x += sec_list[i].x;
+//     }
+
+//     // return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
+//     return primary_x / prim_list.size() + (secondary_x / sec_list.size() - 29.2);
+// }
 
 double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list){
-    double primary_x = 0.0;
-    double secondary_x = 0.0;
+    double rightest_primary_x = 0;
+    double leftest_secondary_x = 27.2;
 
     for(unsigned i = 0; i < prim_list.size(); i++){
-        primary_x += prim_list[i].x;
+        rightest_primary_x = max(prim_list[i].x, rightest_primary_x);
     }
     for(unsigned i = 0; i < sec_list.size(); i++){
-        secondary_x += sec_list[i].x;
+        leftest_secondary_x = min(sec_list[i].x, leftest_secondary_x);
     }
 
-    return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
+    // return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
+    return rightest_primary_x - leftest_secondary_x;
 }
 
-void writeCsv(Layout* layout){
+void writeCsv(Layout* layout, string filename){
     BinaryTree* layout_tree = layout->getBinaryTree();
 
     // vector<TreeNode*> temp = layout_tree->ExtractTree(layout_tree->getRoot()->getID());
@@ -341,7 +384,7 @@ void writeCsv(Layout* layout){
     // cout << endl;
 
     std::ofstream layout_data;
-    layout_data.open ("placement.csv");
+    layout_data.open(filename);
     stack<TreeNode*> nodes;
     nodes.push(layout_tree->getRoot());
     while (nodes.size() > 0) {
@@ -372,7 +415,7 @@ void writeCsv(Layout* layout){
     layout_data.close();
 }
 
-void writePin(Layout* layout) {
+void writePin(Layout* layout, string filename) {
     BinaryTree* layout_tree = layout->getBinaryTree();
     map<string, Point>::iterator iter;
 
@@ -383,7 +426,7 @@ void writePin(Layout* layout) {
     // cout << endl;
     
     std::ofstream pin_data;
-    pin_data.open ("pin.csv");
+    pin_data.open (filename);
     stack<TreeNode*> nodes;
     nodes.push(layout_tree->getRoot());
     while (nodes.size() > 0) {
