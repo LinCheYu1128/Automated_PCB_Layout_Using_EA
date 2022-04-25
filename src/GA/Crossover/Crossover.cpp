@@ -26,11 +26,7 @@ vector<TreeNode*> ExtractTreeWithTreeNode(BinaryTree* Tree){
     return nodelist;
 }
 
-Layout*leftSubtreeCrossover(vector<Layout*>Parents){
-    // cout << "start crossover"<<endl;
-    // ComponentList* component_list = new ComponentList();
-    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
-
+void delete_test (vector<Layout*>Parents){
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     BTreeA->printBinaryTree();
     while (BTreeA->getRoot()->getRightchild()){
@@ -38,6 +34,20 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
     }
     cout << "left subtree : "<<endl;
     BTreeA->printBinaryTree();
+}
+
+Layout*leftSubtreeCrossover(vector<Layout*>Parents){
+    // cout << "start crossover"<<endl;
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
+
+    BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
+    // BTreeA->printBinaryTree();
+    while (BTreeA->getRoot()->getRightchild()){
+        BTreeA->delete_node(BTreeA->getRoot()->getRightchild()->getID());
+    }
+    // cout << "left subtree : "<<endl;
+    // BTreeA->printBinaryTree();
     vector<int> ArraytoDelete;
     vector<TreeNode*> stack;
     stack.push_back(BTreeA->getRoot());
@@ -53,32 +63,32 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
             stack.push_back(node->getLeftchild());
         }
     }
-    cout << "number of remaining nodes = " << ArraytoDelete.size() << endl;
+    // cout << "number of remaining nodes = " << ArraytoDelete.size() << endl;
     
     BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
-    cout << "origin BTreeB : "<<endl;
-    BTreeB->printBinaryTree();
+    // cout << "origin BTreeB : "<<endl;
+    // BTreeB->printBinaryTree();
     for(unsigned int item = 1; item<ArraytoDelete.size(); item++){
         BTreeB->delete_node(ArraytoDelete.at(item));
-        cout << "delete node "<<ArraytoDelete.at(item)<<endl;
+        // cout << "delete node "<<ArraytoDelete.at(item)<<endl;
         // BTreeB->printBinaryTree();
     }
-    cout << "after delete BTreeB : "<<endl;
-    BTreeB->printBinaryTree();
+    // cout << "after delete BTreeB : "<<endl;
+    // BTreeB->printBinaryTree();
     TreeNode* newroot = BTreeB->findRightestNode(BTreeB->getRoot());
-    cout << "new root id : " << newroot->getID() << endl;
+    // cout << "new root id : " << newroot->getID() << endl;
     if(newroot->getID()==0){
         return new Layout(BTreeA, component_list, 1);
     }
     else{
         BTreeB->changetoroot(newroot);
-        cout << "right subtree : "<<endl;
-        BTreeB->printBinaryTree();
+        // cout << "right subtree : "<<endl;
+        // BTreeB->printBinaryTree();
     }
-    cout << "BTreeA tree map size = "<<BTreeA->getTreeNodeMap().size() << endl;
+    // cout << "BTreeA tree map size = "<<BTreeA->getTreeNodeMap().size() << endl;
     BTreeA->getRoot()->setRightChild(BTreeB->getRoot());
     BTreeA->printBinaryTree();
-    cout << "end crossover"<<endl;
+    // cout << "end crossover"<<endl;
     BTreeA->updateTreeNodeMap();
     return new Layout(BTreeA, component_list, 1);
 }

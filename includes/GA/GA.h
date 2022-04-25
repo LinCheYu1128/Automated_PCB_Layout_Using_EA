@@ -51,6 +51,7 @@ class GA {
 bool SortPop(Layout *layout_1, Layout *layout_2);
 
 //Crossover
+void delete_test(vector<Layout*>Parents);
 Layout* leftSubtreeCrossover(vector<Layout*>Parents);
 Layout* kPointCrossover(vector<Layout*>Parents, int k);
 Layout* randomSubtreeCrossover(vector<Layout*>Parents);
