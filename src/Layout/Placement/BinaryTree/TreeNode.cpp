@@ -308,7 +308,7 @@ void TreeNode::updateNode() {
 void TreeNode::shiftUp(vector<Point> contour) {
     double x;
     double max_y = 0;
-    
+
     ComponentState* comp = this->getComponentState();
     if (this->getBranch() == "root") x = 0;
     else {
@@ -330,7 +330,7 @@ void TreeNode::shiftUp(vector<Point> contour) {
 }
 
 void TreeNode::rotate() {
-    double PI = 3.1415926;
+    double PI = 3.141592653589793;
     if (this->comp_state->getAngle() == 90 || this->comp_state->getAngle() == 270) {
         this->comp_state->setLength(this->comp_prop->getWidth() + 2*comp_state->getMargin());
         this->comp_state->setWidth(this->comp_prop->getLength() + 2*comp_state->getMargin());
