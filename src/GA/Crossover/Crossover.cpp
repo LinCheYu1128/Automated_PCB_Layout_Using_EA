@@ -26,11 +26,7 @@ vector<TreeNode*> ExtractTreeWithTreeNode(BinaryTree* Tree){
     return nodelist;
 }
 
-Layout*leftSubtreeCrossover(vector<Layout*>Parents){
-    // cout << "start crossover"<<endl;
-    // ComponentList* component_list = new ComponentList();
-    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
-
+void delete_test (vector<Layout*>Parents){
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     BTreeA->printBinaryTree();
     while (BTreeA->getRoot()->getRightchild()){
@@ -38,6 +34,20 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
     }
     cout << "left subtree : "<<endl;
     BTreeA->printBinaryTree();
+}
+
+Layout*leftSubtreeCrossover(vector<Layout*>Parents){
+    // cout << "start crossover"<<endl;
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
+
+    BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
+    // BTreeA->printBinaryTree();
+    while (BTreeA->getRoot()->getRightchild()){
+        BTreeA->delete_node(BTreeA->getRoot()->getRightchild()->getID());
+    }
+    // cout << "left subtree : "<<endl;
+    // BTreeA->printBinaryTree();
     vector<int> ArraytoDelete;
     vector<TreeNode*> stack;
     stack.push_back(BTreeA->getRoot());
@@ -53,32 +63,32 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
             stack.push_back(node->getLeftchild());
         }
     }
-    cout << "number of remaining nodes = " << ArraytoDelete.size() << endl;
+    // cout << "number of remaining nodes = " << ArraytoDelete.size() << endl;
     
     BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
-    cout << "origin BTreeB : "<<endl;
-    BTreeB->printBinaryTree();
+    // cout << "origin BTreeB : "<<endl;
+    // BTreeB->printBinaryTree();
     for(unsigned int item = 1; item<ArraytoDelete.size(); item++){
         BTreeB->delete_node(ArraytoDelete.at(item));
-        cout << "delete node "<<ArraytoDelete.at(item)<<endl;
+        // cout << "delete node "<<ArraytoDelete.at(item)<<endl;
         // BTreeB->printBinaryTree();
     }
-    cout << "after delete BTreeB : "<<endl;
-    BTreeB->printBinaryTree();
+    // cout << "after delete BTreeB : "<<endl;
+    // BTreeB->printBinaryTree();
     TreeNode* newroot = BTreeB->findRightestNode(BTreeB->getRoot());
-    cout << "new root id : " << newroot->getID() << endl;
+    // cout << "new root id : " << newroot->getID() << endl;
     if(newroot->getID()==0){
         return new Layout(BTreeA, component_list, 1);
     }
     else{
         BTreeB->changetoroot(newroot);
-        cout << "right subtree : "<<endl;
-        BTreeB->printBinaryTree();
+        // cout << "right subtree : "<<endl;
+        // BTreeB->printBinaryTree();
     }
-    cout << "BTreeA tree map size = "<<BTreeA->getTreeNodeMap().size() << endl;
+    // cout << "BTreeA tree map size = "<<BTreeA->getTreeNodeMap().size() << endl;
     BTreeA->getRoot()->setRightChild(BTreeB->getRoot());
     BTreeA->printBinaryTree();
-    cout << "end crossover"<<endl;
+    // cout << "end crossover"<<endl;
     BTreeA->updateTreeNodeMap();
     return new Layout(BTreeA, component_list, 1);
 }
@@ -100,7 +110,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
        picked_node = TreeList.at(rand() % (amount-1)); 
     }
     // cout << "picked_node: " << picked_node->getID() << endl;
-    
+    // ******************* delete the pick node subtree *******************//
     vector<TreeNode*> picked_node_list;
     vector<TreeNode*> stack;
     stack.push_back(picked_node);
@@ -123,8 +133,10 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
     // cout << "BTree side: " << BTreeB->getSide() << endl;
     for(auto item: picked_node_list){
+
         // cout << item->getID() << endl;
         BTreeB->delete_node(item->getID());
+        cout << " delete complete" << endl;
     }
     // cout << endl;
     // BTreeB->printBinaryTree();
@@ -134,6 +146,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
 
     vector<TreeNode*> target_list;
     // vector<TreeNode*> stack;
+    // ****************** Choose the node to connect *********************//
     stack.push_back(BTreeB->getRoot());
     while(!stack.empty()) {
         node = stack.back();
@@ -208,7 +221,6 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
     // cout << "start crossover"<<endl;
     // ComponentList* component_list = new ComponentList();
     ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
-
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     // BTreeA->printBinaryTree();
     BinaryTree *BTreeB = Parents.at(1)->getBinaryTree()->copy();
@@ -216,16 +228,16 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
 
     int amount = BTreeA->getTreeNodeMap().size();
     // cout << "amount = " << amount << endl;
-    vector<unsigned int> cutpoint;
-    cutpoint.push_back(1 + rand() % (amount - 4));
-    cutpoint.push_back(1 + rand() % (amount - 4));
-    while(cutpoint.at(0)==cutpoint.at(1)){
-        cutpoint.clear();
-        cutpoint.push_back(1 + rand() % (amount - 4));
-        cutpoint.push_back(1 + rand() % (amount - 4));
-    }
-    // cout << "Project Finished";
-    sort(cutpoint.begin(),cutpoint.end());
+    // vector<unsigned int> cutpoint;
+    // cutpoint.push_back(1 + rand() % (amount - 4));
+    // cutpoint.push_back(1 + rand() % (amount - 4));
+    // while(cutpoint.at(0)==cutpoint.at(1)){
+    //     cutpoint.clear();
+    //     cutpoint.push_back(1 + rand() % (amount - 4));
+    //     cutpoint.push_back(1 + rand() % (amount - 4));
+    // }
+    // // cout << "Project Finished";
+    // sort(cutpoint.begin(),cutpoint.end());
     // for(auto point: cutpoint){
     //     cout << point << " ";
     // }
@@ -245,11 +257,27 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
     // }
     // cout << endl;
 
-    for(unsigned int i = 0; i < nodelistA.size(); i++){
-        if(i<cutpoint.at(0)||i>cutpoint.at(1)){
-            nodelistA.at(i)->setID(-4);
+    // for(unsigned int i = 0; i < nodelistA.size(); i++){
+    //     if(i<cutpoint.at(0)||i>cutpoint.at(1)){
+    //         nodelistA.at(i)->setID(-4);
+    //     } 
+    // }
+    
+    vector<unsigned int> cutpoint;
+    for (int i = 0; i < amount; i++){
+        cutpoint.push_back(i);
+    }
+    random_shuffle(cutpoint.begin(), cutpoint.end());
+    cutpoint.erase(cutpoint.begin()+k, cutpoint.end());
+    sort(cutpoint.begin(),cutpoint.end());
+    for (unsigned int i = 0; i < nodelistA.size(); i++){
+        for (int t = 0; t < k-1; t++) {
+            if(t%2 == 0 && (i < cutpoint.at(t) || i > cutpoint.at(t+1))){
+                nodelistA.at(i)->setID(-4);
+            }
         } 
     }
+
     // cout << "nodelistA = ";
     // for(auto point: nodelistA){
     //     cout << point->getID() << " ";
@@ -290,7 +318,8 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
 }
 
 Layout* nothingCrossover(vector<Layout*>Parents){
-    ComponentList* component_list = new ComponentList();
+    // ComponentList* component_list = new ComponentList();
+    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     return new Layout(BTreeA, component_list, BTreeA->getSide());

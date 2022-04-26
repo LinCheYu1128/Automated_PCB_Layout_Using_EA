@@ -222,13 +222,21 @@ void BinaryTree::delete_node(int ID) {
         return;
     }
 
-    TreeNode* node = this->TreeNode_map.at(ID);
+    TreeNode* delete_node = this->TreeNode_map.at(ID);
 
-    if (node == nullptr) {
+    if (delete_node == nullptr) {
         Console::log("this node has been removed");
         return;
     }
 
+    if(this->getRoot() == delete_node){
+        TreeNode*new_root = delete_node->delete_root_f();
+        this->setRoot(new_root);
+    }
+    else{
+        delete_node->delete_node_f();
+    }
+    
     /* Steps:
        - Find the node we want to delete.
        - Four cases:
@@ -237,12 +245,12 @@ void BinaryTree::delete_node(int ID) {
         * leaf node.
     */
 
-    this->delete_leaf_node(node);
-    this->delete_hasOneChild_node(node);
-    this->delete_hasBothChild_node(node);
-    this->TreeNode_map[node->getID()] = nullptr;
-    // cout << "debug" << endl;
-    node->disconnect();
+    // this->delete_leaf_node(node);
+    // this->delete_hasOneChild_node(node);
+    // this->delete_hasBothChild_node(node);
+    // this->TreeNode_map[node->getID()] = nullptr;
+    // // cout << "debug" << endl;
+    
     return;
 }
 
@@ -352,7 +360,7 @@ TreeNode* BinaryTree::findLeafNode(TreeNode* node) {
 vector<TreeNode*> BinaryTree::ExtractTree(int extractID){
     vector<TreeNode*> node_permu;
     stack<TreeNode*> node_stack;
-
+    
     BinaryTree* dup_tree = this->copy();
     
     node_stack.push(dup_tree->TreeNode_map[extractID]);

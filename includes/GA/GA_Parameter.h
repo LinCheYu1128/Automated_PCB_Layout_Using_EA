@@ -4,12 +4,14 @@
 class GA_Parameter {
     private:
         int kExpTime = 1;
+
         int kGeneration = 50;
         int kPopSize = 100;
+
         // parent selection
         int k_Tournament = 5;
         // crossover
-        double kCrossoverRate = 0.25;
+        double kCrossoverRate = 0.3;
         int kCrossoverTime = kPopSize / 2;
         // mutation
         double kMutationRate = 0.9;

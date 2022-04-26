@@ -51,6 +51,7 @@ export class Layout {
 function Placement_ArrayToMap(arrData) {
     let mapData = {};
     let component;
+    let  shift = 0.5;
     for (let i = 0; i < arrData.length; i++) {
         component = arrData[i];
         mapData[component[0]] = {
@@ -58,7 +59,7 @@ function Placement_ArrayToMap(arrData) {
             "color": "#"+component[1],
             "size": [Number(component[2]), Number(component[3]), Number(component[4])],
             "voltage": Number(component[5]),
-            "position": [Number(component[6]), Number(component[7])],
+            "position": [Number(component[6]) + shift, Number(component[7]) + shift],
             "margin": Number(component[8]),
             "angle": Number(component[9]),
             "side": component[10],
@@ -72,13 +73,14 @@ function Placement_ArrayToMap(arrData) {
 function Pin_ArrayToMap(arrData) {
     let mapData = {};
     let pin;
+    let  shift = 0.5;
     for (let i = 0; i < arrData.length; i++) {
         pin = arrData[i];
         if (!mapData[pin[0]]) {mapData[pin[0]] = {};}
         mapData[pin[0]][pin[1]] = {
             "name": pin[0] + "-" + pin[1],
             "size": [Number(pin[2]), Number(pin[3])],
-            "position": [Number(pin[4]), Number(pin[5])],
+            "position": [Number(pin[4]) + shift, Number(pin[5]) + shift],
             "margin": 0,
         };
     }

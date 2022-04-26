@@ -163,11 +163,11 @@ Point ComponentState::getPosition() {
 }
 
 double ComponentState::getLength() {
-    return this->length + 2*this->margin;
+    return this->length /*+ 2*this->margin*/;
 }
 
 double ComponentState::getWidth() {
-    return this->width + 2*this->margin;
+    return this->width /*+ 2*this->margin*/;
 }
 
 double ComponentState::getMargin() {

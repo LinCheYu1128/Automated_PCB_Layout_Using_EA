@@ -73,35 +73,41 @@ void GA::crossover() {
 
     this->offspring.clear();
 
-    for(unsigned i = 0; i < this->population.size(); i++) {
-        // cout << "test 1" << endl;
-        vector<Layout*> Parents = this->parentSelect();
-        // cout << "test 2" << endl;
-        Layout *child = kPointCrossover(Parents,2);
-        // cout << "test 3" << endl;
-        offspring.push_back(child);
-        // cout << "test 4" << endl;
-    }
-
+    // for(unsigned i = 0; i < this->population.size(); i++) {
+    //     // cout << "test 1" << endl;
+    //     vector<Layout*> Parents = this->parentSelect();
+    //     // cout << "test 2" << endl;
+    //     Layout *child = kPointCrossover(Parents, 3);
+    //     // Layout *child = Parents[0]->copy();
+    //     // cout << "test 3" << endl;
+    //     offspring.push_back(child);
+    //     // cout << "test 4" << endl;
+    // }
+    vector<Layout*> Parents = this->parentSelect();
+    Layout *child = randomSubtreeCrossover(Parents);
+    child->getBinaryTree()->printBinaryTree();
+    // delete_test(Parents);
     // cout << "End Crossover" << endl;
 }
 
-void GA::mutation() {
+void GA::mutation(int gen) {
 
     // cout << "Conduct mutation" << endl;
 
     for(unsigned i = 0; i < this->offspring.size(); i++) {
         // offspring[i]->getBinaryTree()->printBinaryTree();
         // int mode = 3;
-        int mode = rand() % 7;
+        int mode ;
+        if(gen < 800) mode = rand() % 7;
+        else mode = rand() % 2;
         // offspring[i]->getBinaryTree()->printBinaryTree();
         switch (mode)
         {
         case 0:
-            swapBranchMutation(this->offspring[i]);//save
+            swapNodeMutation(this->offspring[i]);//nono
             break;
         case 1:
-            swapSubtreeMutation(this->offspring[i]);//nono
+            insertMutation(this->offspring[i]);//nono
             break;
         case 2:
             bitwiseMutation(this->offspring[i],0.2);//save
@@ -110,13 +116,13 @@ void GA::mutation() {
             shiftSubtreeMutation(this->offspring[i]);//nono
             break;
         case 4:
-            insertMutation(this->offspring[i]);//nono
+            swapBranchMutation(this->offspring[i]);//save
             break;
         case 5:
             scrambleMutation(this->offspring[i]);//nono
             break;
         case 6:
-            swapNodeMutation(this->offspring[i]);//nono
+            swapSubtreeMutation(this->offspring[i]);//nono
             break;
         default:
             cout << "something wrong" << endl;
@@ -170,6 +176,8 @@ void GA::updateBestOffspring(){
     if(new_best->getFitness() <= this->bestOffspring->getFitness()){
         // cout << "update" << endl;
         this->bestOffspring = new_best->copy();
+        new_best->setFitness();
+        this->bestOffspring->setFitness();
     }
     // cout << "after best fitness: " << this->bestOffspring->getFitness() << endl;
     cout << this->bestOffspring << endl;
