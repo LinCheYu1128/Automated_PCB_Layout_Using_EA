@@ -73,6 +73,7 @@ void GA::crossover() {
 
     this->offspring.clear();
 
+<<<<<<< HEAD
     for(unsigned i = 0; i < this->population.size(); i++) {
         // cout << "test 1" << endl;
         vector<Layout*> Parents = this->parentSelect();
@@ -85,6 +86,22 @@ void GA::crossover() {
         // cout << "test 4" << endl;
     }
 
+=======
+    // for(unsigned i = 0; i < this->population.size(); i++) {
+    //     // cout << "test 1" << endl;
+    //     vector<Layout*> Parents = this->parentSelect();
+    //     // cout << "test 2" << endl;
+    //     Layout *child = kPointCrossover(Parents, 3);
+    //     // Layout *child = Parents[0]->copy();
+    //     // cout << "test 3" << endl;
+    //     offspring.push_back(child);
+    //     // cout << "test 4" << endl;
+    // }
+    vector<Layout*> Parents = this->parentSelect();
+    Layout *child = randomSubtreeCrossover(Parents);
+    child->getBinaryTree()->printBinaryTree();
+    // delete_test(Parents);
+>>>>>>> 22e37c7091ea1fa66b4e7b95a32f1edeb3138f87
     // cout << "End Crossover" << endl;
 }
 
@@ -168,12 +185,17 @@ void GA::evaluate(string target){
 
 void GA::updateBestOffspring(){
     // should use copy function
+    // cout << "pop 1 fitness: " << this->population[0]->getFitness() << endl;
+    // cout << "before best fitness: " << this->bestOffspring->getFitness() << endl;
     Layout* new_best = this->population[0];
     if(new_best->getFitness() <= this->bestOffspring->getFitness()){
+        // cout << "update" << endl;
         this->bestOffspring = new_best->copy();
         new_best->setFitness();
         this->bestOffspring->setFitness();
     }
+    // cout << "after best fitness: " << this->bestOffspring->getFitness() << endl;
+    cout << this->bestOffspring << endl;
 }
 
 void GA::mergePopulationOffspring(){

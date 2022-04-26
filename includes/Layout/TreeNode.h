@@ -30,6 +30,8 @@ class TreeNode {
         void updateNode();
         void shiftUp(vector<Point>);
         void rotate();
+        void delete_node_f();
+        TreeNode* delete_root_f();
 
         // getter
         int getID();

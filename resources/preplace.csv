@@ -1,2 +1,2 @@
-Name	Color	L	W	T	P/S	x	y
-Test	0	2	2	2	-1	2	1
+Name,Color,L,W,T,P/S,x,y,side,pierce
+T501,cecad4,22,24,24.9,0,4,5,front,1

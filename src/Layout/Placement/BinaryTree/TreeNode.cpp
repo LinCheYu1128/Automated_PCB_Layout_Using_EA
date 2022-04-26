@@ -73,6 +73,7 @@ ComponentState* TreeNode::getComponentState() {
 }
 
 void TreeNode::disconnect(string branch) {
+// orignal delete function
     if (branch == "parent" || branch == "all") {
         string mybranch = this->branch;
         if(mybranch == "left"){
@@ -82,7 +83,6 @@ void TreeNode::disconnect(string branch) {
         }
         this->parent = nullptr;
     }
-
     if (branch == "left" || branch == "all") {
         if(this->leftchild) this->leftchild->parent = nullptr;
         this->leftchild = nullptr;
@@ -91,6 +91,99 @@ void TreeNode::disconnect(string branch) {
         if(this->rightchild) this->rightchild->parent = nullptr;
         this->rightchild = nullptr;
     }
+}
+
+void TreeNode::delete_node_f() {
+    if(this->leftchild == nullptr && this->rightchild == nullptr){
+        // cout << "node is leaf node" << endl;
+        if(this->parent){
+            if(this->parent->leftchild == this){
+                this->parent->leftchild = nullptr; 
+            } 
+            else{
+                this->parent->rightchild = nullptr;
+            }  
+        }
+    }
+    else{
+        // cout << "replce by leaf node" << endl;
+        TreeNode* leaf = this;
+        while(leaf->leftchild != nullptr || leaf->rightchild != nullptr){
+            if(leaf->leftchild != nullptr){
+                leaf = leaf->leftchild;
+            }
+            else{
+                leaf = leaf->rightchild;
+            }
+            // cout << " find leaf"<< endl;
+        }
+        // if(leaf->leftchild == nullptr && leaf->rightchild == nullptr) cout<< "leaf is here" << endl;
+        // disconnect leaf parent
+        if(leaf->parent->leftchild == leaf){
+            leaf->parent->leftchild = nullptr;
+        }
+        else {
+            leaf->parent->rightchild = nullptr;
+        }
+        // change delete node parent's child
+        leaf->parent = this->parent;
+        leaf->leftchild = this->leftchild;
+        leaf->rightchild = this->rightchild;
+
+        if(this->parent->leftchild == this){
+            this->parent->leftchild = leaf;
+        } 
+        else{
+            this->parent->rightchild = leaf;
+        }
+        if(this->leftchild) this->leftchild->parent = leaf;
+        if(this->rightchild) this->rightchild->parent = leaf;
+    }
+}
+
+TreeNode* TreeNode::delete_root_f() {
+    if(this->leftchild == nullptr && this->rightchild == nullptr){
+        // cout << "node is leaf node" << endl;
+        if(this->parent){
+            if(this->parent->leftchild == this){
+                this->parent->leftchild = nullptr; 
+            } 
+            else{
+                this->parent->rightchild = nullptr;
+            }  
+        }
+        return nullptr;
+    }
+    else{
+        // cout << "replce by leaf node" << endl;
+        TreeNode* leaf = this;
+        while(leaf->leftchild != nullptr || leaf->rightchild != nullptr){
+            if(leaf->leftchild != nullptr){
+                leaf = leaf->leftchild;
+            }
+            else{
+                leaf = leaf->rightchild;
+            }
+            // cout << " find leaf"<< endl;
+        }
+        // if(leaf->leftchild == nullptr && leaf->rightchild == nullptr) cout<< "leaf is here" << endl;
+        if(leaf->parent->leftchild == leaf){
+            leaf->parent->leftchild = nullptr;
+        }
+        else {
+            leaf->parent->rightchild = nullptr;
+        }
+        
+        leaf->parent = nullptr;
+        leaf->leftchild = this->leftchild;
+        leaf->rightchild = this->rightchild;
+
+        if(this->leftchild) this->leftchild->parent = leaf;
+        if(this->rightchild) this->rightchild->parent = leaf;
+        
+        return leaf;
+    }
+
 }
 
 void TreeNode::setID(int id) {
@@ -215,7 +308,7 @@ void TreeNode::updateNode() {
 void TreeNode::shiftUp(vector<Point> contour) {
     double x;
     double max_y = 0;
-    
+
     ComponentState* comp = this->getComponentState();
     if (this->getBranch() == "root") x = 0;
     else {
@@ -237,7 +330,7 @@ void TreeNode::shiftUp(vector<Point> contour) {
 }
 
 void TreeNode::rotate() {
-    double PI = 3.1415926;
+    double PI = 3.141592653589793;
     if (this->comp_state->getAngle() == 90 || this->comp_state->getAngle() == 270) {
         this->comp_state->setLength(this->comp_prop->getWidth() + 2*comp_state->getMargin());
         this->comp_state->setWidth(this->comp_prop->getLength() + 2*comp_state->getMargin());
