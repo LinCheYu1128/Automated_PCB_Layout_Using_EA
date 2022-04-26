@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    font-family: 'Raleway', sans-serif;
 }
 
 .wrapper {
@@ -22,7 +23,7 @@ body {
 
 .tabcontent {
     color: white;
-    display: none;
+    visibility: hidden; /*不能用 display: none, 會讓trackball轉不動*/
     text-align: center;
 }
 

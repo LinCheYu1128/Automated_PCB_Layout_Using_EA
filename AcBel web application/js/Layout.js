@@ -1,16 +1,17 @@
 import {Canvas} from "./svg canvas.js";
+// import {Scene} from "./3D scene.js";
 import {drawTree} from "./drawTree.js"
 
 export class Layout {
     constructor(placement_csv, pin_csv, net_csv) {
         this.component_data = {};
-        let placement_mapData = Placement_ArrayToMap(placement_csv);
-        let pin_mapData = Pin_ArrayToMap(pin_csv);
-        let net_mapData = Net_ArrayToMap(net_csv);
-        let layout_front = new Canvas("front", {"placement_data": placement_mapData, "pin_data": pin_mapData, "net_data": net_mapData});
-        let layout_back = new Canvas("back", {"placement_data": placement_mapData, "pin_data": pin_mapData, "net_data": net_mapData});
+        this.placement_mapData = Placement_ArrayToMap(placement_csv);
+        this.pin_mapData = Pin_ArrayToMap(pin_csv);
+        this.net_mapData = Net_ArrayToMap(net_csv);
+        this.layout_front = new Canvas("front", {"placement_data": this.placement_mapData, "pin_data": this.pin_mapData, "net_data": this.net_mapData});
+        this.layout_back = new Canvas("back", {"placement_data": this.placement_mapData, "pin_data": this.pin_mapData, "net_data": this.net_mapData});
 
-        drawTree({divID: 'Tree', width: 1500, height: 800, padding: 50, treeData: MapToTree(placement_mapData, placement_csv)});
+        drawTree({divID: 'Tree', width: 1500, height: 800, padding: 50, treeData: MapToTree(this.placement_mapData, placement_csv)});
     }
 
     importPlacement(arrData) {
@@ -48,7 +49,7 @@ export class Layout {
     }
 };
 
-function Placement_ArrayToMap(arrData) {
+export function Placement_ArrayToMap(arrData) {
     let mapData = {};
     let component;
     let  shift = 0.5;
@@ -70,7 +71,7 @@ function Placement_ArrayToMap(arrData) {
     return mapData;
 }
 
-function Pin_ArrayToMap(arrData) {
+export function Pin_ArrayToMap(arrData) {
     let mapData = {};
     let pin;
     let  shift = 0.5;
@@ -87,7 +88,7 @@ function Pin_ArrayToMap(arrData) {
     return mapData;
 }
 
-function Net_ArrayToMap(arrData) {
+export function Net_ArrayToMap(arrData) {
     let mapData = {};
     let pin_id;
     for (let i = 0; i < arrData.length; i++) {
@@ -101,7 +102,7 @@ function Net_ArrayToMap(arrData) {
     return mapData;
 }
 
-function MapToTree(mapData, arrData) {
+export function MapToTree(mapData, arrData) {
     let Tree = {};
     let queue = [];
     let temp, node, component;

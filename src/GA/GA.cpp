@@ -77,6 +77,7 @@ void GA::crossover() {
         // cout << "test 1" << endl;
         vector<Layout*> Parents = this->parentSelect();
         // cout << "test 2" << endl;
+        // Layout *child = nothingCrossover(Parents);
         Layout *child = kPointCrossover(Parents, 3);
         // Layout *child = Parents[0]->copy();
         // cout << "test 3" << endl;
