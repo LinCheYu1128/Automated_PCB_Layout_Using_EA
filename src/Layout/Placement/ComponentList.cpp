@@ -15,6 +15,7 @@ ComponentList::ComponentList(/*Component_Path comp_info*/) {
     };
     this->comp_info = comp_info;
     this->setAllData();
+    this->setPreplace();
 }
 
 ComponentList::~ComponentList() {
@@ -26,7 +27,7 @@ ComponentList::~ComponentList() {
 }
 
 int ComponentList::getSize() {
-    return this->comp_data_dictionary.size();
+    return this->comp_data_vector.size();
 }
 
 ComponentProperty* ComponentList::getDataByName(string comp_name) {
@@ -35,6 +36,10 @@ ComponentProperty* ComponentList::getDataByName(string comp_name) {
 
 ComponentProperty* ComponentList::getDataByIndex(int index) {
     return this->comp_data_vector[index];
+}
+
+vector<ComponentProperty*> ComponentList::getPreplaceData() {
+    return this->preplace_comp_data;
 }
 
 map<string, ComponentProperty*> ComponentList::getAllData() {
@@ -72,7 +77,6 @@ void ComponentList::setPinPosition(string comp_name) {
         // cout << key << " " << point.x << " " << point.y << endl;
         this->comp_data_dictionary[comp_name]->setOneDefaultPinPosition(key, point);
     }
-
     pin_file.close();
 }
 
@@ -102,6 +106,60 @@ void ComponentList::setAllData() {
         this->setPinPosition(comp_prop->getName());
 
         id ++;
+    }
+}
+
+void ComponentList::setPreplace() {
+    ifstream inFile(comp_info.component_relativePath + comp_info.preplace_csvfile);
+    string temp;
+    double x = 0;
+
+    getline(inFile, temp, '\n');
+    while (!inFile.eof()) {
+        ComponentProperty* comp_prop = new ComponentProperty();
+        getline(inFile, temp, ',' );
+        comp_prop->setName(temp);
+        getline(inFile, temp, ',' );
+        comp_prop->setColor(temp);
+        getline(inFile, temp, ',' );
+        comp_prop->setLength(stod(temp));
+        getline(inFile, temp, ',' );
+        comp_prop->setWidth(stod(temp));
+        getline(inFile, temp, ',' );
+        comp_prop->setHeight(stod(temp));
+        getline(inFile, temp, ',' );
+        comp_prop->setVoltage(stoi(temp));
+        getline(inFile, temp, ',');
+        x = stod(temp);
+        getline(inFile, temp, ',');
+        comp_prop->setPreplaceLocation(x, stod(temp));
+        getline(inFile, temp, ',');
+        comp_prop->setSide(temp);
+        getline(inFile, temp, '\n');
+        comp_prop->setPierce(stoi(temp));
+
+        this->comp_data_dictionary[comp_prop->getName()] = comp_prop;
+        this->preplace_comp_data.push_back(comp_prop);
+        this->setPinPosition(comp_prop->getName());
+
+        //Piercing Pin
+        if (comp_prop->getPierce()) {
+            if (comp_prop->getSide() == "front") temp = "back";
+            else temp = "front";
+            map<string, Point> pin_pos = comp_prop->getDefaultPinPosition();
+            for (auto i = pin_pos.begin(); i != pin_pos.end(); ++i) {
+                ComponentProperty* pin_comp_prop = new ComponentProperty();
+                pin_comp_prop->setName(i->first);
+                pin_comp_prop->setColor("0");
+                pin_comp_prop->setLength(1);
+                pin_comp_prop->setWidth(1);
+                pin_comp_prop->setHeight(1);
+                pin_comp_prop->setVoltage(0);
+                pin_comp_prop->setPreplaceLocation(comp_prop->getPreplace().x + i->second.x - 0.5*pin_comp_prop->getLength(), comp_prop->getPreplace().y + i->second.y - 0.5*pin_comp_prop->getWidth());
+                pin_comp_prop->setSide(temp);
+                this->preplace_comp_data.push_back(pin_comp_prop);
+            }
+        }
     }
 }
 

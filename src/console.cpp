@@ -12,7 +12,6 @@ void Console::run() {
     GA* GA_optimizer = new GA();
     
     int generation = GA_optimizer->getParameter()->getGeneration();
-    
 
     for(int i = 0; i < generation; i++){
         // if(i % 10 == 9){

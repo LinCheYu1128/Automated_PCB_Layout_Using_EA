@@ -45,7 +45,7 @@ class Layout {
         // setter
         void setBinaryTree(int side);
         void setContour();
-        void setState(TreeNode*, Contour*);
+        void setState(TreeNode*, string side);
         void updateLayout();
         void setFitness();
         void setArea();
@@ -60,6 +60,7 @@ class Layout {
         double evaluateTotalArea();
         double calcuHPWL(vector< tuple<double, double> > comp_in_net);
         double calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list);
+        void preplaceCheck(TreeNode* node);
 
 };
 
