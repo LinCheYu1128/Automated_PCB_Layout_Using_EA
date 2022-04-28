@@ -14,14 +14,9 @@ function init() {
     let placement_csv = readTextFile("./placement.csv");
     let placement_data = Placement_ArrayToMap(placement_csv);
 
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xFFFFFF);
-
+    addScene({"axisHelper": false, "grid": true});
     createCamera();
 
-    // let axesHelper = new THREE.AxesHelper(50);
-    // scene.add(axesHelper);
-    
     renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
     renderer.setSize(window.innerWidth-250, window.innerHeight);
     document.getElementById("3D").appendChild(renderer.domElement);
@@ -30,7 +25,7 @@ function init() {
     let component_list = {};
 
     createLight();
-    createLayout(placement_data);
+    createLayout(placement_data, {"axisHelper": false});
     createController();
 }
 
@@ -59,6 +54,23 @@ function drawPlacement(placement_data, board_data) {
 //     }
 // }
 
+function addScene(controls) {
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff);
+
+    if (controls["axisHelper"]) {
+        let axesHelper = new THREE.AxesHelper(50);
+        scene.add(axesHelper);
+    }
+
+    if (controls["grid"]) {
+        let size = 50;
+        let divisions = 50;
+        let gridHelper = new THREE.GridHelper(size, divisions, 0x666666, 0xcccccc);
+        scene.add(gridHelper);
+    }
+}
+
 function createBoard(length, width, height) {
     let plate = {
         "size": [length, width, height],
@@ -79,6 +91,27 @@ function createBoard(length, width, height) {
     board.name = "board";
     layout.add(board);
     return board;
+}
+
+function createLayout(placement_data, controls) {
+    let length = 29.2;
+    let width = 32.5;
+    let height = 1.2;
+    layout = new THREE.Group();
+
+    layout.rotation.x = -Math.PI/2;
+    layout.translateX(-length/2);
+    layout.translateY(-width/2);    
+    
+    createBoard(length, width, height);
+    drawPlacement(placement_data, [length, width, height]);
+
+    scene.add(layout);
+
+    if (controls["axisHelper"]) {
+        let layoutAxis = new THREE.AxesHelper(20);
+        layout.add(layoutAxis);
+    }
 }
 
 function createShapeGeometry(position, size, color) {
@@ -115,7 +148,6 @@ function createOBJGeometry(component, board_data) {
                         child.name = comp_id;
                         // component_mesh.push(child);
                         setOBJPosition(child, comp_angle, side);
-
                         let box = new THREE.Box3().setFromObject(child);
                         box.getCenter(child.position);
                         child.position.multiplyScalar(-1);
@@ -128,63 +160,72 @@ function createOBJGeometry(component, board_data) {
 
                 obj.translateX(component["margin"] + component["position"][0] + component["size"][0]/2);
                 obj.translateY(component["margin"] + component["position"][1] + component["size"][1]/2);
-                if (side == "front") {
-                    obj.translateZ(component["size"][2]/2 + board_data[2]/2);
-                } else {
-                    obj.translateZ(-(component["size"][2]/2 + board_data[2]/2));
-                }
+                
+                if (side == "front") {obj.translateZ(component["size"][2]/2 + board_data[2]/2);}
+                else {obj.translateZ(-(component["size"][2]/2 + board_data[2]/2));}
+                
                 layout.add(obj);
-                let box = new THREE.BoxHelper(obj, 0xffff00);
-                box.geometry.computeBoundingBox();
+
+                // let box = new THREE.BoxHelper(obj, 0xffff00);
+                // box.geometry.computeBoundingBox();
                 // layout.add(box);
             }
         );
     }
 }
 
-function createCamera(type="orthographic") {
+function createCamera(type="perspective") {
     if (type == "perspective") {
-        camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 1, 1000);
     } else if (type == "orthographic") {
         let scale = 35;
         let width = (window.innerWidth-250)/scale;
         let height = window.innerHeight/scale;
-        camera = new THREE.OrthographicCamera(-width, width, height, -height, -50, 500);
+        camera = new THREE.OrthographicCamera(-width, width, height, -height, 1, 500);
     }
-    camera.position.set(30, 30, 30);
+    camera.position.set(80, 80, 80);
+}
+
+function createDirectionalLight(position, color) {
+    let light = new THREE.DirectionalLight(color);
+    light.position.set(...position);
+    return light;
 }
 
 function createLight() {
     lightHolder = new THREE.Group();
-    let light = new THREE.AmbientLight(0x808080); // soft white light
+    let light = new THREE.AmbientLight(0x808080);
     lightHolder.add(light);
-    let spotLight = new THREE.SpotLight(0xd0d0d0)
-    spotLight.position.set(100, 100, 200);
-    lightHolder.add(spotLight)
-    scene.add(lightHolder);
-}
 
-function createLayout(placement_data) {
-    let length = 29.2;
-    let width = 32.5;
-    let height = 1.2;
-    layout = new THREE.Group();
-    layout.translateX(-length/2);
-    layout.translateZ(width/2);
-    layout.rotation.x = -Math.PI/2;
+    let dir_light_top = createDirectionalLight([0, 80, 0], 0xffffff);
+    lightHolder.add(dir_light_top);
+
+    let dir_light_bottom = createDirectionalLight([0, -80, 0], 0xffffff);
+    lightHolder.add(dir_light_bottom);
+
+    let dir_light_front = createDirectionalLight([80, 0, 0], 0x888888);
+    lightHolder.add(dir_light_front);
+
+    let dir_light_back = createDirectionalLight([-80, 0, 0], 0x888888);
+    lightHolder.add(dir_light_back);
     
-    createBoard(length, width, height);
-    drawPlacement(placement_data, [length, width, height]);
+    let dir_light_left = createDirectionalLight([0, 0, 80], 0x888888);
+    lightHolder.add(dir_light_left);
 
-    scene.add(layout);
+    let dir_light_right = createDirectionalLight([0, 0, -80], 0x888888);
+    lightHolder.add(dir_light_right);
+
+    scene.add(lightHolder);
 }
 
 function createController() {
     controls = new TrackballControls(camera, renderer.domElement);
-    controls.rotateSpeed = 3;
-    controls.dynamicDampingFactor = 1;
+    controls.rotateSpeed = 5;
     controls.panSpeed = 4;
-    controls.zoomSpeed = 1.2;
+    controls.zoomSpeed = 2;
+    controls.dynamicDampingFactor = 1;
+    controls.minDistance = 30;
+    controls.maxDistance = 1000;
 }
 
 function onWindowResize() {
@@ -206,14 +247,13 @@ function onMouseMove(event) {
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
-    lightHolder.quaternion.copy(camera.quaternion);
-    // // raytracing();
+    // lightHolder.quaternion.copy(camera.quaternion);
+    // raytracing();
     renderer.render(scene, camera);
 }
 
 window.addEventListener('resize', onWindowResize);
 window.addEventListener('mousemove', onMouseMove);
-
 
 init();
 animate();
@@ -223,136 +263,6 @@ animate();
 
 let INTERSECTED;
 // const raycaster = new THREE.Raycaster();
-
-// function createGeometry(name, size, position, angle, color, parent, side) {
-//     var geometry;
-//     var material;
-//     let object;
-//     var loader = new OBJLoader();
-//     console.log(name)
-//     var namelist = ["R501", "R526", "B_RootHole", "F_RootHole", "Origin"];
-//     if (!namelist.includes(name)) {
-//         loader.load('obj/'+name+'.obj',
-//         function (obj) {
-//             obj.traverse( function(child) {
-//                 if (child instanceof THREE.Mesh) {
-//                     child.name = name;
-//                     component_mesh.push(child);
-//                     // child.material.map = texture;
-//                     setPosition(child, angle, side);
-
-//                     let box = new THREE.Box3().setFromObject(child);
-//                     box.getCenter(child.position);
-//                     child.position.multiplyScalar(-1);
-//                     child.position.z = 0;
-//                     child.material.color.set(parseInt(color));
-//                     child.material.transparent = true;
-//                 }
-//             });
-//             obj.name = name;
-//             component_list[name] = obj;
-
-//             obj.translateX(position[0]);
-//             obj.translateY(position[1]);
-//             obj.translateZ(position[2]);
-//             let box = new THREE.BoxHelper(obj, 0xffff00);
-//             box.geometry.computeBoundingBox();
-//             // group.add(box);
-//             parent.add(obj);
-//             // scene.add(box);
-//         });
-//     } else {
-//         geometry = new THREE.BoxGeometry(size[0], size[1], size[2]);
-//         console.log(geometry)
-//         material = new THREE.MeshPhongMaterial( { color: parseInt(color), transparent: true } );
-//         if (color == 0x00000000) {
-//             material.opacity = 0.01;
-//         }
-//         object = new THREE.Mesh( geometry, material );
-        
-//         object.translateX(position[0]);
-//         object.translateY(position[1]);
-//         if (side == 0) {
-//             object.translateZ(position[2] + size[2]/2);
-//         }
-//         else if (side == 1) {
-//             object.translateZ(position[2] - size[2]/2);
-//         }
-//         component_list[name] = object;
-//         object.name = name;
-//         component_mesh.push(object);
-//         parent.add(object);
-//     }
-// }
-
-// const layout = new THREE.Group();
-// layout.translateX(-PCB_DATA["Main"]["size"][0]/2 + 10);
-// layout.translateZ(PCB_DATA["Main"]["size"][1]/2 + 10);
-// layout.rotation.x = -Math.PI/2;
-// layout.visible = true;
-// const board = createBoard(PCB_DATA["Main"], PCB_DATA["Hole"]);
-// layout.add(board)
-// component_mesh.push(board);
-
-// let PCB_SIZE = PCB_DATA["Main"]["size"];
-// let PCB_POS = PCB_DATA["Main"]["position"];
-// let PCB_COLOR = PCB_DATA["Main"]["color"];
-
-// // let COMP_ORIGIN = [-PCB_SIZE[0]/2, -PCB_SIZE[1]/2, 0];
-// let COMP_ORIGIN = [0, 0, 0];
-// let COMP_LIST_F = front_data;
-// let COMP_LIST_B = back_data;
-
-// if (kSingleDoubleSided == 0) {
-//     for (i in COMP_LIST_F) {
-//         let position = [COMP_ORIGIN[0] + COMP_LIST_F[i]["size"][0]/2 + COMP_LIST_F[i]["position"][0], COMP_ORIGIN[1] + COMP_LIST_F[i]["size"][1]/2 + COMP_LIST_F[i]["position"][1], COMP_ORIGIN[2] + PCB_SIZE[2]/2];
-//         createGeometry(i, COMP_LIST_F[i]["size"], position, COMP_LIST_F[i]["angle"], COMP_LIST_F[i]["color"], layout, COMP_LIST_F[i]["position"][2]);
-//     }
-// } else if (kSingleDoubleSided == 1) {
-//     for (i in COMP_LIST_F) {
-//         let position = [COMP_ORIGIN[0] + COMP_LIST_F[i]["size"][0]/2 + COMP_LIST_F[i]["position"][0], COMP_ORIGIN[1] + COMP_LIST_F[i]["size"][1]/2 + COMP_LIST_F[i]["position"][1], COMP_ORIGIN[2] + PCB_SIZE[2]/2];
-//         createGeometry(i, COMP_LIST_F[i]["size"], position, COMP_LIST_F[i]["angle"], COMP_LIST_F[i]["color"], layout, COMP_LIST_F[i]["position"][2]);
-
-//         // if (i == "T501") {
-//         //     for (let x = 0; x < COMP_LIST_F[i]["pin position"].length; x++) {
-//         //         if (x == 2 || x == 3 || x == 9 || x == 10 || x == 11 ) continue;
-//         //         let s_geo = new THREE.SphereGeometry( 1, 32, 16 );
-//         //         let s_mat = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
-//         //         let s = new THREE.Mesh( s_geo, s_mat );
-//         //         s.translateX(COMP_LIST_F[i]["pin position"][x][0]);
-//         //         s.translateY(COMP_LIST_F[i]["pin position"][x][1]);
-//         //         layout.add( s );
-//         //     }
-//         //     let c_geo = new THREE.SphereGeometry( 2, 32, 16 );
-//         //     let c_mat = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
-//         //     let c = new THREE.Mesh( c_geo, c_mat );
-//         //     c.translateX(COMP_ORIGIN[0] + COMP_LIST_F[i]["size"][0]/2 + COMP_LIST_F[i]["position"][0]);
-//         //     c.translateY(COMP_ORIGIN[1] + COMP_LIST_F[i]["size"][1]/2 + COMP_LIST_F[i]["position"][1]);
-//         //     layout.add( c );
-//         // }
-//     }
-//     for (i in COMP_LIST_B) {
-//         let position = [COMP_ORIGIN[0] + COMP_LIST_B[i]["size"][0]/2 + COMP_LIST_B[i]["position"][0], COMP_ORIGIN[1] + COMP_LIST_B[i]["size"][1]/2 + COMP_LIST_B[i]["position"][1], COMP_ORIGIN[2] - PCB_SIZE[2]/2];
-//         createGeometry(i, COMP_LIST_B[i]["size"], position, COMP_LIST_B[i]["angle"], COMP_LIST_B[i]["color"], layout, COMP_LIST_B[i]["position"][2]);
-
-//         // if (i == "T501") {
-//         //     for (let x = 0; x < COMP_LIST_B[i]["pin position"].length; x++) {
-//         //         if (x == 2 || x == 3 || x == 9 || x == 10 || x == 11 ) continue;
-//         //         let s_geo = new THREE.SphereGeometry( 1, 32, 16 );
-//         //         let s_mat = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
-//         //         let s = new THREE.Mesh( s_geo, s_mat );
-//         //         s.translateX(COMP_LIST_B[i]["pin position"][x][0]);
-//         //         s.translateY(COMP_LIST_B[i]["pin position"][x][1]);
-//         //         layout.add( s );
-//         //     }
-//         // }
-//     }
-// }
-
-
-
-
-
 
 // function raytracing() {
 //     camera.updateMatrixWorld();
@@ -659,7 +569,7 @@ let INTERSECTED;
 function setOBJPosition(geometry, angle, side) {
     let deg_90 = Math.PI/2;
     
-    geometry.rotateX(deg_90);
+    // geometry.rotateX(deg_90);
     // geometry.rotateY(deg_90);
 
     // rotate angle
