@@ -52,7 +52,7 @@ export class Layout {
 export function Placement_ArrayToMap(arrData) {
     let mapData = {};
     let component;
-    let  shift = 0.5;
+    let shift = 0.5;
     for (let i = 0; i < arrData.length; i++) {
         component = arrData[i];
         mapData[component[0]] = {
@@ -74,7 +74,7 @@ export function Placement_ArrayToMap(arrData) {
 export function Pin_ArrayToMap(arrData) {
     let mapData = {};
     let pin;
-    let  shift = 0.5;
+    let shift = 0.5;
     for (let i = 0; i < arrData.length; i++) {
         pin = arrData[i];
         if (!mapData[pin[0]]) {mapData[pin[0]] = {};}

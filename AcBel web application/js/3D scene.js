@@ -34,7 +34,7 @@ function init() {
     createController();
 }
 
-function drawPlacement(placement_data) {
+function drawPlacement(placement_data, board_data) {
     let comp_id;
     let roots = ["F_RootHole", "B_RootHole"];
     for (let r in roots) {
@@ -44,7 +44,7 @@ function drawPlacement(placement_data) {
         while (stack.length != 0) {
             comp_id = stack.pop();
             if (comp_id == "null") {continue;}
-            createOBJGeometry(placement_data[comp_id]);
+            createOBJGeometry(placement_data[comp_id], board_data);
             stack.push(placement_data[comp_id]["leftChild"]);
             stack.push(placement_data[comp_id]["rightChild"]);
         }
@@ -59,9 +59,9 @@ function drawPlacement(placement_data) {
 //     }
 // }
 
-function createBoard() {
+function createBoard(length, width, height) {
     let plate = {
-        "size": [29.2, 32.5, 1.2],
+        "size": [length, width, height],
         "position": [0, 0, 0],
         "color": "0x197531",
     };
@@ -91,7 +91,7 @@ function createShapeGeometry(position, size, color) {
     shape.lineTo(position[0], position[1]);
     let extrudeSettings = {
         steps: 2,
-        depth: 1.2,
+        depth: size[2],
         bevelEnabled: false,
     };
     let geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
@@ -100,7 +100,7 @@ function createShapeGeometry(position, size, color) {
     return mesh;
 }
 
-function createOBJGeometry(component) {
+function createOBJGeometry(component, board_data) {
     let loader = new OBJLoader();
     let comp_id = component["name"];
     let comp_color = component["color"];
@@ -114,12 +114,11 @@ function createOBJGeometry(component) {
                     if (child instanceof THREE.Mesh) {
                         child.name = comp_id;
                         // component_mesh.push(child);
-                        setPosition(child, comp_angle, side);
+                        setOBJPosition(child, comp_angle, side);
 
                         let box = new THREE.Box3().setFromObject(child);
                         box.getCenter(child.position);
                         child.position.multiplyScalar(-1);
-                        child.position.z = 0;
                         child.material.color.set(comp_color);
                         child.material.transparent = true;
                     }
@@ -127,9 +126,13 @@ function createOBJGeometry(component) {
                 obj.name = comp_id;
                 // component_list[comp_id] = obj;
 
-                obj.translateX(component["margin"] + component["position"][0]);
-                obj.translateY(component["margin"] + component["position"][1]);
-                obj.translateZ(0.5);
+                obj.translateX(component["margin"] + component["position"][0] + component["size"][0]/2);
+                obj.translateY(component["margin"] + component["position"][1] + component["size"][1]/2);
+                if (side == "front") {
+                    obj.translateZ(component["size"][2]/2 + board_data[2]/2);
+                } else {
+                    obj.translateZ(-(component["size"][2]/2 + board_data[2]/2));
+                }
                 layout.add(obj);
                 let box = new THREE.BoxHelper(obj, 0xffff00);
                 box.geometry.computeBoundingBox();
@@ -162,13 +165,16 @@ function createLight() {
 }
 
 function createLayout(placement_data) {
+    let length = 29.2;
+    let width = 32.5;
+    let height = 1.2;
     layout = new THREE.Group();
-    layout.translateX(-29.2/2);
-    layout.translateZ(32.5/2);
+    layout.translateX(-length/2);
+    layout.translateZ(width/2);
     layout.rotation.x = -Math.PI/2;
     
-    createBoard();
-    drawPlacement(placement_data);
+    createBoard(length, width, height);
+    drawPlacement(placement_data, [length, width, height]);
 
     scene.add(layout);
 }
@@ -207,42 +213,6 @@ function animate() {
 
 window.addEventListener('resize', onWindowResize);
 window.addEventListener('mousemove', onMouseMove);
-
-
-// let placement_csv = readTextFile("./placement.csv");
-// let placement_data = Placement_ArrayToMap(placement_csv);
-
-// scene = new THREE.Scene();
-// scene.background = new THREE.Color(0xFFFFFF);
-// let axesHelper = new THREE.AxesHelper(50);
-// scene.add(axesHelper);
-// let scale = 35;
-// let width = (window.innerWidth)/scale;
-// let height = window.innerHeight/scale;
-// camera = new THREE.OrthographicCamera(-width, width, height, -height, -50, 500);
-// camera.position.set(30, 30, 30);
-
-// // axesHelper = new THREE.AxesHelper(50);
-// // scene.add(axesHelper);
-
-// renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
-// renderer.setSize(window.innerWidth, window.innerHeight);
-// document.getElementById("3D").appendChild(renderer.domElement);
-
-// let component_mesh = [];
-// let component_list = {};
-
-// createLight();
-// createLayout(placement_data);
-
-// controls = new TrackballControls(camera, renderer.domElement);
-// controls.rotateSpeed = 3;
-// controls.dynamicDampingFactor = 1;
-// controls.panSpeed = 4;
-// controls.zoomSpeed = 1.2;
-
-// animate();
-
 
 
 init();
@@ -686,15 +656,17 @@ let INTERSECTED;
 // createPanel();
 // console.log(component_list)
 
-function setPosition(geometry, angle, side) {
-    geometry.rotateX(Math.PI/2);
-    geometry.rotateY(Math.PI/2);
-
-    if (angle == 1) {
-        geometry.rotateY(Math.PI/2);
-    }
+function setOBJPosition(geometry, angle, side) {
+    let deg_90 = Math.PI/2;
     
-    if (side == 1){
+    geometry.rotateX(deg_90);
+    // geometry.rotateY(deg_90);
+
+    // rotate angle
+    geometry.rotateY(deg_90*(angle/90));
+    
+    // flip
+    if (side == "back"){
         geometry.rotateX(Math.PI);
     }
 
