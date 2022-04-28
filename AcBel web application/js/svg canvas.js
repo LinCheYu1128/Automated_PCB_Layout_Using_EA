@@ -4,6 +4,7 @@ import {SVG_Controller} from "./svg controller.js";
 export class Canvas {
     constructor(side, data) {
         this.placement_data = data["placement_data"];
+        this.preplace_data = data["preplace_data"];
         this.pin_data = data["pin_data"];
         this.net_data = data["net_data"];
         this.side = side;
@@ -23,6 +24,7 @@ export class Canvas {
         this.drawGrid();
         this.drawBoundary();
         this.drawPlacement();
+        this.drawPreplace();
         document.getElementById('Layout_'+this.side).appendChild(this.svg);
     }
 
@@ -61,7 +63,7 @@ export class Canvas {
         while (stack.length != 0) {
             comp_id = stack.pop();
             if (comp_id == "null") {continue;}
-            placement_data[comp_id]["side"] = this.side;
+            // placement_data[comp_id]["side"] = this.side;
             this.create2DGeometry({"component": placement_data[comp_id], "fill": placement_data[comp_id]["color"]});
             this.createText({"component": placement_data[comp_id]});
             // console.log(comp_id);
@@ -71,8 +73,21 @@ export class Canvas {
         }
     }
 
+    drawPreplace() {
+        let preplace_data = this.preplace_data;
+        let stack = [];
+
+        for (let [comp_id, value] of Object.entries(this.preplace_data)) {
+            if (preplace_data[comp_id]["side"] == this.side) {
+                this.create2DGeometry({"component": preplace_data[comp_id], "fill": preplace_data[comp_id]["color"]});
+                this.createText({"component": preplace_data[comp_id]});
+                // this.drawPin(comp_id);
+            }
+        }
+    }
+
     drawPin(name) {
-        console.log(this.pin_data[name]);
+        // console.log(this.pin_data[name]);
         for (let [key, value] of Object.entries(this.pin_data[name])) {
             this.create2DGeometry({"component": this.pin_data[name][key], "stroke_width": 0, "alignment": "center", "fill": "#111111"});
             // this.createText({"component": this.pin_data[name][key], "name": this.pin_data[name][key]["name"]}); /*.slice(-1)*/

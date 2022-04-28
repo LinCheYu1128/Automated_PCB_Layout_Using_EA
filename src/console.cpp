@@ -26,11 +26,11 @@ void Console::run() {
     
     GA_optimizer->crossover();
 
-    // for(int i = 0; i < generation; i++){
-    //     // if(i % 10 == 9){
-    //     //     cout << "generation: " << i << endl;
-    //     // }
-    //     cout << "generation: " << i << endl;
+    for(int i = 0; i < generation; i++){
+        // if(i % 10 == 9){
+        //     cout << "generation: " << i << endl;
+        // }
+        cout << "generation: " << i << endl;
 
         GA_optimizer->crossover();
         // GA_optimizer->evaluate("offspring");
@@ -67,9 +67,9 @@ void Console::run() {
 
     //     // cout << endl << endl;
 
-    //     writeCsv(GA_optimizer->getBestOffspring());
-    //     writePin(GA_optimizer->getBestOffspring());
-    // }
+        writeCsv(GA_optimizer->getBestOffspring());
+        writePin(GA_optimizer->getBestOffspring());
+    }
     
     
 }

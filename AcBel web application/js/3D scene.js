@@ -5,16 +5,16 @@ import {OBJLoader} from 'https://threejsfundamentals.org/threejs/resources/three
 import CSG from "./CSGMesh/three-csg.js";
 
 import {readTextFile} from "./files/inputFile.js"
-import {Placement_ArrayToMap} from "./Layout.js"
+import {Placement_ArrayToMap, Preplace_ArrayToMap} from "./Layout.js"
 
 let camera, controls, scene, renderer, layout, lightHolder;
 let mouse = new THREE.Vector2();
 
 function init() {
-    let placement_csv = readTextFile("./placement.csv");
-    let placement_data = Placement_ArrayToMap(placement_csv);
+    let placement_data = Placement_ArrayToMap(readTextFile("./placement.csv"));
+    let preplace_data = Preplace_ArrayToMap(readTextFile("./preplace.csv"));
 
-    addScene({"axisHelper": true, "grid": true});
+    addScene({"axisHelper": false, "grid": true});
     createCamera();
 
     renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
@@ -25,7 +25,7 @@ function init() {
     let component_list = {};
 
     createLight();
-    createLayout(placement_data, {"axisHelper": false});
+    createLayout(placement_data, preplace_data, {"axisHelper": false});
     createController();
 }
 
@@ -54,18 +54,18 @@ function addScene(controls) {
     }
 }
 
-function createLayout(placement_data, controls) {
+function createLayout(placement_data, preplace_data, controls) {
     let length = 29.2;
     let width = 32.5;
     let height = 1.2;
     layout = new THREE.Group();
 
     // layout.rotation.x = -Math.PI/2;
-    // layout.translateX(-length/2);
-    // layout.translateY(-width/2);    
+    layout.translateX(-length/2);
+    layout.translateZ(width/2);    
     
     createBoard([length, width, height]);
-    drawPlacement(placement_data, [length, width, height]);
+    drawPlacement(placement_data, preplace_data, [length, width, height]);
 
     scene.add(layout);
 
@@ -92,11 +92,9 @@ function createBoard(size) {
     let bspResult = bspA.subtract(bspB);
     let board = CSG.toMesh(bspResult, box_geometry.matrix, box_geometry.material);
     board.rotateX(-Math.PI/2);
-    board.translateX(-size[0]/2);
-    board.translateY(-size[1]/2);
     board.translateZ(-size[2]/2);
-    let boardAxis = new THREE.AxesHelper(20);
-    board.add(boardAxis);
+    // let boardAxis = new THREE.AxesHelper(20);
+    // board.add(boardAxis);
     board.name = "board";
     layout.add(board);
     return board;
@@ -121,7 +119,7 @@ function createShapeGeometry(position, size, color) {
     return mesh;
 }
 
-function drawPlacement(placement_data, board_data) {
+function drawPlacement(placement_data, preplace_data, board_data) {
     let comp_id;
     let roots = ["F_RootHole", "B_RootHole"];
     for (let r in roots) {
@@ -131,10 +129,15 @@ function drawPlacement(placement_data, board_data) {
         while (stack.length != 0) {
             comp_id = stack.pop();
             if (comp_id == "null") {continue;}
-            createOBJGeometry(placement_data[comp_id], board_data, {"axisHelper": true});
+            createOBJGeometry(placement_data[comp_id], board_data, {"axisHelper": false});
             stack.push(placement_data[comp_id]["leftChild"]);
             stack.push(placement_data[comp_id]["rightChild"]);
         }
+    }
+
+    for (let i in preplace_data) {
+        console.log(preplace_data[i])
+        createOBJGeometry(preplace_data[i], board_data, {"axisHelper": false});
     }
 }
 
@@ -144,7 +147,7 @@ function createOBJGeometry(component, board_data, controls) {
     let comp_color = component["color"];
     let comp_angle = component["angle"];
     let side = component["side"];
-    var namelist = ["R501", "R526", "B_RootHole", "F_RootHole", "Origin"];
+    var namelist = ["R501", "B_RootHole", "F_RootHole", "Origin"];
     if (!namelist.includes(comp_id)) {
         loader.load('./../resources/obj files/'+comp_id+'.obj',
             function (obj) {
@@ -163,11 +166,17 @@ function createOBJGeometry(component, board_data, controls) {
                 obj.name = comp_id;
                 // component_list[comp_id] = obj;
 
-                obj.translateX(component["margin"] + component["position"][0] + component["size"][0]/2);
-                obj.translateZ(component["margin"] + component["position"][1] + component["size"][1]/2);
+                obj.translateX((component["margin"] + component["position"][0] + component["size"][0]/2));
+                obj.translateZ(-(component["margin"] + component["position"][1] + component["size"][1]/2));
                 
-                if (side == "front") {obj.translateY(component["size"][2]/2 + board_data[2]/2);}
-                else {obj.translateY(-(component["size"][2]/2 + board_data[2]/2));}
+                if (side == "front") {
+                    if (comp_id == "T501") {obj.translateY(component["size"][2]/2.5 + board_data[2]/2);}
+                    else {obj.translateY(component["size"][2]/2 + board_data[2]/2);}
+                }
+                else if (side == "back") {
+                    if (comp_id == "T501") {obj.translateY(-(component["size"][2]/2.5 + board_data[2]/2));}
+                    else {obj.translateY(-(component["size"][2]/2 + board_data[2]/2));}
+                }
 
                 if (controls["axisHelper"]) {
                     let axesHelper = new THREE.AxesHelper(10);
@@ -219,10 +228,10 @@ function createLight() {
     let dir_light_back = createDirectionalLight([-80, 0, 0], 0x888888);
     lightHolder.add(dir_light_back);
     
-    let dir_light_left = createDirectionalLight([0, 0, 80], 0x888888);
+    let dir_light_left = createDirectionalLight([0, 0, 80], 0x222222);
     lightHolder.add(dir_light_left);
 
-    let dir_light_right = createDirectionalLight([0, 0, -80], 0x888888);
+    let dir_light_right = createDirectionalLight([0, 0, -80], 0x222222);
     lightHolder.add(dir_light_right);
 
     scene.add(lightHolder);
@@ -231,7 +240,7 @@ function createLight() {
 function createController() {
     controls = new TrackballControls(camera, renderer.domElement);
     controls.rotateSpeed = 5;
-    controls.panSpeed = 4;
+    controls.panSpeed = 1;
     controls.zoomSpeed = 2;
     controls.dynamicDampingFactor = 1;
     controls.minDistance = 30;
@@ -239,7 +248,6 @@ function createController() {
 }
 
 function onWindowResize() {
-    console.log("resize")
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);

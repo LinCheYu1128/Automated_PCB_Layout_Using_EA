@@ -3,15 +3,16 @@ import {Canvas} from "./svg canvas.js";
 import {drawTree} from "./drawTree.js"
 
 export class Layout {
-    constructor(placement_csv, pin_csv, net_csv) {
+    constructor(placement_csv, pin_csv, preplace_csv, net_csv) {
         this.component_data = {};
-        this.placement_mapData = Placement_ArrayToMap(placement_csv);
-        this.pin_mapData = Pin_ArrayToMap(pin_csv);
-        this.net_mapData = Net_ArrayToMap(net_csv);
-        this.layout_front = new Canvas("front", {"placement_data": this.placement_mapData, "pin_data": this.pin_mapData, "net_data": this.net_mapData});
-        this.layout_back = new Canvas("back", {"placement_data": this.placement_mapData, "pin_data": this.pin_mapData, "net_data": this.net_mapData});
+        this.placement_data = Placement_ArrayToMap(placement_csv);
+        this.preplace_data = Preplace_ArrayToMap(preplace_csv);
+        this.pin_data = Pin_ArrayToMap(pin_csv);
+        this.net_data = Net_ArrayToMap(net_csv);
+        this.layout_front = new Canvas("front", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data});
+        this.layout_back = new Canvas("back", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data});
 
-        drawTree({divID: 'Tree', width: 1500, height: 800, padding: 50, treeData: MapToTree(this.placement_mapData, placement_csv)});
+        drawTree({divID: 'Tree', width: 1500, height: 800, padding: 50, treeData: MapToTree(this.placement_data, placement_csv)});
     }
 
     importPlacement(arrData) {
@@ -49,12 +50,12 @@ export class Layout {
     }
 };
 
-export function Placement_ArrayToMap(arrData) {
+export function Placement_ArrayToMap(csv) {
     let mapData = {};
     let component;
     let shift = 0.5;
-    for (let i = 0; i < arrData.length; i++) {
-        component = arrData[i];
+    for (let i = 0; i < csv.length; i++) {
+        component = csv[i];
         mapData[component[0]] = {
             "name": component[0],
             "color": "#"+component[1],
@@ -71,12 +72,33 @@ export function Placement_ArrayToMap(arrData) {
     return mapData;
 }
 
-export function Pin_ArrayToMap(arrData) {
+export function Preplace_ArrayToMap(csv) {
+    let mapData = {};
+    let component;
+    let shift = 0.5;
+    for (let i = 0; i < csv.length; i++) {
+        component = csv[i];
+        mapData[component[0]] = {
+            "name": component[0],
+            "color": "#"+component[1],
+            "size": [Number(component[2]), Number(component[3]), Number(component[4])],
+            "voltage": Number(component[5]),
+            "position": [Number(component[6]) + shift, Number(component[7]) + shift],
+            "margin": 0,
+            // "angle": Number(component[9]),
+            "side": component[8],
+            "pierce": component[9],
+        }
+    }
+    return mapData;
+}
+
+export function Pin_ArrayToMap(pin_csv) {
     let mapData = {};
     let pin;
     let shift = 0.5;
-    for (let i = 0; i < arrData.length; i++) {
-        pin = arrData[i];
+    for (let i = 0; i < pin_csv.length; i++) {
+        pin = pin_csv[i];
         if (!mapData[pin[0]]) {mapData[pin[0]] = {};}
         mapData[pin[0]][pin[1]] = {
             "name": pin[0] + "-" + pin[1],
@@ -88,11 +110,11 @@ export function Pin_ArrayToMap(arrData) {
     return mapData;
 }
 
-export function Net_ArrayToMap(arrData) {
+export function Net_ArrayToMap(csv) {
     let mapData = {};
     let pin_id;
-    for (let i = 0; i < arrData.length; i++) {
-        pin_id = arrData[i];
+    for (let i = 0; i < csv.length; i++) {
+        pin_id = csv[i];
         mapData[pin_id[0]] = {
             "name": pin_id[0],
             "begin": pin_id[1],
