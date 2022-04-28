@@ -73,20 +73,6 @@ void GA::crossover() {
 
     this->offspring.clear();
 
-<<<<<<< HEAD
-    for(unsigned i = 0; i < this->population.size(); i++) {
-        // cout << "test 1" << endl;
-        vector<Layout*> Parents = this->parentSelect();
-        // cout << "test 2" << endl;
-        // Layout *child = nothingCrossover(Parents);
-        Layout *child = kPointCrossover(Parents, 3);
-        // Layout *child = Parents[0]->copy();
-        // cout << "test 3" << endl;
-        offspring.push_back(child);
-        // cout << "test 4" << endl;
-    }
-
-=======
     // for(unsigned i = 0; i < this->population.size(); i++) {
     //     // cout << "test 1" << endl;
     //     vector<Layout*> Parents = this->parentSelect();
@@ -101,7 +87,6 @@ void GA::crossover() {
     Layout *child = randomSubtreeCrossover(Parents);
     child->getBinaryTree()->printBinaryTree();
     // delete_test(Parents);
->>>>>>> 22e37c7091ea1fa66b4e7b95a32f1edeb3138f87
     // cout << "End Crossover" << endl;
 }
 

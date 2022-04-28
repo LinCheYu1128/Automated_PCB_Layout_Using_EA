@@ -14,7 +14,7 @@ function init() {
     let placement_csv = readTextFile("./placement.csv");
     let placement_data = Placement_ArrayToMap(placement_csv);
 
-    addScene({"axisHelper": false, "grid": true});
+    addScene({"axisHelper": true, "grid": true});
     createCamera();
 
     renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
@@ -27,23 +27,6 @@ function init() {
     createLight();
     createLayout(placement_data, {"axisHelper": false});
     createController();
-}
-
-function drawPlacement(placement_data, board_data) {
-    let comp_id;
-    let roots = ["F_RootHole", "B_RootHole"];
-    for (let r in roots) {
-        let stack = [];
-        stack.push(placement_data[roots[r]]["leftChild"]);
-        stack.push(placement_data[roots[r]]["rightChild"]);
-        while (stack.length != 0) {
-            comp_id = stack.pop();
-            if (comp_id == "null") {continue;}
-            createOBJGeometry(placement_data[comp_id], board_data);
-            stack.push(placement_data[comp_id]["leftChild"]);
-            stack.push(placement_data[comp_id]["rightChild"]);
-        }
-    }
 }
 
 // drawPin(name) {
@@ -71,9 +54,30 @@ function addScene(controls) {
     }
 }
 
-function createBoard(length, width, height) {
+function createLayout(placement_data, controls) {
+    let length = 29.2;
+    let width = 32.5;
+    let height = 1.2;
+    layout = new THREE.Group();
+
+    // layout.rotation.x = -Math.PI/2;
+    // layout.translateX(-length/2);
+    // layout.translateY(-width/2);    
+    
+    createBoard([length, width, height]);
+    drawPlacement(placement_data, [length, width, height]);
+
+    scene.add(layout);
+
+    if (controls["axisHelper"]) {
+        let layoutAxis = new THREE.AxesHelper(20);
+        layout.add(layoutAxis);
+    }
+}
+
+function createBoard(size) {
     let plate = {
-        "size": [length, width, height],
+        "size": size,
         "position": [0, 0, 0],
         "color": "0x197531",
     };
@@ -87,31 +91,15 @@ function createBoard(length, width, height) {
     let bspB = CSG.fromMesh(hole_geometry);
     let bspResult = bspA.subtract(bspB);
     let board = CSG.toMesh(bspResult, box_geometry.matrix, box_geometry.material);
-    board.translateZ(-1.2/2);
+    board.rotateX(-Math.PI/2);
+    board.translateX(-size[0]/2);
+    board.translateY(-size[1]/2);
+    board.translateZ(-size[2]/2);
+    let boardAxis = new THREE.AxesHelper(20);
+    board.add(boardAxis);
     board.name = "board";
     layout.add(board);
     return board;
-}
-
-function createLayout(placement_data, controls) {
-    let length = 29.2;
-    let width = 32.5;
-    let height = 1.2;
-    layout = new THREE.Group();
-
-    layout.rotation.x = -Math.PI/2;
-    layout.translateX(-length/2);
-    layout.translateY(-width/2);    
-    
-    createBoard(length, width, height);
-    drawPlacement(placement_data, [length, width, height]);
-
-    scene.add(layout);
-
-    if (controls["axisHelper"]) {
-        let layoutAxis = new THREE.AxesHelper(20);
-        layout.add(layoutAxis);
-    }
 }
 
 function createShapeGeometry(position, size, color) {
@@ -133,7 +121,24 @@ function createShapeGeometry(position, size, color) {
     return mesh;
 }
 
-function createOBJGeometry(component, board_data) {
+function drawPlacement(placement_data, board_data) {
+    let comp_id;
+    let roots = ["F_RootHole", "B_RootHole"];
+    for (let r in roots) {
+        let stack = [];
+        stack.push(placement_data[roots[r]]["leftChild"]);
+        stack.push(placement_data[roots[r]]["rightChild"]);
+        while (stack.length != 0) {
+            comp_id = stack.pop();
+            if (comp_id == "null") {continue;}
+            createOBJGeometry(placement_data[comp_id], board_data, {"axisHelper": true});
+            stack.push(placement_data[comp_id]["leftChild"]);
+            stack.push(placement_data[comp_id]["rightChild"]);
+        }
+    }
+}
+
+function createOBJGeometry(component, board_data, controls) {
     let loader = new OBJLoader();
     let comp_id = component["name"];
     let comp_color = component["color"];
@@ -159,11 +164,16 @@ function createOBJGeometry(component, board_data) {
                 // component_list[comp_id] = obj;
 
                 obj.translateX(component["margin"] + component["position"][0] + component["size"][0]/2);
-                obj.translateY(component["margin"] + component["position"][1] + component["size"][1]/2);
+                obj.translateZ(component["margin"] + component["position"][1] + component["size"][1]/2);
                 
-                if (side == "front") {obj.translateZ(component["size"][2]/2 + board_data[2]/2);}
-                else {obj.translateZ(-(component["size"][2]/2 + board_data[2]/2));}
-                
+                if (side == "front") {obj.translateY(component["size"][2]/2 + board_data[2]/2);}
+                else {obj.translateY(-(component["size"][2]/2 + board_data[2]/2));}
+
+                if (controls["axisHelper"]) {
+                    let axesHelper = new THREE.AxesHelper(10);
+                    obj.add(axesHelper);
+                }
+
                 layout.add(obj);
 
                 // let box = new THREE.BoxHelper(obj, 0xffff00);
@@ -573,7 +583,7 @@ function setOBJPosition(geometry, angle, side) {
     // geometry.rotateY(deg_90);
 
     // rotate angle
-    geometry.rotateY(deg_90*(angle/90));
+    // geometry.rotateY(deg_90*(angle/90));
     
     // flip
     if (side == "back"){
