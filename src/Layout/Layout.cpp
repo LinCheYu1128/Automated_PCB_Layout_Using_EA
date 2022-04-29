@@ -348,7 +348,7 @@ double Layout::evaluateArea(int side){
     if (MAX_X >= 29.2 + 1) {penalty += 10000*MAX_X;}
     if (MAX_Y >= 32.5 + 1) {penalty += 10000*MAX_Y;}
 
-    return MAX_X * MAX_Y /* + penalty*/;
+    return MAX_X * MAX_Y  + penalty;
 }
 
 double Layout::evaluateTotalArea(){
