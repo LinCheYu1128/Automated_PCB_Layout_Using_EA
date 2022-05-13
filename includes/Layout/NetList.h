@@ -23,6 +23,7 @@ class NetList {
         // vector< Net*>
         // setter
         void setNetList();
+        void outputTwoPinNetList();
 
 };
 

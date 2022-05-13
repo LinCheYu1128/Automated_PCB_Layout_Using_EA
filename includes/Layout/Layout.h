@@ -20,16 +20,18 @@ class Layout {
         BinaryTree* tree;
         Contour* front_contour;
         Contour* back_contour;
-        double area;
-        double Pns;
-        double wirelength;
-        double fitness;
+        double area = 0;
+        double Pns = 0;
+        double wirelength = 0;
+        double fitness = 0;
 
     public:
         // constructor, destructor
         Layout(BinaryTree* tree, ComponentList* comp_list, int side);
         Layout(ComponentList* comp_list, int side);
         ~Layout();
+
+        Layout* copy();
         
         // getter
         BinaryTree* getBinaryTree();
@@ -43,7 +45,7 @@ class Layout {
         // setter
         void setBinaryTree(int side);
         void setContour();
-        void setState(TreeNode*, Contour*);
+        void setState(TreeNode*, string side);
         void updateLayout();
         void setFitness();
         void setArea();
@@ -58,9 +60,11 @@ class Layout {
         double evaluateTotalArea();
         double calcuHPWL(vector< tuple<double, double> > comp_in_net);
         double calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list);
+        void preplaceCheck(TreeNode* node);
 
 };
 
-void writeCsv(Layout layout);
+void writeCsv(Layout* layout, string filename="placement.csv");
+void writePin(Layout* layout, string filename="pin.csv");
 
 #endif

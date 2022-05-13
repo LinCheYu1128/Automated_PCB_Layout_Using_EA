@@ -69,7 +69,7 @@ vector<Layout*> GA::parentSelect() {
 void GA::crossover() {
     // TODO
 
-    cout << "Conduct Crossover" << endl;
+    // cout << "Conduct Crossover" << endl;
 
     this->offspring.clear();
 
@@ -77,34 +77,91 @@ void GA::crossover() {
         // cout << "test 1" << endl;
         vector<Layout*> Parents = this->parentSelect();
         // cout << "test 2" << endl;
+<<<<<<< HEAD
         Layout *child = kPointCrossover(Parents,2);
         // vector<TreeNode*> nodelistA = child->getBinaryTree()->ExtractTree(-1);
         // for(auto point: nodelistA){
         //     cout << point->getID() << " ";
         // }
         // cout << endl;
+=======
+        Layout *child = kPointCrossover(Parents, 3);
+        // Layout *child = Parents[0]->copy();
+>>>>>>> 4e5f951c2de717bfbe33e01e262be267bf759e13
         // cout << "test 3" << endl;
         offspring.push_back(child);
         // cout << "test 4" << endl;
     }
 
-    cout << "End Crossover" << endl;
+    // vector<Layout*> Parents = this->parentSelect();
+    // Layout *child = randomSubtreeCrossover(Parents);
+    // child->getBinaryTree()->printBinaryTree();
+
+    // delete_test(Parents);
+    // cout << "End Crossover" << endl;
 }
 
-void GA::mutation() {
+void GA::mutation(int gen) {
 
     // cout << "Conduct mutation" << endl;
 
     for(unsigned i = 0; i < this->offspring.size(); i++) {
-        swapBranchMutation(this->offspring[i]);
+        // offspring[i]->getBinaryTree()->printBinaryTree();
+        // int mode = 3;
+        int mode ;
+        if(gen < 800) mode = rand() % 7;
+        else mode = rand() % 2;
+        // offspring[i]->getBinaryTree()->printBinaryTree();
+        switch (mode)
+        {
+        case 0:
+            swapNodeMutation(this->offspring[i]);//nono
+            break;
+        case 1:
+            insertMutation(this->offspring[i]);//nono
+            break;
+        case 2:
+            bitwiseMutation(this->offspring[i],0.2);//save
+            break;
+        case 3:
+            shiftSubtreeMutation(this->offspring[i]);//nono
+            break;
+        case 4:
+            swapBranchMutation(this->offspring[i]);//save
+            break;
+        case 5:
+            scrambleMutation(this->offspring[i]);//nono
+            break;
+        case 6:
+            swapSubtreeMutation(this->offspring[i]);//nono
+            break;
+        default:
+            cout << "something wrong" << endl;
+            break;
+        }
         this->offspring[i]->updateLayout();
+        // offspring[i]->getBinaryTree()->printBinaryTree();
+        // // cout << offspring[i] << endl;
+        // vector<TreeNode*> temp = offspring[i]->getBinaryTree()->ExtractTree(offspring[i]->getBinaryTree()->getRoot()->getID());
+        // for(unsigned i = 0; i < temp.size(); i++){
+        //     cout << temp[i]->getComponentProp()->getName() << " ";
+        // }
+        // cout << endl;
     }
-    
+    // cout << offspring[3] << endl;
+    // vector<TreeNode*> temp = offspring[1]->getBinaryTree()->ExtractTree(offspring[1]->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp.size(); i++){
+    //     cout << temp[i]->getComponentProp()->getName() << " ";
+    // }
+    // cout << endl;
     // cout << "End mutation" << endl;
 }
 
 void GA::survivorSelect() {
     sort(this->population.begin(), this->population.end(), SortPop);
+    for (unsigned int i = 0; i < this->offspring.size(); i++) {
+        delete this->population[this->parameter->getPopSize() + i];
+    }
     this->population.erase(this->population.begin() + this->parameter->getPopSize(), this->population.end());
 }
 
@@ -112,21 +169,35 @@ void GA::evaluate(string target){
     if(target == "population"){
         int populationsize = this->getPopulation().size();
         for(int i = 0; i < populationsize; i++){
-            this->getPopulation()[i]->setFitness();
+            this->population[i]->setFitness();
         }
     }else if(target == "offspring"){
         int offspringsize = this->getOffspring().size();
         for(int i = 0; i < offspringsize; i++){
-            this->getOffspring()[i]->setFitness();
+            this->offspring[i]->setFitness();
         }
     }
 }
 
 void GA::updateBestOffspring(){
+    // should use copy function
+    // cout << "pop 1 fitness: " << this->population[0]->getFitness() << endl;
+    // cout << "before best fitness: " << this->bestOffspring->getFitness() << endl;
     Layout* new_best = this->population[0];
     if(new_best->getFitness() <= this->bestOffspring->getFitness()){
-        this->bestOffspring = new_best;
+        // cout << "update" << endl;
+        this->bestOffspring = new_best->copy();
+        new_best->setFitness();
+        this->bestOffspring->setFitness();
     }
+    cout << "after best fitness: " << this->bestOffspring->getFitness() << endl;
+    // cout << this->bestOffspring << endl;
+}
+
+void GA::mergePopulationOffspring(){
+    population.insert(population.end(), offspring.begin(), offspring.end());
+    // sort(this->population.begin(), this->population.end(), SortPop);
+    // offspring.clear();
 }
 
 GA_Parameter* GA::getParameter() {

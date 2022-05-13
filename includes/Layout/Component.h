@@ -21,6 +21,9 @@ class ComponentProperty {
         double height;
         int voltage;
         map<string, Point> default_pin_position;
+        Point preplace_location;
+        string preplace_side;
+        bool pierce = false;
 
     public:
         // constructor, destructor
@@ -37,7 +40,10 @@ class ComponentProperty {
         double getHeight();
         int getVoltage();
         map<string, Point> getDefaultPinPosition();
-
+        Point getPreplace();
+        string getSide();
+        bool getPierce();
+        
         // setter
         void setName(string name);
         void setColor(string color);
@@ -48,6 +54,9 @@ class ComponentProperty {
         void setOneDefaultPinPosition(string key, Point one_pin_position);
         void setAllDefaultPinPosition(map<string, Point> all_pin_position);
         void setAllInfo(ComponentProperty* comp_prop);
+        void setPreplaceLocation(double x, double y);
+        void setSide(string side);
+        void setPierce(bool pierce);
         
         // printer
         void printDefaultPinPosition();
@@ -57,25 +66,26 @@ class ComponentProperty {
 class ComponentState {
     private:
         string side;
-        int angle;
+        double angle;
         Point leftdown_position;
         Point center_position;
         double length;
         double width;
         double margin;
+        int voltage;
         map<string, Point> pin_position;
 
 
     public:
         // constructor, destructor
-        ComponentState();
+        ComponentState(int voltage);
         ~ComponentState() {};
 
         ComponentState* copy();
 
         // getter
         string getSide();
-        int getAngle();
+        double getAngle();
         Point getPosition();
         double getLength();
         double getWidth();
@@ -84,15 +94,17 @@ class ComponentState {
         
         // setter
         void setSide(string side);
-        void setAngle(int angle);
+        void setAngle(double angle);
         void setPosition(double x, double y);
         void setLength(double length);
         void setWidth(double width);
         void setMargin(double margin);
-        // void rotatePinPosition(int angle);
+        void setPinPosition(map<string, Point> input_position);
+        void setOnePin(string key, Point value);
         void setAllInfo(ComponentState* comp_state);
 
         // printer
+        void printPinPosition();
 
 };
 

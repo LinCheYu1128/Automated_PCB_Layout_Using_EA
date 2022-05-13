@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/sidenav.css">
+    <link rel="stylesheet" type="text/css" href="css/drawTree.css">
+    <title>2D Layout Drawer</title>
+</head>
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<body>
+    <div class="wrapper">
+        <div class="sidenav box1">
+            <div class="dropdown">
+                <button class="dropbtn">File
+                    <i class="fa fa-caret-down"></i>
+                </button>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Examples
+                    <i class="fa fa-caret-down"></i>
+                </button>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">View
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <button class="dropbtn 2D_PageOpen">2D</a>
+                    <button class="dropbtn 3D_PageOpen" id="default_PageOpen">3D</a>
+                    <button class="dropbtn Tree_PageOpen">Tree</a>
+                </div>
+            </div>
+        </div>
+        <div id="2D" class="box-container tabcontent box2">
+            <!-- <div id="Layout_single"></div> -->
+            <div class="box" id="Layout_front"></div>
+            <div class="box" id="Layout_back"></div>
+        </div>
+        <div id="3D" class="box-container tabcontent box2"></div>
+        <div id="Tree" class="box-container tabcontent box2"></div>
+    </div>
+
+    <script type="module" src="js/files/csvParser.js"></script>
+    <script type="module" src="js/files/inputFile.js"></script>
+    <script type="module" src="js/svg canvas.js"></script>
+    <script type="module" src="js/svg controller.js"></script>
+    <script type="module" src="js/drawTree.js"></script>
+    <script type="module" src="js/Layout.js"></script>
+    <script type="module" src="js/3D scene.js"></script>
+    <script type="module" src="js/openPage.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
