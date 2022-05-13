@@ -77,7 +77,12 @@ void GA::crossover() {
         // cout << "test 1" << endl;
         vector<Layout*> Parents = this->parentSelect();
         // cout << "test 2" << endl;
-        Layout *child = randomSubtreeCrossover(Parents);
+        Layout *child = kPointCrossover(Parents,2);
+        // vector<TreeNode*> nodelistA = child->getBinaryTree()->ExtractTree(-1);
+        // for(auto point: nodelistA){
+        //     cout << point->getID() << " ";
+        // }
+        // cout << endl;
         // cout << "test 3" << endl;
         offspring.push_back(child);
         // cout << "test 4" << endl;

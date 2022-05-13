@@ -18,6 +18,7 @@ set(SOURCES
     # Layout -> Routing
     src/Layout/Routing/Net.cpp
     src/Layout/Routing/NetList.cpp
+    src/Layout/Routing/Route.cpp
     # GA
     src/GA/GA.cpp
     src/GA/GA_Parameter.cpp

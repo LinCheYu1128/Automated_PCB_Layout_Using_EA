@@ -8,14 +8,6 @@
 #include <map>
 using namespace std;
 
-// class Net{
-//     private:
-//     /* data */
-//     public:
-//         Net(/* args */);
-//         ~Net();
-// };
-
 class NetList {
     private:
         map< string, vector<string> > list_info;
