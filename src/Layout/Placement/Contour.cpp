@@ -9,6 +9,16 @@ Contour::Contour() {
     // cout << "build contour successfully!" << endl;
 }
 
+Contour::~Contour() {}
+
+Contour* Contour::copy() {
+    Contour* new_contour = new Contour();
+    for (unsigned int i = 0; i < this->contour.size(); i++){
+        new_contour->contour.push_back(this->contour.at(i));
+    }
+    return new_contour;
+}
+
 vector<Point> Contour::getContourVector(){
     return this->contour;
 }

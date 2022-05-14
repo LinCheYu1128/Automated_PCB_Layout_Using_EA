@@ -57,31 +57,11 @@ void ComponentProperty::setHeight(double height) {
     this->height = height;
 }
 
-string ComponentProperty::getSide() {
-    return this->preplace_side;
-}
-
-void ComponentProperty::setSide(string side) {
-    this->preplace_side = side;
-}
-
-bool ComponentProperty::getPierce() {
-    return this->pierce;
-}
-
-void ComponentProperty::setPierce(bool pierce) {
-    this->pierce = pierce;
-}
-
 int ComponentProperty::getVoltage() {
     return this->voltage;
 }
 void ComponentProperty::setVoltage(int voltage) {
     this->voltage = voltage;
-}
-
-Point ComponentProperty::getPreplace() {
-    return this->preplace_location;
 }
 
 void ComponentProperty::setPreplaceLocation(double x, double y) {
