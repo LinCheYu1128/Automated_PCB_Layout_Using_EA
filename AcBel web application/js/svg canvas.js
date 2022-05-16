@@ -1,10 +1,11 @@
 import {Component} from "./geometry.js";
 import {SVG_Controller} from "./svg controller.js";
 
+let T501_information;
+
 export class Canvas {
     constructor(side, data) {
         this.placement_data = data["placement_data"];
-        this.preplace_data = data["preplace_data"];
         this.pin_data = data["pin_data"];
         this.net_data = data["net_data"];
         this.side = side;
@@ -15,29 +16,16 @@ export class Canvas {
         this.svg_controller = new SVG_Controller(this.width, this.height, this.margin_x, this.margin_y);
         this.svg = this.svg_controller.svg;
         
+        // this.svg.style.transform = "rotateX(180deg)";
         if (side == "front" || side == "single") {
             this.svg.style.transform = "rotateX(180deg)";
         } else if (side == "back") {
             this.svg.style.transform = "rotateZ(180deg)";
         }
 
-        this.drawGrid();
-        this.drawBoundary();
-        this.drawPlacement();
-        this.drawPreplace();
         document.getElementById('Layout_'+this.side).appendChild(this.svg);
-    }
-
-    drawGrid() {
-        let i, j;
-        i = -100;
-        for (j = -100; j < 100; j++) {this.create2DLine({"polyline":`${i}, ${j} ${i+200}, ${j}`, stroke_width: 0.01});}
-        j = -100;
-        for (i = -100; i < 100; i++) {this.create2DLine({"polyline":`${i}, ${j} ${i}, ${j+200}`, stroke_width: 0.01});}
-    }
-
-    drawBoundary() {
-        this.create2DPolygon({
+        this.drawGrid();
+        this.create2DGeometry({
             "polygon":`${this.margin_x + 2}, ${this.margin_y + 0} 
                        ${this.margin_x + this.width}, ${this.margin_y + 0} 
                        ${this.margin_x + this.width}, ${this.margin_y + this.height} 
@@ -47,63 +35,59 @@ export class Canvas {
             "stroke_alignment": "outer",
             "stroke_width": 1,
         });
+
+        this.drawPlacement();
+    }
+
+    drawGrid() {
+        let i, j;
+        i = 0;
+        for (j = -50; j < 50; j++) {this.create2DLine({"polyline":`${i}, ${j} ${i+50}, ${j}`, stroke_width: 0.01});}
+        j = 0;
+        for (i = -50; i < 50; i++) {this.create2DLine({"polyline":`${i}, ${j} ${i}, ${j+50}`, stroke_width: 0.01});}
     }
 
     drawPlacement() {
-        let comp_id;
+        let name;
+        let stack = [];
         let placement_data = this.placement_data;
-        let stack = [];
-        
-        if (this.side == "front") {comp_id = "F_RootHole";}
-        else if (this.side == "back") {comp_id = "B_RootHole";}
-        else {comp_id = "Origin";}
 
-        stack.push(placement_data[comp_id]["leftChild"]);
-        stack.push(placement_data[comp_id]["rightChild"]);
+        if (this.side == "front") {name = "F_RootHole";}
+        else if (this.side == "back") {name = "B_RootHole";}
+        else {name = "Origin";}
+
+        stack.push(placement_data[name]["leftChild"]);
+        stack.push(placement_data[name]["rightChild"]);
         while (stack.length != 0) {
-            comp_id = stack.pop();
-            if (comp_id == "null") {continue;}
-            // placement_data[comp_id]["side"] = this.side;
-            this.create2DGeometry({"component": placement_data[comp_id], "fill": placement_data[comp_id]["color"]});
-            this.createText({"component": placement_data[comp_id]});
-            // console.log(comp_id);
-            this.drawPin(comp_id);
-            stack.push(placement_data[comp_id]["leftChild"]);
-            stack.push(placement_data[comp_id]["rightChild"]);
-        }
-    }
-
-    drawPreplace() {
-        let preplace_data = this.preplace_data;
-        let stack = [];
-
-        for (let [comp_id, value] of Object.entries(this.preplace_data)) {
-            if (preplace_data[comp_id]["side"] == this.side) {
-                this.create2DGeometry({"component": preplace_data[comp_id], "fill": preplace_data[comp_id]["color"]});
-                this.createText({"component": preplace_data[comp_id]});
-                // this.drawPin(comp_id);
-            }
+            name = stack.pop();
+            if (name == "null") {continue;}
+            this.create2DGeometry({"component": placement_data[name], "fill": placement_data[name]["color"]});
+            this.createText({"component": placement_data[name]});
+            console.log(name);
+            this.drawPin(name);
+            stack.push(placement_data[name]["leftChild"]);
+            stack.push(placement_data[name]["rightChild"]);
         }
     }
 
     drawPin(name) {
-        // console.log(this.pin_data[name]);
+        console.log(this.pin_data[name]);
         for (let [key, value] of Object.entries(this.pin_data[name])) {
             this.create2DGeometry({"component": this.pin_data[name][key], "stroke_width": 0, "alignment": "center", "fill": "#111111"});
             // this.createText({"component": this.pin_data[name][key], "name": this.pin_data[name][key]["name"]}); /*.slice(-1)*/
         }
     }
 
-    create2DPolygon({polygon, stroke="#666666", stroke_width=0}) {
-        let poly = document.createElementNS("http://www.w3.org/2000/svg", 'polygon');
-        poly.setAttribute('points', polygon);
-        poly.setAttribute('fill', "none");
-        poly.style['stroke'] = "#197531";
-        poly.style['stroke-width'] = stroke_width;
-        this.svg.appendChild(poly);
-    }
-
-    create2DGeometry({component, alignment="bottom_left", stroke_alignment="center", stroke="#666666", stroke_width=0, fill="#666666"}) {
+    create2DGeometry({component, alignment="bottom_left", stroke_alignment="center", stroke_width=0, polygon=null, fill="#666666"}) {
+        if (polygon) {
+            let poly = document.createElementNS("http://www.w3.org/2000/svg", 'polygon');
+            poly.setAttribute('points', polygon);
+            poly.setAttribute('fill', "none");
+            poly.style['stroke'] = "#197531";
+            poly.style['stroke-width'] = stroke_width;
+            this.svg.appendChild(poly);
+            return;
+        }
         let rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
         let stroke_alignment_ratio;
         if (stroke_alignment == "inner") {

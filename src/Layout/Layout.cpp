@@ -10,10 +10,10 @@ Layout::Layout(BinaryTree* tree, ComponentList* comp_list, int side){
     this->setContour();
     // this->tree->updateTree();
 
-    if (side == 1) this->setState(this->tree->getRoot(), "front");
+    if (side == 1) this->setState(this->tree->getRoot(), this->front_contour);
     else if (side == 2) {
-        this->setState(this->tree->getRoot()->getLeftchild(), "front");
-        this->setState(this->tree->getRoot()->getRightchild(), "back");
+        this->setState(this->tree->getRoot()->getLeftchild(), this->front_contour);
+        this->setState(this->tree->getRoot()->getRightchild(), this->back_contour);
     }
     else {cout << "unknown side" << endl; exit(0);} 
     this->component_num = comp_list->getSize();
@@ -28,12 +28,13 @@ Layout::Layout(ComponentList* comp_list, int side) {
     this->comp_list = comp_list;
     this->setBinaryTree(side);
     this->setContour();
+
     // this->tree->updateTree();
 
-    if (side == 1) this->setState(this->tree->getRoot(), "front");
+    if (side == 1) this->setState(this->tree->getRoot(), this->front_contour);
     else if (side == 2) {
-        this->setState(this->tree->getRoot()->getLeftchild(), "front");
-        this->setState(this->tree->getRoot()->getRightchild(), "back");
+        this->setState(this->tree->getRoot()->getLeftchild(), this->front_contour);
+        this->setState(this->tree->getRoot()->getRightchild(), this->back_contour);
     }
     else {cout << "unknown side" << endl; exit(0);}
     this->component_num = comp_list->getSize();
@@ -44,8 +45,16 @@ Layout::Layout(ComponentList* comp_list, int side) {
     // this->back_contour->printContour();
 }
 
+Layout::Layout(ComponentList* comp_list) {
+        this->comp_list = comp_list;
+        this->component_num = 0;
+        double area = 0;
+        double Pns = 0;
+        double wirelength = 0;
+        double fitness = 0;
+}
+
 Layout::~Layout() {
-    // delete this->comp_list;
     delete this->tree;
     delete this->front_contour;
     delete this->back_contour;
@@ -53,10 +62,16 @@ Layout::~Layout() {
 
 Layout* Layout::copy(){
     // ComponentList* component_list = new ComponentList();
-    int side = this->getBinaryTree()->getSide();
-    BinaryTree* tree = this->getBinaryTree()->copy();
-    Layout* layout = new Layout(tree, this->comp_list, side);
-    layout->setFitness();
+    Layout* layout = new Layout(this->comp_list);
+    layout->component_num = this->component_num;
+
+    layout->tree = this->getBinaryTree()->copy();
+    layout->front_contour = this->front_contour->copy();
+    layout->back_contour = this->back_contour->copy();
+    layout->fitness = this->fitness;
+    layout->area = this->area;
+    layout->Pns = this->Pns;
+    layout->wirelength = this->wirelength;
     return layout;
 }
 
@@ -103,16 +118,7 @@ void Layout::setContour() {
     this->back_contour = new Contour();
 }
 
-void Layout::setState(TreeNode* root, string side) {
-    Contour* contour;
-    root->getComponentState()->setSide(side);
-    if (side == "front") {
-        contour = this->front_contour;
-    }
-    else if (side == "back") {
-        contour = this->back_contour;
-    }
-    else {cout << "Unknown side name." << endl; exit(0);}
+void Layout::setState(TreeNode* root, Contour* contour) {
     // cout << "---------------------------------------------------" << endl;
     // cout << root->getComponentProp()->getName() << endl;
     // if(root->getLeftchild()){
@@ -128,7 +134,6 @@ void Layout::setState(TreeNode* root, string side) {
     // cout << "contour" ;
     // contour->printContour();
     root->shiftUp(contour->getContourVector());
-    preplaceCheck(root);
     // cout << "block w: " << root->getComponentState()->getWidth() << endl;
     // cout << "block l: " << root->getComponentState()->getLength() << endl;
     // cout << "block position: (" << root->getComponentState()->getPosition().x << "," << root->getComponentState()->getPosition().y << ")" << endl;
@@ -136,39 +141,45 @@ void Layout::setState(TreeNode* root, string side) {
 
     if (root->getLeftchild()) {
         // cout << "search left ";
-        setState(root->getLeftchild(), side);
+        this->setState(root->getLeftchild(), contour);
     }
     if (root->getRightchild()) {
         // cout << "search right ";
-        setState(root->getRightchild(), side);
+        this->setState(root->getRightchild(), contour);
     }
 }
 
 void Layout::updateLayout(){
     this->setContour();
     this->getBinaryTree()->updateTree();
-    if (this->tree->getSide() == 1) this->setState(this->tree->getRoot(), "front");
+    if (this->tree->getSide() == 1) this->setState(this->tree->getRoot(), this->front_contour);
     else if (this->tree->getSide() == 2) {
-        this->setState(this->tree->getRoot()->getLeftchild(), "front");
-        this->setState(this->tree->getRoot()->getRightchild(), "back");
+        this->setState(this->tree->getRoot()->getLeftchild(), this->front_contour);
+        this->setState(this->tree->getRoot()->getRightchild(), this->back_contour);
     }
     else {cout << "unknown side" << endl; exit(0);} 
 }
 
 void Layout::setFitness(){
     this->setArea();
-    // this->setWireLength();
+    this->setWireLength();
     this->setPns();
-
-
-    this->fitness = this->area + this->Pns/10;
-
-    // this->fitness = this->area;
+    // this->fitness = this->area + this->Pns*1000;
+    this->fitness = this->area;
     // this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
+}
 
-    // this->fitness = this->area + this->wirelength + this->Pns;
-    // this->fitness = this->area / 750 *0.4 + this->wirelength / 270 * 0.4 + this->Pns / 10 * 0.2;
-
+void Layout::setFitness(tuple<double, double, double> weight_vector){
+    this->setArea();
+    this->setWireLength();//memory leak
+    this->setPns();
+    this->area = (this->area - 887.04) / (3045.82 - 887.04);
+    this->wirelength = (this->wirelength - 393.18) / (1324.36 - 393.18);
+    this->Pns = (this->Pns - 2.8) / (50 - 2.8);
+    this->fitness = this->area * get<0>(weight_vector) + 
+                    this->wirelength * get<1>(weight_vector) + 
+                    this->Pns * get<2>(weight_vector);
+    // this->fitness = this->Pns;
 }
 
 void Layout::setArea() {
@@ -232,6 +243,8 @@ void Layout::setWireLength(){
         total_net_length += net_length;
     }
     this->wirelength = total_net_length;
+
+    delete net_list;
 }
 
 void Layout::setPns(){
@@ -348,12 +361,11 @@ double Layout::evaluateArea(int side){
             MAX_Y = max(MAX_Y, this->getContour("back")->getContourVector().at(i).y);
         }
     }
-
     
     if (MAX_X >= 29.2 + 1) {penalty += 10000*MAX_X;}
     if (MAX_Y >= 32.5 + 1) {penalty += 10000*MAX_Y;}
 
-    return MAX_X * MAX_Y  + penalty;
+    return MAX_X * MAX_Y /*+ penalty*/;
 }
 
 double Layout::evaluateTotalArea(){
@@ -388,26 +400,7 @@ double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list)
     }
 
     // return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
-
-//     return 10 * primary_x - secondary_x /*/ prim_list.size() + (secondary_x / sec_list.size() - 29.2)*/;
-  return rightest_primary_x - leftest_secondary_x;
-}
-
-void Layout::preplaceCheck(TreeNode* node) {
-    Point node_left_bot = node->getComponentState()->getPosition();
-    double y = node_left_bot.y;
-    vector<ComponentProperty*> preplace_comp = this->comp_list->getPreplaceData();
-    for (auto i = preplace_comp.begin(); i != preplace_comp.end(); i++) {
-        if ((*i)->getSide() == node->getComponentState()->getSide()) {
-            Point comp_left_bot = (*i)->getPreplace();
-            if (node_left_bot.x < comp_left_bot.x + (*i)->getLength()\
-            && comp_left_bot.x < node_left_bot.x + node->getComponentState()->getLength()\
-            && node_left_bot.y < comp_left_bot.y + (*i)->getWidth()\
-            && comp_left_bot.y < node_left_bot.y + node->getComponentState()->getWidth()) y = max(y, comp_left_bot.y + (*i)->getWidth());
-            // rec1[0] < rec2[2] && rec2[0] < rec1[2] && rec1[1] < rec2[3] && rec2[1] < rec1[3];
-        } 
-    }
-    node->getComponentState()->setPosition(node_left_bot.x, y);
+    return rightest_primary_x - leftest_secondary_x;
 }
 
 void writeCsv(Layout* layout, string filename){
@@ -487,3 +480,13 @@ void writePin(Layout* layout, string filename) {
     }
     pin_data.close();
 }
+
+// void writeBehavior(vector<double> GA_behavior, string filename){
+//     std::ofstream behavior;
+//     behavior.open (filename);
+//     for (int i = 0; i < GA_behavior.size(); i++) {
+//         behavior << i << "," << GA_behavior[i] << "\n";
+//     }
+
+//     behavior.close();
+// }

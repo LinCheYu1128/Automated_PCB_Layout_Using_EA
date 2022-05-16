@@ -6,7 +6,8 @@
 using namespace std;
 
 int main (int argc, char **argv) {
-    srand((unsigned)time(0));
+    // srand((unsigned)time(0));
+    srand(186);
 
     Console::set(argc, argv);
     Console::run();

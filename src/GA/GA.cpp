@@ -72,23 +72,19 @@ void GA::crossover() {
     // cout << "Conduct Crossover" << endl;
 
     this->offspring.clear();
-
-    for(unsigned i = 0; i < this->population.size(); i++) {
+    for(unsigned i = 0; i < this->population.size(); i++) {//
         // cout << "test 1" << endl;
         vector<Layout*> Parents = this->parentSelect();
         // cout << "test 2" << endl;
-        Layout *child = kPointCrossover(Parents, 3);
+        Layout *child = randomSubtreeCrossover(Parents);
+        // Layout *child = kPointCrossover(Parents, 2);
         // Layout *child = Parents[0]->copy();
         // cout << "test 3" << endl;
+        child->updateLayout();
         offspring.push_back(child);
         // cout << "test 4" << endl;
     }
 
-    // vector<Layout*> Parents = this->parentSelect();
-    // Layout *child = randomSubtreeCrossover(Parents);
-    // child->getBinaryTree()->printBinaryTree();
-
-    // delete_test(Parents);
     // cout << "End Crossover" << endl;
 }
 
@@ -100,8 +96,7 @@ void GA::mutation(int gen) {
         // offspring[i]->getBinaryTree()->printBinaryTree();
         // int mode = 3;
         int mode ;
-        if(gen < 800) mode = rand() % 7;
-        else mode = rand() % 2;
+        mode = 0;
         // offspring[i]->getBinaryTree()->printBinaryTree();
         switch (mode)
         {
@@ -125,6 +120,9 @@ void GA::mutation(int gen) {
             break;
         case 6:
             swapSubtreeMutation(this->offspring[i]);//nono
+            break;
+        case 7:
+            
             break;
         default:
             cout << "something wrong" << endl;
@@ -172,17 +170,69 @@ void GA::evaluate(string target){
 
 void GA::updateBestOffspring(){
     // should use copy function
-    // cout << "pop 1 fitness: " << this->population[0]->getFitness() << endl;
-    // cout << "before best fitness: " << this->bestOffspring->getFitness() << endl;
-    Layout* new_best = this->population[0];
-    if(new_best->getFitness() <= this->bestOffspring->getFitness()){
-        // cout << "update" << endl;
-        this->bestOffspring = new_best->copy();
-        new_best->setFitness();
-        this->bestOffspring->setFitness();
+    Layout* new_best = this->population[0]->copy();
+    // cout << "current fitness: " << this->population[0]->getFitness() << endl;
+    // cout << "copy fitness: " << new_best->getFitness() << endl;
+
+    // this->population[0]->getContour("front")->printContour();
+    // cout << "-----------------" << endl;
+    // new_best->getContour("front")->printContour();
+
+    // vector<TreeNode*> temp = this->population[0]->getBinaryTree()->ExtractTree(this->population[0]->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp.size(); i++){
+    //     cout << temp[i]->getComponentProp()->getHeight() << " ";
+    // }
+    // cout << endl;
+
+    // vector<TreeNode*> temp1 = new_best->getBinaryTree()->ExtractTree(new_best->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp1.size(); i++){
+    //     cout << temp1[i]->getComponentProp()->getHeight() << " ";
+    // }
+    // cout << endl;
+
+    // vector<TreeNode*> temp2 = this->population[0]->getBinaryTree()->ExtractTree(this->population[0]->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp2.size(); i++){
+    //     cout << temp2[i]->getComponentState()->getWidth() << " ";
+    // }
+    // cout << endl;
+
+    // vector<TreeNode*> temp3 = new_best->getBinaryTree()->ExtractTree(new_best->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp3.size(); i++){
+    //     cout << temp3[i]->getComponentState()->getWidth() << " ";
+    // }
+    // cout << endl;
+
+    // vector<TreeNode*> temp4 = this->population[0]->getBinaryTree()->ExtractTree(this->population[0]->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp4.size(); i++){
+    //     cout << temp4[i]->getComponentState()->getPosition().y << " ";
+    // }
+    // cout << endl;
+
+    // vector<TreeNode*> temp5 = new_best->getBinaryTree()->ExtractTree(new_best->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp5.size(); i++){
+    //     cout << temp5[i]->getComponentState()->getPosition().y << " ";
+    // }
+    // cout << endl;
+
+    // vector<TreeNode*> temp6 = this->population[0]->getBinaryTree()->ExtractTree(this->population[0]->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp6.size(); i++){
+    //     cout << temp6[i]->getComponentState()->getPosition().x << " ";
+    // }
+    // cout << endl;
+
+    // vector<TreeNode*> temp7 = new_best->getBinaryTree()->ExtractTree(new_best->getBinaryTree()->getRoot()->getID());
+    // for(unsigned i = 0; i < temp7.size(); i++){
+    //     cout << temp7[i]->getComponentState()->getPosition().x << " ";
+    // }
+    // cout << endl;
+
+    // cout << "best fitness: " << this->bestOffspring->getFitness() << endl;
+    if(new_best->getFitness() < this->bestOffspring->getFitness()){
+        // Layout* temp = this->bestOffspring;
+        // delete temp;
+        this->bestOffspring = new_best;
     }
-    cout << "after best fitness: " << this->bestOffspring->getFitness() << endl;
-    // cout << this->bestOffspring << endl;
+    if(this->population[0]->getFitness() != new_best->getFitness()) exit(EXIT_FAILURE);
 }
 
 void GA::mergePopulationOffspring(){

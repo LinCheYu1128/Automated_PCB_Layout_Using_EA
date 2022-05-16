@@ -22,6 +22,7 @@ class BinaryTree {
     public:
         // constructor, destructor
         BinaryTree(ComponentList* comp_list);
+        
         ~BinaryTree();
         
         // utility

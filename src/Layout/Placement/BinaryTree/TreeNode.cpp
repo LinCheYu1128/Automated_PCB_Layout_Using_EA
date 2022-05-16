@@ -12,6 +12,7 @@ TreeNode::TreeNode(ComponentProperty* comp_prop) {
     this->parent = nullptr;
     this->leftchild = nullptr;
     this->rightchild = nullptr;
+    // this->comp_prop = comp_prop;
     this->comp_prop = new ComponentProperty();
     this->setComponentProp(comp_prop);
     this->comp_state = new ComponentState(this->comp_prop->getVoltage());
@@ -29,7 +30,8 @@ TreeNode* TreeNode::copy() {
     TreeNode* new_node = new TreeNode(this->comp_prop);
     new_node->setID(this->id);
     new_node->setBranch(this->branch);
-    new_node->setComponentState(this->getComponentState()->copy());
+    // new_node->setComponentProp(this->getComponentProp()->copy());//no need this step
+    // new_node->setComponentState(this->getComponentState()->copy());//no need this step
     return new_node;
 }
 
@@ -72,85 +74,74 @@ ComponentState* TreeNode::getComponentState() {
     return this->comp_state;
 }
 
-void TreeNode::disconnect(string branch) {
-// orignal delete function
-    if (branch == "parent" || branch == "all") {
-        string mybranch = this->branch;
-        if(mybranch == "left"){
-            if(this->parent) this->parent->leftchild = nullptr;
-        }else if((mybranch == "right")){
-            if(this->parent) this->parent->rightchild = nullptr;
-        }
+void TreeNode::disconnect() {
+    if(this->parent){
+        if(this->parent->leftchild == this) this->parent->leftchild = nullptr;
+        else this->parent->rightchild = nullptr;
         this->parent = nullptr;
     }
-    if (branch == "left" || branch == "all") {
-        if(this->leftchild) this->leftchild->parent = nullptr;
-        this->leftchild = nullptr;
-    }
-    if (branch == "right" || branch == "all") {
-        if(this->rightchild) this->rightchild->parent = nullptr;
-        this->rightchild = nullptr;
-    }
+
+    // if (branch == "parent" || branch == "all") {
+    //     string mybranch = this->branch;
+    //     if(mybranch == "left"){
+    //         if(this->parent) this->parent->leftchild = nullptr;
+    //     }else if((mybranch == "right")){
+    //         if(this->parent) this->parent->rightchild = nullptr;
+    //     }
+    //     this->parent = nullptr;
+    // }
+
+    // if (branch == "left" || branch == "all") {
+    //     if(this->leftchild) this->leftchild->parent = nullptr;
+    //     this->leftchild = nullptr;
+    // }
+    // if (branch == "right" || branch == "all") {
+    //     if(this->rightchild) this->rightchild->parent = nullptr;
+    //     this->rightchild = nullptr;
+    // }
 }
 
 void TreeNode::delete_node_f() {
     if(this->leftchild == nullptr && this->rightchild == nullptr){
         // cout << "node is leaf node" << endl;
         if(this->parent){
-            if(this->parent->leftchild == this){
-                this->parent->leftchild = nullptr; 
-            } 
-            else{
-                this->parent->rightchild = nullptr;
-            }  
+            if(this->parent->leftchild == this) this->parent->leftchild = nullptr; 
+            else this->parent->rightchild = nullptr; 
         }
     }
     else{
         // cout << "replce by leaf node" << endl;
         TreeNode* leaf = this;
         while(leaf->leftchild != nullptr || leaf->rightchild != nullptr){
-            if(leaf->leftchild != nullptr){
-                leaf = leaf->leftchild;
-            }
-            else{
-                leaf = leaf->rightchild;
-            }
+            if(leaf->leftchild != nullptr) leaf = leaf->leftchild;
+            else leaf = leaf->rightchild;
             // cout << " find leaf"<< endl;
         }
         // if(leaf->leftchild == nullptr && leaf->rightchild == nullptr) cout<< "leaf is here" << endl;
         // disconnect leaf parent
-        if(leaf->parent->leftchild == leaf){
-            leaf->parent->leftchild = nullptr;
-        }
-        else {
-            leaf->parent->rightchild = nullptr;
-        }
+        if(leaf->parent->leftchild == leaf) leaf->parent->leftchild = nullptr;
+        else leaf->parent->rightchild = nullptr;
         // change delete node parent's child
         leaf->parent = this->parent;
         leaf->leftchild = this->leftchild;
         leaf->rightchild = this->rightchild;
 
-        if(this->parent->leftchild == this){
-            this->parent->leftchild = leaf;
-        } 
-        else{
-            this->parent->rightchild = leaf;
-        }
+        if(this->parent->leftchild == this) this->parent->leftchild = leaf;
+        else this->parent->rightchild = leaf;
         if(this->leftchild) this->leftchild->parent = leaf;
         if(this->rightchild) this->rightchild->parent = leaf;
     }
+    // this->parent = nullptr;
+    this->leftchild = nullptr;
+    this->rightchild = nullptr;
 }
 
 TreeNode* TreeNode::delete_root_f() {
     if(this->leftchild == nullptr && this->rightchild == nullptr){
         // cout << "node is leaf node" << endl;
         if(this->parent){
-            if(this->parent->leftchild == this){
-                this->parent->leftchild = nullptr; 
-            } 
-            else{
-                this->parent->rightchild = nullptr;
-            }  
+            if(this->parent->leftchild == this) this->parent->leftchild = nullptr; 
+            else this->parent->rightchild = nullptr; 
         }
         return nullptr;
     }
@@ -158,22 +149,14 @@ TreeNode* TreeNode::delete_root_f() {
         // cout << "replce by leaf node" << endl;
         TreeNode* leaf = this;
         while(leaf->leftchild != nullptr || leaf->rightchild != nullptr){
-            if(leaf->leftchild != nullptr){
-                leaf = leaf->leftchild;
-            }
-            else{
-                leaf = leaf->rightchild;
-            }
+            if(leaf->leftchild != nullptr) leaf = leaf->leftchild;
+            else leaf = leaf->rightchild;
             // cout << " find leaf"<< endl;
         }
         // if(leaf->leftchild == nullptr && leaf->rightchild == nullptr) cout<< "leaf is here" << endl;
-        if(leaf->parent->leftchild == leaf){
-            leaf->parent->leftchild = nullptr;
-        }
-        else {
-            leaf->parent->rightchild = nullptr;
-        }
-        
+        if(leaf->parent->leftchild == leaf) leaf->parent->leftchild = nullptr;
+        else leaf->parent->rightchild = nullptr;
+
         leaf->parent = nullptr;
         leaf->leftchild = this->leftchild;
         leaf->rightchild = this->rightchild;
@@ -181,6 +164,9 @@ TreeNode* TreeNode::delete_root_f() {
         if(this->leftchild) this->leftchild->parent = leaf;
         if(this->rightchild) this->rightchild->parent = leaf;
         
+        // this->parent = nullptr;
+        this->leftchild = nullptr;
+        this->rightchild = nullptr;
         return leaf;
     }
 
@@ -225,7 +211,10 @@ void TreeNode::setComponentProp(ComponentProperty* comp_prop) {
 }
 
 void TreeNode::setComponentState(ComponentState* comp_state) {
-    this->comp_state = comp_state;
+    // if(this->comp_state){
+        
+    // }
+    this->comp_state->setAllInfo(comp_state);
 }
 
 // void TreeNode::changeParent(TreeNode* parent, string branch) {
@@ -308,7 +297,7 @@ void TreeNode::updateNode() {
 void TreeNode::shiftUp(vector<Point> contour) {
     double x;
     double max_y = 0;
-
+    
     ComponentState* comp = this->getComponentState();
     if (this->getBranch() == "root") x = 0;
     else {
@@ -330,7 +319,7 @@ void TreeNode::shiftUp(vector<Point> contour) {
 }
 
 void TreeNode::rotate() {
-    double PI = 3.141592653589793;
+    double PI = 3.1415926;
     if (this->comp_state->getAngle() == 90 || this->comp_state->getAngle() == 270) {
         this->comp_state->setLength(this->comp_prop->getWidth() + 2*comp_state->getMargin());
         this->comp_state->setWidth(this->comp_prop->getLength() + 2*comp_state->getMargin());

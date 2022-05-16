@@ -110,7 +110,7 @@ void shiftSubtreeMutation(Layout *input){
 
     // cout << "targetparent ID: " << targetparentID << endl;
 
-    targetnode->disconnect("parent");
+    targetnode->disconnect();
 
     // cout << "test 3" << endl;
 
@@ -138,11 +138,12 @@ void insertMutation(Layout *input){
     // cout << "conduct insertMutation" << endl;
 
     BinaryTree* inputtree = input->getBinaryTree();
+    BinaryTree* duptree = input->getBinaryTree()->copy();
     map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
 
     if(inputtree->getSide() == 1){
         vector<TreeNode*> node_permu;
-        node_permu = inputtree->ExtractTree(0);
+        node_permu = duptree->ExtractTree(0);
         // node_permu = ExtractTree(dup_tree->root);
 
         int amount = node_permu.size();
@@ -186,8 +187,8 @@ void insertMutation(Layout *input){
     }else if(inputtree->getSide() == 2){
         vector<TreeNode*> node_permu_front;
         vector<TreeNode*> node_permu_back;
-        node_permu_front = inputtree->ExtractTree(-2);
-        node_permu_back = inputtree->ExtractTree(-3);
+        node_permu_front = duptree->ExtractTree(-2);
+        node_permu_back = duptree->ExtractTree(-3);
 
         node_permu_front.erase(node_permu_front.begin());
         node_permu_back.erase(node_permu_back.begin());
@@ -246,6 +247,7 @@ void insertMutation(Layout *input){
 
         inputtree->ModifyDoubleSidedTree(node_permu_front, node_permu_back);
     }
+    delete duptree;
 
 }
 
@@ -253,11 +255,12 @@ void scrambleMutation(Layout *input){
     // cout << "conduct scrambleMutation" << endl;
 
     BinaryTree* inputtree = input->getBinaryTree();
+    BinaryTree* duptree = input->getBinaryTree()->copy();
     map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
 
     if(inputtree->getSide() == 1){
         vector<TreeNode*> node_permu;
-        node_permu = inputtree->ExtractTree(0);
+        node_permu = duptree->ExtractTree(0);
         int amount = node_permu.size();
         vector<TreeNode*> scramble_list;
 
@@ -300,8 +303,8 @@ void scrambleMutation(Layout *input){
     }else if(inputtree->getSide() == 2){
         vector<TreeNode*> node_permu_front;
         vector<TreeNode*> node_permu_back;
-        node_permu_front = inputtree->ExtractTree(-2);
-        node_permu_back = inputtree->ExtractTree(-3);
+        node_permu_front = duptree->ExtractTree(-2);
+        node_permu_back = duptree->ExtractTree(-3);
 
         node_permu_front.erase(node_permu_front.begin());
         node_permu_back.erase(node_permu_back.begin());
@@ -359,18 +362,19 @@ void scrambleMutation(Layout *input){
 
         inputtree->ModifyDoubleSidedTree(node_permu_front, node_permu_back);
     }
-
+    delete duptree;
 }
 
 void swapNodeMutation(Layout *input){
     // cout << "conduct swapNodeMutation" << endl;
 
     BinaryTree* inputtree = input->getBinaryTree();
+    BinaryTree* duptree = input->getBinaryTree()->copy();
     map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
 
     if(inputtree->getSide() == 1){
         vector<TreeNode*> node_permu;
-        node_permu = inputtree->ExtractTree(0);
+        node_permu = duptree->ExtractTree(0);
         int amount = node_permu.size();
 
         int mutate_p1 = 0, mutate_p2 = 0;
@@ -388,8 +392,8 @@ void swapNodeMutation(Layout *input){
 
         vector<TreeNode*> node_permu_front;
         vector<TreeNode*> node_permu_back;
-        node_permu_front = inputtree->ExtractTree(-2);
-        node_permu_back = inputtree->ExtractTree(-3);
+        node_permu_front = duptree->ExtractTree(-2);
+        node_permu_back = duptree->ExtractTree(-3);
 
         int front_size = node_permu_front.size();
         int back_size = node_permu_back.size();
@@ -424,4 +428,5 @@ void swapNodeMutation(Layout *input){
         }
         inputtree->ModifyDoubleSidedTree(node_permu_front, node_permu_back);
     }
+    delete duptree;
 }

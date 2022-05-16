@@ -23,9 +23,13 @@ set(SOURCES
     src/GA/GA_Parameter.cpp
     src/GA/Crossover/Crossover.cpp
     src/GA/Mutation/Mutation.cpp
+    # MOEAD
+    # src/MOEAD/MOEAD.cpp
+    # src/MOEAD/MOEAD_Parameter.cpp
     # console
     src/console.cpp
     # src/GL.cpp
+
 )
 
 # find_package(OpenGL REQUIRED)
@@ -44,4 +48,5 @@ target_include_directories(${PROJECT_NAME}
         ${PROJECT_SOURCE_DIR}/includes
         ${PROJECT_SOURCE_DIR}/includes/GA
         ${PROJECT_SOURCE_DIR}/includes/Layout
+        # ${PROJECT_SOURCE_DIR}/includes/MOEAD
 )
