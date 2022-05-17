@@ -191,10 +191,10 @@ void BinaryTree::swap(int id_1, int id_2) {
     if (this->TreeNode_map[id_1] && this->TreeNode_map[id_2]) {
         TreeNode* A_parent = A->getParent();
         TreeNode* B_parent = B->getParent();
-        string A_branch = A->getBranch();
-        string B_branch = B->getBranch();
-        A->setParent(B_parent, B_branch);
-        B->setParent(A_parent, A_branch);
+        // string A_branch = A->getBranch();
+        // string B_branch = B->getBranch();
+        A->setParent(B_parent, "");
+        B->setParent(A_parent, "");
     } else {
         Console::log("Can't swap! Some node not inside this tree.");
         exit(0);
@@ -283,11 +283,11 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
         return;
     }
 
-    if (node->getBranch() == "root") {
+    if (node->getParent() == nullptr) {
         Console::log("delete node is root");
         this->setRoot(successor);
     } else {
-        if(node->getParent()) node->getParent()->setChild(successor, node->getBranch());
+        if(node->getParent()) node->getParent()->setChild(successor, "");
     }
 }
 
@@ -393,7 +393,7 @@ void BinaryTree::ModifyTree(vector<TreeNode*> node_permu){
         TreeNode* temp = node_stack.top();
         if (temp->getID() != node_permu.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu.at(ptr)->getComponentState()->getAngle()) {
             temp->setID(node_permu.at(ptr)->getID());
-            temp->setBranch(node_permu.at(ptr)->getBranch());
+            // temp->setBranch(node_permu.at(ptr)->getBranch());
             temp->setComponentProp(node_permu.at(ptr)->getComponentProp()->copy());
             temp->setComponentState(node_permu.at(ptr)->getComponentState()->copy());
         }
@@ -423,7 +423,7 @@ void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vecto
         // cout << endl;
         if (temp->getID() != node_permu_front.at(ptr)->getID()) {
             temp->setID(node_permu_front[ptr]->getID());
-            temp->setBranch(node_permu_front[ptr]->getBranch());
+            // temp->setBranch(node_permu_front[ptr]->getBranch());
             temp->setComponentProp(node_permu_front[ptr]->getComponentProp()->copy());
             temp->setComponentState(node_permu_front[ptr]->getComponentState()->copy());
         }
@@ -444,7 +444,7 @@ void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vecto
         // cout << "origin: " << temp->getID() << " modify: " << node_permu_back.at(ptr)->getID() << endl;
         if (temp->getID() != node_permu_back.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu_back.at(ptr)->getComponentState()->getAngle()) {
             temp->setID(node_permu_back.at(ptr)->getID());
-            temp->setBranch(node_permu_back.at(ptr)->getBranch());
+            // temp->setBranch(node_permu_back.at(ptr)->getBranch());
             temp->setComponentProp(node_permu_back.at(ptr)->getComponentProp()->copy());
             temp->setComponentState(node_permu_back.at(ptr)->getComponentState()->copy());
         }

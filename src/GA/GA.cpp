@@ -72,13 +72,31 @@ void GA::crossover() {
     // cout << "Conduct Crossover" << endl;
 
     this->offspring.clear();
+    int mode = 0;//rand()%2;
+    // if(mode==0) cout << "randomSubtreeCrossover" << endl;
+    // else cout << "kPointCrossover" << endl;
+
     for(unsigned i = 0; i < this->population.size(); i++) {//
+        // cout << i ;
         // cout << "test 1" << endl;
         vector<Layout*> Parents = this->parentSelect();
         // cout << "test 2" << endl;
-        Layout *child = randomSubtreeCrossover(Parents);
-        // Layout *child = kPointCrossover(Parents, 2);
-        // Layout *child = Parents[0]->copy();
+        
+        Layout *child;
+        switch (mode){
+        case 0:
+            child = randomSubtreeCrossover(Parents);
+            break;
+        case 1:
+            child = kPointCrossover(Parents, 2);
+            break;
+        case 2: 
+            child = nothingCrossover(Parents);
+            break;
+        default:
+            cout << "something wrong" << endl;
+            break;
+        }
         // cout << "test 3" << endl;
         child->updateLayout();
         offspring.push_back(child);
@@ -91,13 +109,14 @@ void GA::crossover() {
 void GA::mutation(int gen) {
 
     // cout << "Conduct mutation" << endl;
-
+    int mode ;
+    mode = rand()%7;
+    cout << "mutaion mode " <<mode<< endl;
     for(unsigned i = 0; i < this->offspring.size(); i++) {
         // offspring[i]->getBinaryTree()->printBinaryTree();
         // int mode = 3;
-        int mode ;
-        mode = 0;
         // offspring[i]->getBinaryTree()->printBinaryTree();
+        // cout << i ;
         switch (mode)
         {
         case 0:
@@ -128,9 +147,9 @@ void GA::mutation(int gen) {
             cout << "something wrong" << endl;
             break;
         }
-        this->offspring[i]->updateLayout();
         // offspring[i]->getBinaryTree()->printBinaryTree();
-        // // cout << offspring[i] << endl;
+        this->offspring[i]->updateLayout();
+        // cout << "test" << endl;
         // vector<TreeNode*> temp = offspring[i]->getBinaryTree()->ExtractTree(offspring[i]->getBinaryTree()->getRoot()->getID());
         // for(unsigned i = 0; i < temp.size(); i++){
         //     cout << temp[i]->getComponentProp()->getName() << " ";
@@ -142,8 +161,7 @@ void GA::mutation(int gen) {
     // for(unsigned i = 0; i < temp.size(); i++){
     //     cout << temp[i]->getComponentProp()->getName() << " ";
     // }
-    // cout << endl;
-    // cout << "End mutation" << endl;
+    cout << "End mutation" << endl;
 }
 
 void GA::survivorSelect() {

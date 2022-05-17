@@ -101,7 +101,7 @@ void shiftSubtreeMutation(Layout *input){
 
     int targetId = rand() % componentsize;
     TreeNode* targetnode = inputmap[targetId];
-    while(targetnode->getBranch() == "root"){
+    while(targetnode->getParent() == nullptr){
         targetId = rand() % componentsize;
         targetnode = inputmap[targetId];
     }
@@ -117,7 +117,7 @@ void shiftSubtreeMutation(Layout *input){
     TreeNode* leaf = inputtree->findLeafNode(inputtree->getRoot());
 
     // cout << "test 4" << endl;
-    while(leaf->getID() == targetparentID && inputmap[targetparentID]->getBranch() != "root"){
+    while(leaf->getID() == targetparentID && inputmap[targetparentID]->getParent() == nullptr){
         leaf = inputtree->findLeafNode(inputtree->getRoot());
     }
 

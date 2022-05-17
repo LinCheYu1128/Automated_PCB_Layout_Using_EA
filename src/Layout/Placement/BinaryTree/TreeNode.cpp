@@ -8,7 +8,7 @@ using namespace std;
 
 TreeNode::TreeNode(ComponentProperty* comp_prop) {
     this->id = 0;
-    this->branch = "";
+    // this->branch = "";
     this->parent = nullptr;
     this->leftchild = nullptr;
     this->rightchild = nullptr;
@@ -29,7 +29,7 @@ TreeNode* TreeNode::copy() {
     // copy information without connection
     TreeNode* new_node = new TreeNode(this->comp_prop);
     new_node->setID(this->id);
-    new_node->setBranch(this->branch);
+    // new_node->setBranch(this->branch);
     // new_node->setComponentProp(this->getComponentProp()->copy());//no need this step
     // new_node->setComponentState(this->getComponentState()->copy());//no need this step
     return new_node;
@@ -39,20 +39,28 @@ int TreeNode::getID() {
     return this->id;
 }
 
-string TreeNode::getBranch() {
-    return this->branch;
-}
+// string TreeNode::getBranch() {
+//     return this->branch;
+// }
 
-TreeNode* TreeNode::getChild(string branch) {
-    if (branch == "left") {
-        return this->leftchild;
-    } else if (branch == "right") {
-        return this->rightchild;
-    } else {
-        cout << "no branch defined" << endl;
-        exit(0);
-    }
-}
+// TreeNode* TreeNode::getChild(string branch) {
+//     // if (branch == "left") {
+//     //     return this->leftchild;
+//     // } else if (branch == "right") {
+//     //     return this->rightchild;
+//     // } else {
+//     //     cout << "no branch defined" << endl;
+//     //     exit(0);
+//     // }
+//     if (this->parent->leftchild == this) {
+//         return this->leftchild;
+//     } else if (this->parent->rightchild == this) {
+//         return this->rightchild;
+//     } else {
+//         cout << "no branch defined" << endl;
+//         exit(0);  
+//     }
+// }
 
 TreeNode* TreeNode::getLeftchild() {
     return this->leftchild;
@@ -176,27 +184,32 @@ void TreeNode::setID(int id) {
     this->id = id;
 }
 
-void TreeNode::setBranch(string branch) {
-    this->branch = branch;
-}
+// void TreeNode::setBranch(string branch) {
+//     this->branch = branch;
+// }
 
 void TreeNode::setChild(TreeNode* node, string branch) {
-    if (branch == "left") {
+    // if (branch == "left") {
+    //     this->setLeftChild(node);
+    // } else if (branch == "right") {
+    //     this->setRightChild(node);
+    // }
+    if (this->parent->leftchild == this) {
         this->setLeftChild(node);
-    } else if (branch == "right") {
+    } else if (this->parent->rightchild == this) {
         this->setRightChild(node);
     }
 }
 
 void TreeNode::setLeftChild(TreeNode* node) {
     this->leftchild = node;
-    this->leftchild->setBranch("left");
+    // this->leftchild->setBranch("left");
     node->parent = this;
 }
 
 void TreeNode::setRightChild(TreeNode* node) {
     this->rightchild = node;
-    this->rightchild->setBranch("right");
+    // this->rightchild->setBranch("right");
     node->parent = this;
 }
 
@@ -299,12 +312,12 @@ void TreeNode::shiftUp(vector<Point> contour) {
     double max_y = 0;
     
     ComponentState* comp = this->getComponentState();
-    if (this->getBranch() == "root") x = 0;
+    if (this->parent == nullptr) x = 0;
     else {
         ComponentState* parent = this->getParent()->getComponentState();
-        if (this->getBranch() == "left") x = parent->getPosition().x + parent->getLength() /*+ 2*parent->getMargin()*/;
-        else if (this->getBranch() == "right") x = parent->getPosition().x;
-        else {cout << "Branch invalid" << endl; exit(0);}
+        if (this->parent->leftchild == this) x = parent->getPosition().x + parent->getLength() /*+ 2*parent->getMargin()*/;
+        else if (this->parent->rightchild == this) x = parent->getPosition().x;
+        // else {cout << "Branch invalid" << endl; exit(0);}
     }
 
     this->rotate();

@@ -140,24 +140,28 @@ void Layout::setState(TreeNode* root, Contour* contour) {
     contour->addBlock(root->getComponentState());
 
     if (root->getLeftchild()) {
-        // cout << "search left ";
+        // cout << "search left; ";
         this->setState(root->getLeftchild(), contour);
     }
     if (root->getRightchild()) {
-        // cout << "search right ";
+        // cout << "search right; ";
         this->setState(root->getRightchild(), contour);
     }
 }
 
 void Layout::updateLayout(){
     this->setContour();
+    // cout << "test 1;" ;
     this->getBinaryTree()->updateTree();
+    // cout << " test 2;" ;
     if (this->tree->getSide() == 1) this->setState(this->tree->getRoot(), this->front_contour);
     else if (this->tree->getSide() == 2) {
+        // cout << " test 3;" ;
         this->setState(this->tree->getRoot()->getLeftchild(), this->front_contour);
         this->setState(this->tree->getRoot()->getRightchild(), this->back_contour);
     }
     else {cout << "unknown side" << endl; exit(0);} 
+    // cout << " finish;"<< endl;
 }
 
 void Layout::setFitness(){
