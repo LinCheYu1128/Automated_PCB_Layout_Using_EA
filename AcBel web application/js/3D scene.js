@@ -178,7 +178,7 @@ function createOBJGeometry(component, board_data, controls) {
                     else {obj.translateY(-(component["size"][2]/2 + board_data[2]/2));}
                 }
 
-                if (comp_id == "T501") {obj.rotateY(Math.PI/2);}
+                // if (comp_id == "T501") {obj.rotateY(Math.PI/2);}
 
                 if (controls["axisHelper"]) {
                     let axesHelper = new THREE.AxesHelper(10);

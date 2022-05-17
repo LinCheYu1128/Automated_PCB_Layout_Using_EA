@@ -22,7 +22,6 @@ class ComponentList {
         vector<ComponentProperty*> preplace_comp_data;
         Component_Path comp_info = {
             "component.csv",                     // component_csvfile
-            "preplace.csv",                      // preplace_csvfile
             "..\\resources\\",                   // component_relativePath
             "..\\resources\\pin position\\"      // pinPosition_relativePath
         };

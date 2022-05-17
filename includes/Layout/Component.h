@@ -43,7 +43,7 @@ class ComponentProperty {
         Point getPreplace();
         string getSide();
         bool getPierce();
-        
+
         // setter
         void setName(string name);
         void setColor(string color);

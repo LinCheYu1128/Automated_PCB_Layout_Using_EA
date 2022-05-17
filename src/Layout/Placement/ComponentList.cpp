@@ -24,6 +24,10 @@ ComponentList::~ComponentList() {
         delete iter->second;
         ++iter;
     }
+    for(unsigned i = 0; i < comp_data_vector.size(); i++){
+        delete comp_data_vector.at(i);
+    }
+    comp_data_vector.clear();
 }
 
 int ComponentList::getSize() {
@@ -77,6 +81,7 @@ void ComponentList::setPinPosition(string comp_name) {
         // cout << key << " " << point.x << " " << point.y << endl;
         this->comp_data_dictionary[comp_name]->setOneDefaultPinPosition(key, point);
     }
+
     pin_file.close();
 }
 
@@ -153,7 +158,7 @@ void ComponentList::setPreplace() {
                 pin_comp_prop->setColor("0");
                 pin_comp_prop->setLength(1);
                 pin_comp_prop->setWidth(1);
-                pin_comp_prop->setHeight(1);
+                pin_comp_prop->setHeight(0);
                 pin_comp_prop->setVoltage(0);
                 pin_comp_prop->setPreplaceLocation(comp_prop->getPreplace().x + i->second.x - 0.5*pin_comp_prop->getLength(), comp_prop->getPreplace().y + i->second.y - 0.5*pin_comp_prop->getWidth());
                 pin_comp_prop->setSide(temp);

@@ -10,6 +10,8 @@ class Contour {
     public:
         // constructor
         Contour();
+        ~Contour();
+        Contour* copy();
 
         // getter
         vector<Point> getContourVector();

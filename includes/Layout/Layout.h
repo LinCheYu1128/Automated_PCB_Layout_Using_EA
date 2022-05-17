@@ -29,6 +29,7 @@ class Layout {
         // constructor, destructor
         Layout(BinaryTree* tree, ComponentList* comp_list, int side);
         Layout(ComponentList* comp_list, int side);
+        Layout(ComponentList* comp_list);
         ~Layout();
 
         Layout* copy();
@@ -48,6 +49,7 @@ class Layout {
         void setState(TreeNode*, string side);
         void updateLayout();
         void setFitness();
+        void setFitness(tuple<double, double, double> weight_vector);
         void setArea();
         void setWireLength();
         void setPns();
@@ -61,10 +63,10 @@ class Layout {
         double calcuHPWL(vector< tuple<double, double> > comp_in_net);
         double calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list);
         void preplaceCheck(TreeNode* node);
-
 };
 
 void writeCsv(Layout* layout, string filename="placement.csv");
 void writePin(Layout* layout, string filename="pin.csv");
+// void writeBehavior(vector<double> GA_behavior, string filename);
 
 #endif

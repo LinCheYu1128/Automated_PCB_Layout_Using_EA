@@ -15,7 +15,6 @@ BinaryTree::BinaryTree(ComponentList* comp_list) {
 }
 
 BinaryTree::~BinaryTree() {
-    // delete this->comp_list;
     delete this->root;
 }
 
@@ -37,13 +36,14 @@ ComponentList* BinaryTree::getComponentList(){
 
 BinaryTree* BinaryTree::copy() {
     BinaryTree* new_tree = new BinaryTree(this->comp_list);
+    new_tree->setSide(this->side);
     new_tree->setRoot(this->root->copy());
     new_tree->copyByTraverseTree(this->root, new_tree->getRoot());
-    new_tree->setSide(this->side);
     return new_tree;
 }
 
 void BinaryTree::copyByTraverseTree(TreeNode* old_root, TreeNode* new_root) {
+    // cout << "new Tree Node Map: " << this->TreeNode_map.size() << endl;
     this->TreeNode_map[new_root->getID()] = new_root;
     if (old_root->getLeftchild() != nullptr) {
         new_root->setLeftChild(old_root->getLeftchild()->copy());
@@ -58,8 +58,8 @@ void BinaryTree::copyByTraverseTree(TreeNode* old_root, TreeNode* new_root) {
 
 void BinaryTree::setRoot(TreeNode* node) {
     this->root = node;
-    this->root->setBranch("root");
-    this->root->disconnect("parent");
+    // this->root->setBranch("root");
+    // this->root->disconnect("parent");
 }
 
 void BinaryTree::setSide(int side) {
@@ -134,7 +134,7 @@ void BinaryTree::setDoubleSide() {
     this->root->setRightChild(new TreeNode(new ComponentProperty("B_RootHole", "0", 2, 9, 0.1, 0)));
     this->root->getRightchild()->setID(-3);
     this->TreeNode_map[-3] = this->root->getRightchild();
-        
+    
     for (unsigned int i = 0; i < comp_list_index.size(); i++) {
         new_comp = comp_list->getDataByIndex(comp_list_index[i]);
         // left & right branch
@@ -201,19 +201,19 @@ void BinaryTree::swap(int id_1, int id_2) {
 }
 
 void BinaryTree::changetoroot(TreeNode* node){
-    if(node->getRightchild()==nullptr && node->getLeftchild()==nullptr){
-        cout << node->getBranch() << endl;
-        node->getParent()->disconnect(node->getBranch());
-        cout << "debug disconnect" << endl;
-        if(this->getRoot()->getLeftchild()){
-            node->setLeftChild(this->getRoot()->getLeftchild());
-        }
-        if(this->getRoot()->getRightchild()){
-            node->setRightChild(this->getRoot()->getRightchild());
-        }
-        cout << "debug setChild" << endl;
-        this->setRoot(node);
-    }
+    // if(node->getRightchild()==nullptr && node->getLeftchild()==nullptr){
+    //     cout << node->getBranch() << endl;
+    //     node->getParent()->disconnect(node->getBranch());
+    //     cout << "debug disconnect" << endl;
+    //     if(this->getRoot()->getLeftchild()){
+    //         node->setLeftChild(this->getRoot()->getLeftchild());
+    //     }
+    //     if(this->getRoot()->getRightchild()){
+    //         node->setRightChild(this->getRoot()->getRightchild());
+    //     }
+    //     cout << "debug setChild" << endl;
+    //     this->setRoot(node);
+    // }
 }
 
 void BinaryTree::delete_node(int ID) {
@@ -236,7 +236,7 @@ void BinaryTree::delete_node(int ID) {
     else{
         delete_node->delete_node_f();
     }
-    
+    delete delete_node;
     /* Steps:
        - Find the node we want to delete.
        - Four cases:
@@ -255,19 +255,19 @@ void BinaryTree::delete_node(int ID) {
 }
 
 void BinaryTree::delete_leaf_node(TreeNode* node) {
-    if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
-        Console::log("delete leaf node " + to_string(node->getID()));
-    } else {
-        return;
-    }
+    // if (node->getLeftchild() == nullptr && node->getRightchild() == nullptr) {
+    //     Console::log("delete leaf node " + to_string(node->getID()));
+    // } else {
+    //     return;
+    // }
     
-    if (node->getBranch() == "root") {
-        Console::log("delete node is root");
-        this->root = nullptr;
-    } else {
-        Console::log("delete node is " + node->getBranch());
-        if(node->getParent()) node->getParent()->disconnect(node->getBranch());
-    }
+    // if (node->getBranch() == "root") {
+    //     Console::log("delete node is root");
+    //     this->root = nullptr;
+    // } else {
+    //     Console::log("delete node is " + node->getBranch());
+    //     if(node->getParent()) node->getParent()->disconnect(node->getBranch());
+    // }
 }
 
 void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
@@ -291,36 +291,36 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
 }
 
 void BinaryTree::delete_hasBothChild_node(TreeNode* node) {
-    TreeNode* successor;
-    if (node->getLeftchild() != nullptr && node->getRightchild() != nullptr) {
-        // since node has both children, findRightestNode(node) != nullptr
-        successor = findRightestNode(node);
-        Console::log("delete has BothChild node " + to_string(node->getID()));
-        Console::log("found successor node "  + to_string(successor->getID()));
-        // Console::log("successor old parent is "  + to_string(successor->getParent()->getID()));
-        if(successor->getParent()) successor->getParent()->disconnect(successor->getBranch());
-    } else {
-        return;
-    }
+    // TreeNode* successor;
+    // if (node->getLeftchild() != nullptr && node->getRightchild() != nullptr) {
+    //     // since node has both children, findRightestNode(node) != nullptr
+    //     successor = findRightestNode(node);
+    //     Console::log("delete has BothChild node " + to_string(node->getID()));
+    //     Console::log("found successor node "  + to_string(successor->getID()));
+    //     // Console::log("successor old parent is "  + to_string(successor->getParent()->getID()));
+    //     if(successor->getParent()) successor->getParent()->disconnect(successor->getBranch());
+    // } else {
+    //     return;
+    // }
 
-    if (node->getBranch() == "root") {
-        Console::log("delete node is root");
-        this->setRoot(successor);
-    } else {
-        // cout << "debug" << endl;
-        successor->setParent(node->getParent(), node->getBranch());
-        // cout << "debugA" << endl;
-        // Console::log("successor new parent is " + to_string(successor->getParent()->getID()));
-        // node must has left child, but right child may be successor        
-        if (node->getLeftchild()) {
-            // Console::log("node leftchild is " + to_string(node->getLeftchild()->getID()));
-            successor->setLeftChild(node->getLeftchild());
-        }
-        if (node->getRightchild()) {
-            successor->setRightChild(node->getRightchild());
-            // Console::log("node rightchild is " + to_string(node->getRightchild()->getID()));
-        }
-    }
+    // if (node->getBranch() == "root") {
+    //     Console::log("delete node is root");
+    //     this->setRoot(successor);
+    // } else {
+    //     // cout << "debug" << endl;
+    //     successor->setParent(node->getParent(), node->getBranch());
+    //     // cout << "debugA" << endl;
+    //     // Console::log("successor new parent is " + to_string(successor->getParent()->getID()));
+    //     // node must has left child, but right child may be successor        
+    //     if (node->getLeftchild()) {
+    //         // Console::log("node leftchild is " + to_string(node->getLeftchild()->getID()));
+    //         successor->setLeftChild(node->getLeftchild());
+    //     }
+    //     if (node->getRightchild()) {
+    //         successor->setRightChild(node->getRightchild());
+    //         // Console::log("node rightchild is " + to_string(node->getRightchild()->getID()));
+    //     }
+    // }
 }
 
 TreeNode* BinaryTree::findRightestNode(TreeNode* node) {
@@ -361,9 +361,9 @@ vector<TreeNode*> BinaryTree::ExtractTree(int extractID){
     vector<TreeNode*> node_permu;
     stack<TreeNode*> node_stack;
     
-    BinaryTree* dup_tree = this->copy();
+    // BinaryTree* dup_tree = this->copy();
     
-    node_stack.push(dup_tree->TreeNode_map[extractID]);
+    node_stack.push(this->TreeNode_map[extractID]);
     
     // Pre-order iterate
     while (node_stack.empty() == false)
@@ -393,8 +393,8 @@ void BinaryTree::ModifyTree(vector<TreeNode*> node_permu){
         if (temp->getID() != node_permu.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu.at(ptr)->getComponentState()->getAngle()) {
             temp->setID(node_permu.at(ptr)->getID());
             temp->setBranch(node_permu.at(ptr)->getBranch());
-            temp->setComponentProp(node_permu.at(ptr)->getComponentProp());
-            temp->setComponentState(node_permu.at(ptr)->getComponentState());
+            temp->setComponentProp(node_permu.at(ptr)->getComponentProp()->copy());
+            temp->setComponentState(node_permu.at(ptr)->getComponentState()->copy());
         }
         node_stack.pop();
         if (temp->getRightchild())
@@ -423,8 +423,8 @@ void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vecto
         if (temp->getID() != node_permu_front.at(ptr)->getID()) {
             temp->setID(node_permu_front[ptr]->getID());
             temp->setBranch(node_permu_front[ptr]->getBranch());
-            temp->setComponentProp(node_permu_front[ptr]->getComponentProp());
-            temp->setComponentState(node_permu_front[ptr]->getComponentState());
+            temp->setComponentProp(node_permu_front[ptr]->getComponentProp()->copy());
+            temp->setComponentState(node_permu_front[ptr]->getComponentState()->copy());
         }
         node_stack.pop();
         if (temp->getRightchild())
@@ -444,8 +444,8 @@ void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vecto
         if (temp->getID() != node_permu_back.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu_back.at(ptr)->getComponentState()->getAngle()) {
             temp->setID(node_permu_back.at(ptr)->getID());
             temp->setBranch(node_permu_back.at(ptr)->getBranch());
-            temp->setComponentProp(node_permu_back.at(ptr)->getComponentProp());
-            temp->setComponentState(node_permu_back.at(ptr)->getComponentState());
+            temp->setComponentProp(node_permu_back.at(ptr)->getComponentProp()->copy());
+            temp->setComponentState(node_permu_back.at(ptr)->getComponentState()->copy());
         }
         node_stack.pop();
         if (temp->getRightchild())

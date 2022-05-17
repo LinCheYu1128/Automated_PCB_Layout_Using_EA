@@ -28,6 +28,7 @@ Layout::Layout(ComponentList* comp_list, int side) {
     this->comp_list = comp_list;
     this->setBinaryTree(side);
     this->setContour();
+
     // this->tree->updateTree();
 
     if (side == 1) this->setState(this->tree->getRoot(), "front");
@@ -44,8 +45,16 @@ Layout::Layout(ComponentList* comp_list, int side) {
     // this->back_contour->printContour();
 }
 
+Layout::Layout(ComponentList* comp_list) {
+        this->comp_list = comp_list;
+        this->component_num = 0;
+        double area = 0;
+        double Pns = 0;
+        double wirelength = 0;
+        double fitness = 0;
+}
+
 Layout::~Layout() {
-    // delete this->comp_list;
     delete this->tree;
     delete this->front_contour;
     delete this->back_contour;
@@ -53,10 +62,16 @@ Layout::~Layout() {
 
 Layout* Layout::copy(){
     // ComponentList* component_list = new ComponentList();
-    int side = this->getBinaryTree()->getSide();
-    BinaryTree* tree = this->getBinaryTree()->copy();
-    Layout* layout = new Layout(tree, this->comp_list, side);
-    layout->setFitness();
+    Layout* layout = new Layout(this->comp_list);
+    layout->component_num = this->component_num;
+
+    layout->tree = this->getBinaryTree()->copy();
+    layout->front_contour = this->front_contour->copy();
+    layout->back_contour = this->back_contour->copy();
+    layout->fitness = this->fitness;
+    layout->area = this->area;
+    layout->Pns = this->Pns;
+    layout->wirelength = this->wirelength;
     return layout;
 }
 
@@ -157,13 +172,24 @@ void Layout::updateLayout(){
 
 void Layout::setFitness(){
     this->setArea();
-    // this->setWireLength();
+    this->setWireLength();
     this->setPns();
-
-    this->fitness = this->area + this->Pns/10;
-
-    // this->fitness = this->area;
+    // this->fitness = this->area + this->Pns*1000;
+    this->fitness = this->area;
     // this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
+}
+
+void Layout::setFitness(tuple<double, double, double> weight_vector){
+    this->setArea();
+    this->setWireLength();//memory leak
+    this->setPns();
+    this->area = (this->area - 887.04) / (3045.82 - 887.04);
+    this->wirelength = (this->wirelength - 393.18) / (1324.36 - 393.18);
+    this->Pns = (this->Pns - 2.8) / (50 - 2.8);
+    this->fitness = this->area * get<0>(weight_vector) + 
+                    this->wirelength * get<1>(weight_vector) + 
+                    this->Pns * get<2>(weight_vector);
+    // this->fitness = this->Pns;
 }
 
 void Layout::setArea() {
@@ -227,6 +253,8 @@ void Layout::setWireLength(){
         total_net_length += net_length;
     }
     this->wirelength = total_net_length;
+
+    delete net_list;
 }
 
 void Layout::setPns(){
@@ -343,12 +371,15 @@ double Layout::evaluateArea(int side){
             MAX_Y = max(MAX_Y, this->getContour("back")->getContourVector().at(i).y);
         }
     }
-
     
     if (MAX_X >= 29.2 + 1) {penalty += 10000*MAX_X;}
     if (MAX_Y >= 32.5 + 1) {penalty += 10000*MAX_Y;}
 
-    return MAX_X * MAX_Y  + penalty;
+    // cout << "max x: " << MAX_X << endl;
+    // cout << "max y: " << MAX_Y << endl;
+    // cout << MAX_X * MAX_Y << endl;
+
+    return MAX_X * MAX_Y /*+ penalty*/;
 }
 
 double Layout::evaluateTotalArea(){
@@ -383,9 +414,7 @@ double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list)
     }
 
     // return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
-
-//     return 10 * primary_x - secondary_x /*/ prim_list.size() + (secondary_x / sec_list.size() - 29.2)*/;
-  return rightest_primary_x - leftest_secondary_x;
+    return rightest_primary_x - leftest_secondary_x;
 }
 
 void Layout::preplaceCheck(TreeNode* node) {
@@ -413,13 +442,14 @@ void writeCsv(Layout* layout, string filename){
     //     cout << temp[i]->getComponentProp()->getName() << " ";
     // }
     // cout << endl;
-
+    
     std::ofstream layout_data;
     layout_data.open(filename);
     stack<TreeNode*> nodes;
     nodes.push(layout_tree->getRoot());
     while (nodes.size() > 0) {
         TreeNode *current = nodes.top();
+        cout << current->getComponentState()->getPosition().x << endl;
         nodes.pop();
         ComponentProperty* prop = current->getComponentProp();
         ComponentState* state = current->getComponentState();
@@ -480,5 +510,19 @@ void writePin(Layout* layout, string filename) {
         if (current->getLeftchild()) nodes.push(current->getLeftchild());
 
     }
+    // Preplace pin position
+    vector<ComponentProperty*> preplace_comp = layout_tree->getComponentList()->getPreplaceData();
+    for (auto i = preplace_comp.begin(); i != preplace_comp.end(); i++) {
+        map<string, Point> temp_preplace = (*i)->getDefaultPinPosition();
+        for (auto j = temp_preplace.begin(); j != temp_preplace.end(); j++) {
+            pin_data << (*i)->getName() << ","
+                     << j->first << ","
+                     << 0.2 << ","
+                     << 0.2 << ","
+                     << j->second.x + (*i)->getPreplace().x << ","
+                     << j->second.y + (*i)->getPreplace().y << "\n";
+        }
+    }
+
     pin_data.close();
 }

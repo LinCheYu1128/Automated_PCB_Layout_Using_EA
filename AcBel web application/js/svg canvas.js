@@ -81,7 +81,7 @@ export class Canvas {
             if (preplace_data[comp_id]["side"] == this.side) {
                 this.create2DGeometry({"component": preplace_data[comp_id], "fill": preplace_data[comp_id]["color"]});
                 this.createText({"component": preplace_data[comp_id]});
-                // this.drawPin(comp_id);
+                this.drawPin(comp_id);
             }
         }
     }

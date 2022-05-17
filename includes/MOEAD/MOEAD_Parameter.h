@@ -1,11 +1,11 @@
-#ifndef GA_PARAMETER_H
-#define GA_PARAMETER_H
+#ifndef MOEAD_PARAMETER_H
+#define MOEAD_PARAMETER_H
 
-class GA_Parameter {
+class MOEAD_Parameter {
     private:
         int kExpTime = 1;
-        int kGeneration = 1;
-        int kPopSize = 300;
+        int kGeneration = 2;
+        int kPopSize = 200;
         // parent selection
         int k_Tournament = 5;
         // crossover
@@ -17,11 +17,13 @@ class GA_Parameter {
         double kSideChangeRate = 0.3;
         // evaluation
         double kAreaUtilTarget = 0.95;
+        // neighbor
+        int kNeighborNumber = 5;
 
     public:
         // constructor, destructor
-        GA_Parameter();
-        ~GA_Parameter();
+        MOEAD_Parameter();
+        ~MOEAD_Parameter();
 
         // getter
         int getExpTime();
@@ -34,6 +36,7 @@ class GA_Parameter {
         double getAngleChangeRate();
         double getSideChangeRate();
         double getAreaUtilTarget();
+        int getNeighborNumber();
         
         // setter
         void setExpTime(int kExpTime);
