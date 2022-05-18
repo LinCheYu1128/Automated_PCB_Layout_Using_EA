@@ -2,11 +2,11 @@ function openPage(page) {
     var i, tabcontent;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
+      // tabcontent[i].style.display = "none";
       tabcontent[i].style.visibility = "hidden";
     }
 
-    document.getElementById(page).style.display = "flex";
+    // document.getElementById(page).style.display = "flex";
     document.getElementById(page).style.visibility = "visible";
 }
 

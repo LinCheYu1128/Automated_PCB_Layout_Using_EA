@@ -96,7 +96,7 @@ export class Canvas {
             if (pierce) {
                 this.pin_data[name][key]["color"] = "#FF0000";
             } else {
-                this.pin_data[name][key]["color"] = "#111111";
+                this.pin_data[name][key]["color"] = "#000000";
             }
             this.create2DGeometry({"component": this.pin_data[name][key], "stroke_width": 0, "alignment": "center"});
             // this.createText({"component": this.pin_data[name][key], "name": this.pin_data[name][key]["name"]}); /*.slice(-1)*/
@@ -112,39 +112,56 @@ export class Canvas {
         this.svg.appendChild(poly);
     }
 
-    create2DGeometry({component, alignment="bottom_left", stroke_alignment="center"}) {
+    create2DGeometry({component, alignment="bottom_left"}) {
         let rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
-        let stroke_alignment_ratio;
-        let stroke_width = component["margin"];
-        if (stroke_alignment == "inner") {
-            stroke_alignment_ratio = 0;
-        } else if (stroke_alignment == "center") {
-            stroke_alignment_ratio = 0.5;
-        } else if (stroke_alignment == "outer") {
-            stroke_alignment_ratio = 1;
-        }
+        let rect_margin = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+
         if (alignment == "bottom_left") {
             console.log(component["name"], component["size"][0], component["size"][1])
-            rect.setAttribute('x', this.margin_x + component["margin"] + component["position"][0] - stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('y', this.margin_y + component["margin"] + component["position"][1] - stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('width', component["size"][0] + 2*stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('height', component["size"][1] + 2*stroke_width*stroke_alignment_ratio);
+            rect.setAttribute('x', this.margin_x + component["margin"] + component["position"][0]);
+            rect.setAttribute('y', this.margin_y + component["margin"] + component["position"][1]);
+            rect.setAttribute('width', component["size"][0]);
+            rect.setAttribute('height', component["size"][1]);
+
+            rect_margin.setAttribute('x', this.margin_x + component["position"][0]);
+            rect_margin.setAttribute('y', this.margin_y + component["position"][1]);
+            rect_margin.setAttribute('width', component["size"][0] + 2*component["margin"]);
+            rect_margin.setAttribute('height', component["size"][1] + 2*component["margin"]);
         } else if (alignment == "center") {
-            rect.setAttribute('x', this.margin_x + component["margin"] + (component["position"][0] - component["size"][0]/2) - stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('y', this.margin_y + component["margin"] + (component["position"][1] - component["size"][1]/2) - stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('width', component["size"][0] + 2*stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('height', component["size"][1] + 2*stroke_width*stroke_alignment_ratio);
+            rect.setAttribute('x', this.margin_x + component["margin"] + (component["position"][0] - component["size"][0]/2));
+            rect.setAttribute('y', this.margin_y + component["margin"] + (component["position"][1] - component["size"][1]/2));
+            rect.setAttribute('width', component["size"][0]);
+            rect.setAttribute('height', component["size"][1]);
+
+            rect_margin.setAttribute('x', this.margin_x + (component["position"][0] - component["size"][0]/2));
+            rect_margin.setAttribute('y', this.margin_y + (component["position"][1] - component["size"][1]/2));
+            rect_margin.setAttribute('width', component["size"][0] + 2*component["margin"]);
+            rect_margin.setAttribute('height', component["size"][1] + 2*component["margin"]);
         }
+        
+        rect.setAttribute('name', component["name"]);
+        rect.setAttribute('original-fill', component["color"]);
         rect.setAttribute('fill', component["color"]);
-        rect.style['stroke-width'] = stroke_width;
-        // if (component["voltage"] == "1") {
-        //     rect.style['stroke'] = '#FF000044';
-        // } else if (component["voltage"] == "-1") {
-        //     rect.style['stroke'] = '#0000FF44';
-        // } else {
-        //     rect.style['stroke'] = '#00FF0044';
-        // }
+
+        if (component["voltage"] == "1") {
+            rect.setAttribute('PNS-fill', '#FF000066');
+            rect_margin.style['fill'] = '#FF000088';
+        } else if (component["voltage"] == "-1") {
+            rect.setAttribute('PNS-fill', '#0000FF66');
+            rect_margin.style['fill'] = '#0000FF88';
+        } else {
+            rect.setAttribute('PNS-fill', '#11111166');
+            rect_margin.style['fill'] = '#00000088';
+        }
+        rect_margin.style['stroke'] = '#666666';
+        rect_margin.style['stroke-width'] = 0.01;
+        rect_margin.style.display = "none";
+
+        rect.classList.add("component");
+        rect_margin.classList.add("component-margin");
+
         this.svg.appendChild(rect);
+        this.svg.appendChild(rect_margin);
     }
 
     create2DLine({polyline, stroke="#666666", stroke_width=0.2}) {
