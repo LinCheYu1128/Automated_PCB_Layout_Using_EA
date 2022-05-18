@@ -102,6 +102,7 @@ export function Pin_ArrayToMap(pin_csv) {
         if (!mapData[pin[0]]) {mapData[pin[0]] = {};}
         mapData[pin[0]][pin[1]] = {
             "name": pin[0] + "-" + pin[1],
+            "color": "#666666",
             "size": [Number(pin[2]), Number(pin[3])],
             "position": [Number(pin[4]) + shift, Number(pin[5]) + shift],
             "margin": 0,
@@ -146,6 +147,6 @@ export function MapToTree(mapData, arrData) {
         queue.push({"node": node["children"][0], "component": mapData[component["leftChild"]]}, {"node": node["children"][1], "component": mapData[component["rightChild"]]});
     }
 
-    console.log(Tree)
+    console.log("Tree", Tree)
     return Tree;
 }

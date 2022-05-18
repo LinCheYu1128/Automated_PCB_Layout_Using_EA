@@ -87,8 +87,8 @@ class ComponentState {
         string getSide();
         double getAngle();
         Point getPosition();
-        double getLength();
-        double getWidth();
+        double getLength(string range);
+        double getWidth(string range);
         double getMargin();
         map<string, Point> getPinPosition();
         

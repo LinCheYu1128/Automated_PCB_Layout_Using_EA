@@ -292,10 +292,10 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
 
 Layout* nothingCrossover(vector<Layout*>Parents){
 
-    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
+    // ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
-    BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
-    Layout* new_layout = new Layout(BTreeA, component_list, BTreeA->getSide());
+    // BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
+    Layout* new_layout = Parents.at(0)->copy();
     // Layout* new_layout = new Layout(component_list, 2);
 
     return new_layout;

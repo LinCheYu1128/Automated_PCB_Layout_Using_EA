@@ -45,16 +45,8 @@ Layout::Layout(ComponentList* comp_list, int side) {
     // this->back_contour->printContour();
 }
 
-Layout::Layout(ComponentList* comp_list) {
-        this->comp_list = comp_list;
-        this->component_num = 0;
-        double area = 0;
-        double Pns = 0;
-        double wirelength = 0;
-        double fitness = 0;
-}
-
 Layout::~Layout() {
+    // delete this->comp_list;
     delete this->tree;
     delete this->front_contour;
     delete this->back_contour;
@@ -62,16 +54,10 @@ Layout::~Layout() {
 
 Layout* Layout::copy(){
     // ComponentList* component_list = new ComponentList();
-    Layout* layout = new Layout(this->comp_list);
-    layout->component_num = this->component_num;
-
-    layout->tree = this->getBinaryTree()->copy();
-    layout->front_contour = this->front_contour->copy();
-    layout->back_contour = this->back_contour->copy();
-    layout->fitness = this->fitness;
-    layout->area = this->area;
-    layout->Pns = this->Pns;
-    layout->wirelength = this->wirelength;
+    int side = this->getBinaryTree()->getSide();
+    BinaryTree* tree = this->getBinaryTree()->copy();
+    Layout* layout = new Layout(tree, this->comp_list, side);
+    layout->setFitness();
     return layout;
 }
 
@@ -161,7 +147,7 @@ void Layout::setState(TreeNode* root, string side) {
 
 void Layout::updateLayout(){
     this->setContour();
-    this->getBinaryTree()->updateTree();
+    // this->getBinaryTree()->updateTree();
     if (this->tree->getSide() == 1) this->setState(this->tree->getRoot(), "front");
     else if (this->tree->getSide() == 2) {
         this->setState(this->tree->getRoot()->getLeftchild(), "front");
@@ -172,10 +158,12 @@ void Layout::updateLayout(){
 
 void Layout::setFitness(){
     this->setArea();
-    this->setWireLength();
+    // this->setWireLength();
     this->setPns();
-    // this->fitness = this->area + this->Pns*1000;
-    this->fitness = this->area;
+
+    this->fitness = this->area + this->Pns/10;
+
+    // this->fitness = this->area;
     // this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
 }
 
@@ -241,8 +229,8 @@ void Layout::setWireLength(){
                 ComponentState* comp_state = this->getBinaryTree()->getTreeNodeMap().at(compid)->getComponentState();
                 bl_x = comp_state->getPosition().x;
                 bl_y = comp_state->getPosition().y;
-                tr_x = comp_state->getPosition().x + comp_state->getLength();
-                tr_y = comp_state->getPosition().y + comp_state->getWidth();
+                tr_x = comp_state->getPosition().x + comp_state->getLength("outer");
+                tr_y = comp_state->getPosition().y + comp_state->getWidth("outer");
                 comp_in_net.push_back(make_tuple(bl_x, bl_y));
                 comp_in_net.push_back(make_tuple(tr_x, tr_y));
             }
@@ -253,8 +241,6 @@ void Layout::setWireLength(){
         total_net_length += net_length;
     }
     this->wirelength = total_net_length;
-
-    delete net_list;
 }
 
 void Layout::setPns(){
@@ -371,15 +357,12 @@ double Layout::evaluateArea(int side){
             MAX_Y = max(MAX_Y, this->getContour("back")->getContourVector().at(i).y);
         }
     }
+
     
     if (MAX_X >= 29.2 + 1) {penalty += 10000*MAX_X;}
     if (MAX_Y >= 32.5 + 1) {penalty += 10000*MAX_Y;}
 
-    // cout << "max x: " << MAX_X << endl;
-    // cout << "max y: " << MAX_Y << endl;
-    // cout << MAX_X * MAX_Y << endl;
-
-    return MAX_X * MAX_Y /*+ penalty*/;
+    return MAX_X * MAX_Y  + penalty;
 }
 
 double Layout::evaluateTotalArea(){
@@ -414,7 +397,9 @@ double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list)
     }
 
     // return abs(primary_x / prim_list.size() - secondary_x / sec_list.size()) * -1;
-    return rightest_primary_x - leftest_secondary_x;
+
+//     return 10 * primary_x - secondary_x /*/ prim_list.size() + (secondary_x / sec_list.size() - 29.2)*/;
+  return rightest_primary_x - leftest_secondary_x;
 }
 
 void Layout::preplaceCheck(TreeNode* node) {
@@ -425,9 +410,9 @@ void Layout::preplaceCheck(TreeNode* node) {
         if ((*i)->getSide() == node->getComponentState()->getSide()) {
             Point comp_left_bot = (*i)->getPreplace();
             if (node_left_bot.x < comp_left_bot.x + (*i)->getLength()\
-            && comp_left_bot.x < node_left_bot.x + node->getComponentState()->getLength()\
+            && comp_left_bot.x < node_left_bot.x + node->getComponentState()->getLength("outer")\
             && node_left_bot.y < comp_left_bot.y + (*i)->getWidth()\
-            && comp_left_bot.y < node_left_bot.y + node->getComponentState()->getWidth()) y = max(y, comp_left_bot.y + (*i)->getWidth());
+            && comp_left_bot.y < node_left_bot.y + node->getComponentState()->getWidth("outer")) y = max(y, comp_left_bot.y + (*i)->getWidth());
             // rec1[0] < rec2[2] && rec2[0] < rec1[2] && rec1[1] < rec2[3] && rec2[1] < rec1[3];
         } 
     }
@@ -455,8 +440,8 @@ void writeCsv(Layout* layout, string filename){
         ComponentState* state = current->getComponentState();
         layout_data << prop->getName() << "," 
                     << prop->getColor() << ","
-                    << state->getLength() << ","
-                    << state->getWidth() << ","
+                    << prop->getLength() << ","
+                    << prop->getWidth() << ","
                     << prop->getHeight() << ","
                     << prop->getVoltage() << ","
                     << state->getPosition().x << ","

@@ -30,8 +30,8 @@ TreeNode* TreeNode::copy() {
     TreeNode* new_node = new TreeNode(this->comp_prop);
     new_node->setID(this->id);
     new_node->setBranch(this->branch);
-    // new_node->setComponentProp(this->getComponentProp()->copy());//no need this step
-    // new_node->setComponentState(this->getComponentState()->copy());//no need this step
+    new_node->setComponentProp(this->getComponentProp()->copy());//no need this step
+    new_node->setComponentState(this->getComponentState()->copy());//no need this step
     return new_node;
 }
 
@@ -267,31 +267,31 @@ bool TreeNode::search(int ID) {
 
 
 void TreeNode::updateNode() {
-    if(this->comp_prop->getVoltage() == 1){
-        if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
-            this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-        } else {
-            this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-        }
-    }else if(this->comp_prop->getVoltage() == -1){
-        if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
-            this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-        } else {
-            this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-        }
-    }else{
-        if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
-            this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-        } else {
-            this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-        }
-    }
+    // if(this->comp_prop->getVoltage() == 1){
+    //     if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+    //         this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //     } else {
+    //         this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //     }
+    // }else if(this->comp_prop->getVoltage() == -1){
+    //     if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+    //         this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //     } else {
+    //         this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //     }
+    // }else{
+    //     if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+    //         this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //     } else {
+    //         this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //     }
+    // }
 }
 
 void TreeNode::shiftUp(vector<Point> contour) {
@@ -302,7 +302,7 @@ void TreeNode::shiftUp(vector<Point> contour) {
     if (this->getBranch() == "root") x = 0;
     else {
         ComponentState* parent = this->getParent()->getComponentState();
-        if (this->getBranch() == "left") x = parent->getPosition().x + parent->getLength() /*+ 2*parent->getMargin()*/;
+        if (this->getBranch() == "left") x = parent->getPosition().x + parent->getLength("outer");
         else if (this->getBranch() == "right") x = parent->getPosition().x;
         else {cout << "Branch invalid" << endl; exit(0);}
     }
@@ -310,7 +310,7 @@ void TreeNode::shiftUp(vector<Point> contour) {
     this->rotate();
 
     for (unsigned int i = 0; i < contour.size(); i++){
-        if (contour.at(i).x >= x && contour.at(i).x < x + comp->getLength() /*+ 2*comp->getMargin()*/) {
+        if (contour.at(i).x >= x && contour.at(i).x < x + comp->getLength("outer")) {
             max_y = max(contour.at(i).y, max_y);
         }
     }
@@ -321,20 +321,18 @@ void TreeNode::shiftUp(vector<Point> contour) {
 void TreeNode::rotate() {
     double PI = 3.1415926;
     if (this->comp_state->getAngle() == 90 || this->comp_state->getAngle() == 270) {
-        this->comp_state->setLength(this->comp_prop->getWidth() + 2*comp_state->getMargin());
-        this->comp_state->setWidth(this->comp_prop->getLength() + 2*comp_state->getMargin());
+        this->comp_state->setLength(this->comp_prop->getWidth());
+        this->comp_state->setWidth(this->comp_prop->getLength());
     } else {
-        this->comp_state->setLength(this->comp_prop->getLength() + 2*comp_state->getMargin());
-        this->comp_state->setWidth(this->comp_prop->getWidth() + 2*comp_state->getMargin());
+        this->comp_state->setLength(this->comp_prop->getLength());
+        this->comp_state->setWidth(this->comp_prop->getWidth());
     }
-    Point center_position = {this->comp_state->getLength()/2, this->comp_state->getWidth()/2};
+    Point center_position = {this->comp_state->getLength("outer")/2, this->comp_state->getWidth("outer")/2};
     this->comp_state->setPinPosition(this->comp_prop->getDefaultPinPosition());
     map <string, Point> temp = this->comp_prop->getDefaultPinPosition();
 
     for (auto iter = temp.begin(); iter != temp.end(); iter++) {
         Point new_pin = {0, 0};
-        // double origin_pin_x = iter->second.x - center_position.x;
-        // double origin_pin_y = iter->second.y - center_position.y;
         double origin_pin_x = iter->second.x - this->comp_prop->getLength()/2;
         double origin_pin_y = iter->second.y - this->comp_prop->getWidth()/2;
         new_pin.x = (cos(this->comp_state->getAngle()/180*PI) * origin_pin_x - sin(this->comp_state->getAngle()/180*PI) * origin_pin_y) + center_position.x;

@@ -64,7 +64,7 @@ export class Canvas {
             comp_id = stack.pop();
             if (comp_id == "null") {continue;}
             // placement_data[comp_id]["side"] = this.side;
-            this.create2DGeometry({"component": placement_data[comp_id], "fill": placement_data[comp_id]["color"]});
+            this.create2DGeometry({"component": placement_data[comp_id]});
             this.createText({"component": placement_data[comp_id]});
             // console.log(comp_id);
             this.drawPin(comp_id);
@@ -79,17 +79,26 @@ export class Canvas {
 
         for (let [comp_id, value] of Object.entries(this.preplace_data)) {
             if (preplace_data[comp_id]["side"] == this.side) {
-                this.create2DGeometry({"component": preplace_data[comp_id], "fill": preplace_data[comp_id]["color"]});
+                this.create2DGeometry({"component": preplace_data[comp_id]});
                 this.createText({"component": preplace_data[comp_id]});
                 this.drawPin(comp_id);
+            }
+
+            if (preplace_data[comp_id]["side"] != this.side && preplace_data[comp_id]["pierce"] == "1") {
+                this.drawPin(comp_id, true);
             }
         }
     }
 
-    drawPin(name) {
+    drawPin(name, pierce=false) {
         // console.log(this.pin_data[name]);
         for (let [key, value] of Object.entries(this.pin_data[name])) {
-            this.create2DGeometry({"component": this.pin_data[name][key], "stroke_width": 0, "alignment": "center", "fill": "#111111"});
+            if (pierce) {
+                this.pin_data[name][key]["color"] = "#FF0000";
+            } else {
+                this.pin_data[name][key]["color"] = "#111111";
+            }
+            this.create2DGeometry({"component": this.pin_data[name][key], "stroke_width": 0, "alignment": "center"});
             // this.createText({"component": this.pin_data[name][key], "name": this.pin_data[name][key]["name"]}); /*.slice(-1)*/
         }
     }
@@ -103,9 +112,10 @@ export class Canvas {
         this.svg.appendChild(poly);
     }
 
-    create2DGeometry({component, alignment="bottom_left", stroke_alignment="center", stroke="#666666", stroke_width=0, fill="#666666"}) {
+    create2DGeometry({component, alignment="bottom_left", stroke_alignment="center"}) {
         let rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
         let stroke_alignment_ratio;
+        let stroke_width = component["margin"];
         if (stroke_alignment == "inner") {
             stroke_alignment_ratio = 0;
         } else if (stroke_alignment == "center") {
@@ -114,19 +124,26 @@ export class Canvas {
             stroke_alignment_ratio = 1;
         }
         if (alignment == "bottom_left") {
+            console.log(component["name"], component["size"][0], component["size"][1])
             rect.setAttribute('x', this.margin_x + component["margin"] + component["position"][0] - stroke_width*stroke_alignment_ratio);
             rect.setAttribute('y', this.margin_y + component["margin"] + component["position"][1] - stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('width', component["size"][0]-2*component["margin"] + 2*stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('height', component["size"][1]-2*component["margin"] + 2*stroke_width*stroke_alignment_ratio);
+            rect.setAttribute('width', component["size"][0] + 2*stroke_width*stroke_alignment_ratio);
+            rect.setAttribute('height', component["size"][1] + 2*stroke_width*stroke_alignment_ratio);
         } else if (alignment == "center") {
             rect.setAttribute('x', this.margin_x + component["margin"] + (component["position"][0] - component["size"][0]/2) - stroke_width*stroke_alignment_ratio);
             rect.setAttribute('y', this.margin_y + component["margin"] + (component["position"][1] - component["size"][1]/2) - stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('width', component["size"][0]-2*component["margin"] + 2*stroke_width*stroke_alignment_ratio);
-            rect.setAttribute('height', component["size"][1]-2*component["margin"] + 2*stroke_width*stroke_alignment_ratio);
+            rect.setAttribute('width', component["size"][0] + 2*stroke_width*stroke_alignment_ratio);
+            rect.setAttribute('height', component["size"][1] + 2*stroke_width*stroke_alignment_ratio);
         }
-        rect.setAttribute('fill', fill);
-        rect.style['stroke'] = component["border_color"];
+        rect.setAttribute('fill', component["color"]);
         rect.style['stroke-width'] = stroke_width;
+        // if (component["voltage"] == "1") {
+        //     rect.style['stroke'] = '#FF000044';
+        // } else if (component["voltage"] == "-1") {
+        //     rect.style['stroke'] = '#0000FF44';
+        // } else {
+        //     rect.style['stroke'] = '#00FF0044';
+        // }
         this.svg.appendChild(rect);
     }
 
@@ -142,14 +159,14 @@ export class Canvas {
 
     createText({component}) {
         let text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-        text.setAttribute('x', this.margin_x + (component["position"][0] + component["size"][0]/2));
-        text.setAttribute('y', this.margin_y + (component["position"][1] + component["size"][1]/2));
+        text.setAttribute('x', this.margin_x + (component["position"][0] + component["margin"] + component["size"][0]/2));
+        text.setAttribute('y', this.margin_y + (component["position"][1] + component["margin"] + component["size"][1]/2));
         text.style['font'] = "0.5px \"Lato\", sans-serif";
         text.style['dominant-baseline'] = "middle";
         text.style['text-anchor'] = "middle";
         text.textContent = component.name;
-        let x = this.margin_x + (component["position"][0] + component["size"][0]/2);
-        let y = this.margin_y + (component["position"][1] + component["size"][1]/2);
+        let x = this.margin_x + (component["position"][0] + component["margin"] + component["size"][0]/2);
+        let y = this.margin_y + (component["position"][1] + component["margin"] + component["size"][1]/2);
         if (this.side == "front" || this.side == "single") {
             text.setAttribute('transform', `translate(${x}, ${y}) scale(1, -1) translate(${-x}, ${-y})`);
         } else {
