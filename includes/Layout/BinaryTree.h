@@ -53,6 +53,7 @@ class BinaryTree {
 
         // printer
         void printBinaryTree();
+        void printBinaryTreeInPreorder();
 };
 
 

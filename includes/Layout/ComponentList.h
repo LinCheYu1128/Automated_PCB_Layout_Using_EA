@@ -19,6 +19,7 @@ class ComponentList {
     private:
         map<string, ComponentProperty*> comp_data_dictionary;
         vector<ComponentProperty*> comp_data_vector;
+        vector<ComponentProperty*> preplace_comp_data;
         Component_Path comp_info = {
             "component.csv",                     // component_csvfile
             "..\\resources\\",                   // component_relativePath
@@ -34,6 +35,7 @@ class ComponentList {
         int getSize();
         ComponentProperty* getDataByName(string comp_name);
         ComponentProperty* getDataByIndex(int index);
+        vector<ComponentProperty*> getPreplaceData();
         map<string, ComponentProperty*> getAllData();
         map<string, int> getCompIdMap();
         
@@ -41,6 +43,7 @@ class ComponentList {
         void setData(string comp_name, ComponentProperty* comp_prop);
         void setPinPosition(string comp_name);
         void setAllData();
+        void setPreplace();
 
         // printer
         void printData(string comp_name);

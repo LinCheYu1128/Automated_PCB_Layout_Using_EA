@@ -5,7 +5,59 @@
 #include <algorithm>
 using namespace std;
 
-int MyRandom (int i) { return std::rand()%i;}
+int MyRandom(int i) { return std::rand() % i; }
+
+// void swapBranchMutation(Layout *input){
+//     // cout << "conduct swapBranchMutation" << endl;
+
+//     int componentsize = input->getComponentNum();
+
+//     BinaryTree *inputtree = input->getBinaryTree();
+//     map<int, TreeNode *> tempmap = inputtree->getTreeNodeMap();
+
+//     vector<TreeNode *> temp1 = input->getBinaryTree()->ExtractTree(input->getBinaryTree()->getRoot()->getID());
+//     // for (unsigned i = 0; i < temp1.size(); i++)
+//     // {
+//     //     cout << temp1[i]->getComponentProp()->getName() << " ";
+//     // }
+//     // cout << endl;
+//     // for (unsigned i = 0; i < temp1.size(); i++)
+//     // {
+//     //     cout << temp1[i]->getComponentState()->getPosition().y << " ";
+//     // }
+//     // cout << endl;
+
+//     int targetId = rand() % componentsize;
+//     TreeNode *targetnode = tempmap[targetId];
+
+//     while(targetnode->getLeftchild() == nullptr || targetnode->getRightchild() == nullptr){
+//         targetId = rand() % componentsize;
+//         inputtree = input->getBinaryTree();
+//         tempmap = inputtree->getTreeNodeMap();
+//         targetnode = tempmap[targetId];
+//     }
+
+//     int leftchild = targetnode->getLeftchild()->getID();
+//     int rightchild = targetnode->getRightchild()->getID();
+
+//     Console::log("parent = " + to_string(targetId));
+//     Console::log("left child = " + to_string(leftchild));
+//     Console::log("right child = " + to_string(rightchild));
+
+//     inputtree->swap(leftchild, rightchild);
+
+//     vector<TreeNode *> temp2 = input->getBinaryTree()->ExtractTree(input->getBinaryTree()->getRoot()->getID());
+//     // for (unsigned i = 0; i < temp2.size(); i++)
+//     // {
+//     //     cout << temp2[i]->getComponentProp()->getName() << " ";
+//     // }
+//     // cout << endl;
+//     // for (unsigned i = 0; i < temp2.size(); i++)
+//     // {
+//     //     cout << temp2[i]->getComponentState()->getPosition().y << " ";
+//     // }
+//     // cout << endl;
+// }
 
 void swapBranchMutation(Layout *input){
     // cout << "conduct swapBranchMutation" << endl;
@@ -41,8 +93,8 @@ void swapSubtreeMutation(Layout *input){
 
     int componentsize = input->getComponentNum();
 
-    BinaryTree* inputtree = input->getBinaryTree();
-    map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
+    BinaryTree *inputtree = input->getBinaryTree();
+    map<int, TreeNode *> inputmap = inputtree->getTreeNodeMap();
 
     int s1 = rand() % componentsize;
     int s2 = rand() % componentsize;
@@ -54,7 +106,6 @@ void swapSubtreeMutation(Layout *input){
     // cout << inputmap[s1]->getComponentProp()->getName() << endl;
     // cout << inputmap[s2]->getComponentProp()->getName() << endl;
     inputtree->swap(s1, s2);
-
 }
 
 void bitwiseMutation(Layout *input,  double prob){
@@ -62,8 +113,8 @@ void bitwiseMutation(Layout *input,  double prob){
 
     int componentsize = input->getComponentNum();
 
-    BinaryTree* inputtree = input->getBinaryTree();
-    map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
+    BinaryTree *inputtree = input->getBinaryTree();
+    map<int, TreeNode *> inputmap = inputtree->getTreeNodeMap();
 
     // for(int i=0; i < componentsize; i++){
     //     cout << inputmap[i]->getComponentState()->getAngle() << " ";
@@ -77,7 +128,7 @@ void bitwiseMutation(Layout *input,  double prob){
             while(inputmap[i]->getComponentState()->getAngle() / 90 == angle){
                 angle = rand() % 4;
             }
-            inputmap[i]->getComponentState()->setAngle(90*angle);
+            inputmap[i]->getComponentState()->setAngle(90 * angle);
         }
     }
 
@@ -92,16 +143,18 @@ void shiftSubtreeMutation(Layout *input){
 
     int componentsize = input->getComponentNum();
 
-    // cout << "test 1" << endl;
+    // cout << componentsize << endl;
 
-    BinaryTree* inputtree = input->getBinaryTree();
-    map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
+    BinaryTree *inputtree = input->getBinaryTree();
+    map<int, TreeNode *> inputmap = inputtree->getTreeNodeMap();
 
     // cout << "test 2" << endl;
 
     int targetId = rand() % componentsize;
     TreeNode* targetnode = inputmap[targetId];
-    while(targetnode->getParent() == nullptr){
+    // cout << targetnode->getComponentProp()->getName() << endl;
+    while(targetnode->getParent()==nullptr){
+    // while(targetnode->getBranch() == "root"){
         targetId = rand() % componentsize;
         targetnode = inputmap[targetId];
     }
@@ -110,14 +163,15 @@ void shiftSubtreeMutation(Layout *input){
 
     // cout << "targetparent ID: " << targetparentID << endl;
 
-    targetnode->disconnect();
+    targetnode->disconnect("parent");
 
     // cout << "test 3" << endl;
 
-    TreeNode* leaf = inputtree->findLeafNode(inputtree->getRoot());
-
-    // cout << "test 4" << endl;
-    while(leaf->getID() == targetparentID && inputmap[targetparentID]->getParent() == nullptr){
+    TreeNode *leaf = inputtree->findLeafNode(inputtree->getRoot());
+    // if(leaf->getLeftchild()==nullptr && leaf->getRightchild()==nullptr) cout << "leaf" << endl;
+    // else cout <<"something wrong" << endl;
+    // cout << "test 4" << endl; 
+    while(leaf->getID() == targetparentID && inputmap[targetparentID]->getBranch() != "root"){
         leaf = inputtree->findLeafNode(inputtree->getRoot());
     }
 
@@ -131,15 +185,14 @@ void shiftSubtreeMutation(Layout *input){
         // cout << "add rightchild" << endl;
         leaf->setRightChild(targetnode);
     }
-
 }
 
 void insertMutation(Layout *input){
     // cout << "conduct insertMutation" << endl;
 
-    BinaryTree* inputtree = input->getBinaryTree();
-    BinaryTree* duptree = input->getBinaryTree()->copy();
-    map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
+    BinaryTree *inputtree = input->getBinaryTree();
+    BinaryTree *duptree = input->getBinaryTree()->copy();
+    map<int, TreeNode *> inputmap = inputtree->getTreeNodeMap();
 
     if(inputtree->getSide() == 1){
         vector<TreeNode*> node_permu;
@@ -168,14 +221,14 @@ void insertMutation(Layout *input){
                 node_permu.at(pivot) = node_permu.at(pivot-1);
                 pivot--;
             }
-            node_permu.at(mutate_p1+1) = key_node;
+            node_permu.at(mutate_p1 + 1) = key_node;
         }
         else {
             while (pivot < mutate_p1) {
                 node_permu.at(pivot) = node_permu.at(pivot+1);
                 pivot++;
             }
-            node_permu.at(mutate_p1-1) = key_node;
+            node_permu.at(mutate_p1 - 1) = key_node;
         }
 
         // for(unsigned i=0; i < node_permu.size(); i++){
@@ -204,7 +257,6 @@ void insertMutation(Layout *input){
         // }
         // cout << endl;
 
-
         int mutate_p1 = 0, mutate_p2 = 0;
         while (mutate_p1 == mutate_p2 || mutate_p1 == mutate_p2 +1 || mutate_p2 == mutate_p1 +1) {
             mutate_p1 = rand() % amount;
@@ -221,14 +273,14 @@ void insertMutation(Layout *input){
                 node_permu_front.at(pivot) = node_permu_front.at(pivot-1);
                 pivot--;
             }
-            node_permu_front.at(mutate_p1+1) = key_node;
+            node_permu_front.at(mutate_p1 + 1) = key_node;
         }
         else {
             while (pivot < mutate_p1) {
                 node_permu_front.at(pivot) = node_permu_front.at(pivot+1);
                 pivot++;
             }
-            node_permu_front.at(mutate_p1-1) = key_node;
+            node_permu_front.at(mutate_p1 - 1) = key_node;
         }
 
         // for(unsigned i=0; i < node_permu_front.size(); i++){
@@ -248,21 +300,20 @@ void insertMutation(Layout *input){
         inputtree->ModifyDoubleSidedTree(node_permu_front, node_permu_back);
     }
     delete duptree;
-
 }
 
 void scrambleMutation(Layout *input){
     // cout << "conduct scrambleMutation" << endl;
 
-    BinaryTree* inputtree = input->getBinaryTree();
-    BinaryTree* duptree = input->getBinaryTree()->copy();
-    map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
+    BinaryTree *inputtree = input->getBinaryTree();
+    BinaryTree *duptree = input->getBinaryTree()->copy();
+    map<int, TreeNode *> inputmap = inputtree->getTreeNodeMap();
 
     if(inputtree->getSide() == 1){
         vector<TreeNode*> node_permu;
         node_permu = duptree->ExtractTree(0);
         int amount = node_permu.size();
-        vector<TreeNode*> scramble_list;
+        vector<TreeNode *> scramble_list;
 
         // for(unsigned i=0; i < node_permu.size(); i++){
         //     cout << node_permu[i]->getID() << " ";
@@ -320,20 +371,23 @@ void scrambleMutation(Layout *input){
         // }
         // cout << endl;
 
-        vector<TreeNode*> scramble_list;
+        vector<TreeNode *> scramble_list;
         int mutate_p1 = 0, mutate_p2 = 0;
-        while (mutate_p1 == mutate_p2 || mutate_p1 == 0 || mutate_p2 == 0){
+        while (mutate_p1 == mutate_p2 || mutate_p1 == 0 || mutate_p2 == 0)
+        {
             mutate_p1 = rand() % amount;
             mutate_p2 = rand() % amount;
         }
-        if (mutate_p2 < mutate_p1){
+        if (mutate_p2 < mutate_p1)
+        {
             swap(mutate_p1, mutate_p2);
         }
 
         // cout << "m1: " << node_permu_front.at(mutate_p1)->getID() << "  m2: " << node_permu_front.at(mutate_p2)->getID() << endl;
 
         int pivot = mutate_p1;
-        while (pivot <= mutate_p2){
+        while (pivot <= mutate_p2)
+        {
             scramble_list.push_back(node_permu_front.at(pivot));
             pivot++;
         }
@@ -341,8 +395,9 @@ void scrambleMutation(Layout *input){
         random_shuffle(scramble_list.begin(), scramble_list.end(), MyRandom);
 
         pivot = mutate_p1;
-        while (pivot <= mutate_p2){
-            node_permu_front.at(pivot) = scramble_list.at(pivot-mutate_p1);
+        while (pivot <= mutate_p2)
+        {
+            node_permu_front.at(pivot) = scramble_list.at(pivot - mutate_p1);
             pivot++;
         }
 
@@ -352,7 +407,8 @@ void scrambleMutation(Layout *input){
         // cout << endl;
 
         int n = 0;
-        while (node_permu_back.size() != back_size) {
+        while (node_permu_back.size() != back_size)
+        {
             node_permu_back.push_back(node_permu_front.at(front_size + n));
             n++;
         }
@@ -368,9 +424,9 @@ void scrambleMutation(Layout *input){
 void swapNodeMutation(Layout *input){
     // cout << "conduct swapNodeMutation" << endl;
 
-    BinaryTree* inputtree = input->getBinaryTree();
-    BinaryTree* duptree = input->getBinaryTree()->copy();
-    map<int, TreeNode*> inputmap = inputtree->getTreeNodeMap();
+    BinaryTree *inputtree = input->getBinaryTree();
+    BinaryTree *duptree = input->getBinaryTree()->copy();
+    map<int, TreeNode *> inputmap = inputtree->getTreeNodeMap();
 
     if(inputtree->getSide() == 1){
         vector<TreeNode*> node_permu;
@@ -390,8 +446,8 @@ void swapNodeMutation(Layout *input){
 
     }else if(inputtree->getSide() == 2){
 
-        vector<TreeNode*> node_permu_front;
-        vector<TreeNode*> node_permu_back;
+        vector<TreeNode *> node_permu_front;
+        vector<TreeNode *> node_permu_back;
         node_permu_front = duptree->ExtractTree(-2);
         node_permu_back = duptree->ExtractTree(-3);
 

@@ -9,7 +9,7 @@ using namespace std;
 class TreeNode {
     private:
         int id;
-        // string branch;
+        string branch;
         ComponentProperty* comp_prop;
         ComponentState* comp_state;
     
@@ -25,7 +25,7 @@ class TreeNode {
 
         // utility
         TreeNode* copy();
-        void disconnect();
+        void disconnect(string branch="all");
         bool search(int ID);
         void updateNode();
         void shiftUp(vector<Point>);
@@ -35,8 +35,8 @@ class TreeNode {
 
         // getter
         int getID();
-        // string getBranch();
-        // TreeNode* getChild(string branch);
+        string getBranch();
+        TreeNode* getChild(string branch);
         TreeNode* getLeftchild();
         TreeNode* getRightchild();
         TreeNode* getParent();
@@ -45,7 +45,7 @@ class TreeNode {
         
         // setter
         void setID(int id);
-        // void setBranch(string branch);
+        void setBranch(string branch);
         void setChild(TreeNode* node, string branch);
         void setLeftChild(TreeNode* node);
         void setRightChild(TreeNode* node);

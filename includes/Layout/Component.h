@@ -22,6 +22,8 @@ class ComponentProperty {
         int voltage;
         map<string, Point> default_pin_position;
         Point preplace_location;
+        string preplace_side;
+        bool pierce = false;
 
     public:
         // constructor, destructor
@@ -38,6 +40,9 @@ class ComponentProperty {
         double getHeight();
         int getVoltage();
         map<string, Point> getDefaultPinPosition();
+        Point getPreplace();
+        string getSide();
+        bool getPierce();
 
         // setter
         void setName(string name);
@@ -50,6 +55,8 @@ class ComponentProperty {
         void setAllDefaultPinPosition(map<string, Point> all_pin_position);
         void setAllInfo(ComponentProperty* comp_prop);
         void setPreplaceLocation(double x, double y);
+        void setSide(string side);
+        void setPierce(bool pierce);
         
         // printer
         void printDefaultPinPosition();
@@ -80,8 +87,8 @@ class ComponentState {
         string getSide();
         double getAngle();
         Point getPosition();
-        double getLength();
-        double getWidth();
+        double getLength(string range);
+        double getWidth(string range);
         double getMargin();
         map<string, Point> getPinPosition();
         

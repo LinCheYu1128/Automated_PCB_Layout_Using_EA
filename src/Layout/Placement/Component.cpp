@@ -57,11 +57,31 @@ void ComponentProperty::setHeight(double height) {
     this->height = height;
 }
 
+string ComponentProperty::getSide() {
+    return this->preplace_side;
+}
+
+void ComponentProperty::setSide(string side) {
+    this->preplace_side = side;
+}
+
+bool ComponentProperty::getPierce() {
+    return this->pierce;
+}
+
+void ComponentProperty::setPierce(bool pierce) {
+    this->pierce = pierce;
+}
+
 int ComponentProperty::getVoltage() {
     return this->voltage;
 }
 void ComponentProperty::setVoltage(int voltage) {
     this->voltage = voltage;
+}
+
+Point ComponentProperty::getPreplace() {
+    return this->preplace_location;
 }
 
 void ComponentProperty::setPreplaceLocation(double x, double y) {
@@ -142,12 +162,24 @@ Point ComponentState::getPosition() {
     // }
 }
 
-double ComponentState::getLength() {
-    return this->length /*+ 2*this->margin*/;
+double ComponentState::getLength(string range) {
+    if (range == "inner") {
+        return this->length;
+    } else if (range == "outer") {
+        return this->length + 2*this->margin;
+    } else {
+        return this->length + 2*this->margin;
+    }
 }
 
-double ComponentState::getWidth() {
-    return this->width /*+ 2*this->margin*/;
+double ComponentState::getWidth(string range) {
+    if (range == "inner") {
+        return this->width;
+    } else if (range == "outer") {
+        return this->width + 2*this->margin;
+    } else {
+        return this->width + 2*this->margin;
+    }
 }
 
 double ComponentState::getMargin() {
@@ -224,8 +256,8 @@ void ComponentState::setAllInfo(ComponentState* comp_state) {
     this->setSide(comp_state->getSide());
     this->setAngle(comp_state->getAngle());
     this->setPosition(comp_state->getPosition().x, comp_state->getPosition().y);
-    this->setLength(comp_state->getLength());
-    this->setWidth(comp_state->getWidth());
+    this->setLength(comp_state->getLength("inner"));
+    this->setWidth(comp_state->getWidth("inner"));
     this->setMargin(comp_state->getMargin());
 }
 

@@ -8,7 +8,7 @@ using namespace std;
 
 TreeNode::TreeNode(ComponentProperty* comp_prop) {
     this->id = 0;
-    // this->branch = "";
+    this->branch = "";
     this->parent = nullptr;
     this->leftchild = nullptr;
     this->rightchild = nullptr;
@@ -29,9 +29,10 @@ TreeNode* TreeNode::copy() {
     // copy information without connection
     TreeNode* new_node = new TreeNode(this->comp_prop);
     new_node->setID(this->id);
-    // new_node->setBranch(this->branch);
+    new_node->setBranch(this->branch);
     // new_node->setComponentProp(this->getComponentProp()->copy());//no need this step
-    // new_node->setComponentState(this->getComponentState()->copy());//no need this step
+    new_node->setComponentState(this->getComponentState());
+    new_node->comp_state->setPinPosition(this->getComponentState()->getPinPosition());
     return new_node;
 }
 
@@ -39,28 +40,20 @@ int TreeNode::getID() {
     return this->id;
 }
 
-// string TreeNode::getBranch() {
-//     return this->branch;
-// }
+string TreeNode::getBranch() {
+    return this->branch;
+}
 
-// TreeNode* TreeNode::getChild(string branch) {
-//     // if (branch == "left") {
-//     //     return this->leftchild;
-//     // } else if (branch == "right") {
-//     //     return this->rightchild;
-//     // } else {
-//     //     cout << "no branch defined" << endl;
-//     //     exit(0);
-//     // }
-//     if (this->parent->leftchild == this) {
-//         return this->leftchild;
-//     } else if (this->parent->rightchild == this) {
-//         return this->rightchild;
-//     } else {
-//         cout << "no branch defined" << endl;
-//         exit(0);  
-//     }
-// }
+TreeNode* TreeNode::getChild(string branch) {
+    if (branch == "left") {
+        return this->leftchild;
+    } else if (branch == "right") {
+        return this->rightchild;
+    } else {
+        cout << "no branch defined" << endl;
+        exit(0);
+    }
+}
 
 TreeNode* TreeNode::getLeftchild() {
     return this->leftchild;
@@ -82,31 +75,25 @@ ComponentState* TreeNode::getComponentState() {
     return this->comp_state;
 }
 
-void TreeNode::disconnect() {
-    if(this->parent){
-        if(this->parent->leftchild == this) this->parent->leftchild = nullptr;
-        else this->parent->rightchild = nullptr;
+void TreeNode::disconnect(string branch) {
+    if (branch == "parent" || branch == "all") {
+        string mybranch = this->branch;
+        if(mybranch == "left"){
+            if(this->parent) this->parent->leftchild = nullptr;
+        }else if((mybranch == "right")){
+            if(this->parent) this->parent->rightchild = nullptr;
+        }
         this->parent = nullptr;
     }
 
-    // if (branch == "parent" || branch == "all") {
-    //     string mybranch = this->branch;
-    //     if(mybranch == "left"){
-    //         if(this->parent) this->parent->leftchild = nullptr;
-    //     }else if((mybranch == "right")){
-    //         if(this->parent) this->parent->rightchild = nullptr;
-    //     }
-    //     this->parent = nullptr;
-    // }
-
-    // if (branch == "left" || branch == "all") {
-    //     if(this->leftchild) this->leftchild->parent = nullptr;
-    //     this->leftchild = nullptr;
-    // }
-    // if (branch == "right" || branch == "all") {
-    //     if(this->rightchild) this->rightchild->parent = nullptr;
-    //     this->rightchild = nullptr;
-    // }
+    if (branch == "left" || branch == "all") {
+        if(this->leftchild) this->leftchild->parent = nullptr;
+        this->leftchild = nullptr;
+    }
+    if (branch == "right" || branch == "all") {
+        if(this->rightchild) this->rightchild->parent = nullptr;
+        this->rightchild = nullptr;
+    }
 }
 
 void TreeNode::delete_node_f() {
@@ -134,8 +121,14 @@ void TreeNode::delete_node_f() {
         leaf->leftchild = this->leftchild;
         leaf->rightchild = this->rightchild;
 
-        if(this->parent->leftchild == this) this->parent->leftchild = leaf;
-        else this->parent->rightchild = leaf;
+        if(this->parent->leftchild == this){
+            this->parent->leftchild = leaf;
+            leaf->branch = "left";
+        }    
+        else {
+            this->parent->rightchild = leaf;
+            leaf->branch = "right";
+        } 
         if(this->leftchild) this->leftchild->parent = leaf;
         if(this->rightchild) this->rightchild->parent = leaf;
     }
@@ -184,32 +177,27 @@ void TreeNode::setID(int id) {
     this->id = id;
 }
 
-// void TreeNode::setBranch(string branch) {
-//     this->branch = branch;
-// }
+void TreeNode::setBranch(string branch) {
+    this->branch = branch;
+}
 
 void TreeNode::setChild(TreeNode* node, string branch) {
-    // if (branch == "left") {
-    //     this->setLeftChild(node);
-    // } else if (branch == "right") {
-    //     this->setRightChild(node);
-    // }
-    if (this->parent->leftchild == this) {
+    if (branch == "left") {
         this->setLeftChild(node);
-    } else if (this->parent->rightchild == this) {
+    } else if (branch == "right") {
         this->setRightChild(node);
     }
 }
 
 void TreeNode::setLeftChild(TreeNode* node) {
     this->leftchild = node;
-    // this->leftchild->setBranch("left");
+    this->leftchild->setBranch("left");
     node->parent = this;
 }
 
 void TreeNode::setRightChild(TreeNode* node) {
     this->rightchild = node;
-    // this->rightchild->setBranch("right");
+    this->rightchild->setBranch("right");
     node->parent = this;
 }
 
@@ -280,31 +268,31 @@ bool TreeNode::search(int ID) {
 
 
 void TreeNode::updateNode() {
-    if(this->comp_prop->getVoltage() == 1){
-        if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
-            this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-        } else {
-            this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-        }
-    }else if(this->comp_prop->getVoltage() == -1){
-        if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
-            this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-        } else {
-            this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-        }
-    }else{
-        if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
-            this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-        } else {
-            this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
-            this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
-        }
-    }
+    // if(this->comp_prop->getVoltage() == 1){
+    //     if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+    //         this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //     } else {
+    //         this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //     }
+    // }else if(this->comp_prop->getVoltage() == -1){
+    //     if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+    //         this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //     } else {
+    //         this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //     }
+    // }else{
+    //     if (this->comp_state->getAngle() == 0 || this->comp_state->getAngle() == 180) {
+    //         this->comp_state->setLength(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //     } else {
+    //         this->comp_state->setLength(this->comp_prop->getWidth() + 2*this->comp_state->getMargin());
+    //         this->comp_state->setWidth(this->comp_prop->getLength() + 2*this->comp_state->getMargin());
+    //     }
+    // }
 }
 
 void TreeNode::shiftUp(vector<Point> contour) {
@@ -312,18 +300,18 @@ void TreeNode::shiftUp(vector<Point> contour) {
     double max_y = 0;
     
     ComponentState* comp = this->getComponentState();
-    if (this->parent == nullptr) x = 0;
+    if (this->getBranch() == "root") x = 0;
     else {
         ComponentState* parent = this->getParent()->getComponentState();
-        if (this->parent->leftchild == this) x = parent->getPosition().x + parent->getLength() /*+ 2*parent->getMargin()*/;
-        else if (this->parent->rightchild == this) x = parent->getPosition().x;
-        // else {cout << "Branch invalid" << endl; exit(0);}
+        if (this->getBranch() == "left") x = parent->getPosition().x + parent->getLength("outer");
+        else if (this->getBranch() == "right") x = parent->getPosition().x;
+        else {cout << "Branch invalid" << endl; exit(0);}
     }
 
     this->rotate();
 
     for (unsigned int i = 0; i < contour.size(); i++){
-        if (contour.at(i).x >= x && contour.at(i).x < x + comp->getLength() /*+ 2*comp->getMargin()*/) {
+        if (contour.at(i).x >= x && contour.at(i).x < x + comp->getLength("outer")) {
             max_y = max(contour.at(i).y, max_y);
         }
     }
@@ -334,20 +322,18 @@ void TreeNode::shiftUp(vector<Point> contour) {
 void TreeNode::rotate() {
     double PI = 3.1415926;
     if (this->comp_state->getAngle() == 90 || this->comp_state->getAngle() == 270) {
-        this->comp_state->setLength(this->comp_prop->getWidth() + 2*comp_state->getMargin());
-        this->comp_state->setWidth(this->comp_prop->getLength() + 2*comp_state->getMargin());
+        this->comp_state->setLength(this->comp_prop->getWidth());
+        this->comp_state->setWidth(this->comp_prop->getLength());
     } else {
-        this->comp_state->setLength(this->comp_prop->getLength() + 2*comp_state->getMargin());
-        this->comp_state->setWidth(this->comp_prop->getWidth() + 2*comp_state->getMargin());
+        this->comp_state->setLength(this->comp_prop->getLength());
+        this->comp_state->setWidth(this->comp_prop->getWidth());
     }
-    Point center_position = {this->comp_state->getLength()/2, this->comp_state->getWidth()/2};
+    Point center_position = {this->comp_state->getLength("outer")/2, this->comp_state->getWidth("outer")/2};
     this->comp_state->setPinPosition(this->comp_prop->getDefaultPinPosition());
     map <string, Point> temp = this->comp_prop->getDefaultPinPosition();
 
     for (auto iter = temp.begin(); iter != temp.end(); iter++) {
         Point new_pin = {0, 0};
-        // double origin_pin_x = iter->second.x - center_position.x;
-        // double origin_pin_y = iter->second.y - center_position.y;
         double origin_pin_x = iter->second.x - this->comp_prop->getLength()/2;
         double origin_pin_y = iter->second.y - this->comp_prop->getWidth()/2;
         new_pin.x = (cos(this->comp_state->getAngle()/180*PI) * origin_pin_x - sin(this->comp_state->getAngle()/180*PI) * origin_pin_y) + center_position.x;

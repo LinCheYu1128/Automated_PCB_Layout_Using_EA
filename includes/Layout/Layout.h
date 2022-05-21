@@ -46,7 +46,7 @@ class Layout {
         // setter
         void setBinaryTree(int side);
         void setContour();
-        void setState(TreeNode*, Contour*);
+        void setState(TreeNode*, string side);
         void updateLayout();
         void setFitness();
         void setFitness(tuple<double, double, double> weight_vector);
@@ -62,7 +62,8 @@ class Layout {
         double evaluateTotalArea();
         double calcuHPWL(vector< tuple<double, double> > comp_in_net);
         double calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list);
-
+        double calcuTwoSideV2(vector< TreeNode* > f_prim_list, vector< TreeNode* > f_sec_list, vector< TreeNode* > b_prim_list, vector< TreeNode* > b_sec_list);
+        void preplaceCheck(TreeNode* node);
 };
 
 void writeCsv(Layout* layout, string filename="placement.csv");

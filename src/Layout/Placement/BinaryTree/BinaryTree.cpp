@@ -15,7 +15,6 @@ BinaryTree::BinaryTree(ComponentList* comp_list) {
 }
 
 BinaryTree::~BinaryTree() {
-    // delete this->comp_list;
     delete this->root;
 }
 
@@ -59,8 +58,8 @@ void BinaryTree::copyByTraverseTree(TreeNode* old_root, TreeNode* new_root) {
 
 void BinaryTree::setRoot(TreeNode* node) {
     this->root = node;
-    // this->root->setBranch("root");
-    // this->root->disconnect("parent");
+    this->root->setBranch("root");
+    this->root->disconnect("parent");
 }
 
 void BinaryTree::setSide(int side) {
@@ -135,7 +134,7 @@ void BinaryTree::setDoubleSide() {
     this->root->setRightChild(new TreeNode(new ComponentProperty("B_RootHole", "0", 2, 9, 0.1, 0)));
     this->root->getRightchild()->setID(-3);
     this->TreeNode_map[-3] = this->root->getRightchild();
-        
+    
     for (unsigned int i = 0; i < comp_list_index.size(); i++) {
         new_comp = comp_list->getDataByIndex(comp_list_index[i]);
         // left & right branch
@@ -191,10 +190,10 @@ void BinaryTree::swap(int id_1, int id_2) {
     if (this->TreeNode_map[id_1] && this->TreeNode_map[id_2]) {
         TreeNode* A_parent = A->getParent();
         TreeNode* B_parent = B->getParent();
-        // string A_branch = A->getBranch();
-        // string B_branch = B->getBranch();
-        A->setParent(B_parent, "");
-        B->setParent(A_parent, "");
+        string A_branch = A->getBranch();
+        string B_branch = B->getBranch();
+        A->setParent(B_parent, B_branch);
+        B->setParent(A_parent, A_branch);
     } else {
         Console::log("Can't swap! Some node not inside this tree.");
         exit(0);
@@ -283,11 +282,11 @@ void BinaryTree::delete_hasOneChild_node(TreeNode* node) {
         return;
     }
 
-    if (node->getParent() == nullptr) {
+    if (node->getBranch() == "root") {
         Console::log("delete node is root");
         this->setRoot(successor);
     } else {
-        if(node->getParent()) node->getParent()->setChild(successor, "");
+        if(node->getParent()) node->getParent()->setChild(successor, node->getBranch());
     }
 }
 
@@ -393,7 +392,7 @@ void BinaryTree::ModifyTree(vector<TreeNode*> node_permu){
         TreeNode* temp = node_stack.top();
         if (temp->getID() != node_permu.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu.at(ptr)->getComponentState()->getAngle()) {
             temp->setID(node_permu.at(ptr)->getID());
-            // temp->setBranch(node_permu.at(ptr)->getBranch());
+            temp->setBranch(node_permu.at(ptr)->getBranch());
             temp->setComponentProp(node_permu.at(ptr)->getComponentProp()->copy());
             temp->setComponentState(node_permu.at(ptr)->getComponentState()->copy());
         }
@@ -423,7 +422,7 @@ void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vecto
         // cout << endl;
         if (temp->getID() != node_permu_front.at(ptr)->getID()) {
             temp->setID(node_permu_front[ptr]->getID());
-            // temp->setBranch(node_permu_front[ptr]->getBranch());
+            temp->setBranch(node_permu_front[ptr]->getBranch());
             temp->setComponentProp(node_permu_front[ptr]->getComponentProp()->copy());
             temp->setComponentState(node_permu_front[ptr]->getComponentState()->copy());
         }
@@ -444,7 +443,7 @@ void BinaryTree::ModifyDoubleSidedTree(vector<TreeNode*> node_permu_front, vecto
         // cout << "origin: " << temp->getID() << " modify: " << node_permu_back.at(ptr)->getID() << endl;
         if (temp->getID() != node_permu_back.at(ptr)->getID() || temp->getComponentState()->getAngle() != node_permu_back.at(ptr)->getComponentState()->getAngle()) {
             temp->setID(node_permu_back.at(ptr)->getID());
-            // temp->setBranch(node_permu_back.at(ptr)->getBranch());
+            temp->setBranch(node_permu_back.at(ptr)->getBranch());
             temp->setComponentProp(node_permu_back.at(ptr)->getComponentProp()->copy());
             temp->setComponentState(node_permu_back.at(ptr)->getComponentState()->copy());
         }
@@ -525,4 +524,13 @@ void BinaryTree::updateTreeNodeMap(){
             stack.push_back(node->getLeftchild());
         }
     }
+}
+
+void BinaryTree::printBinaryTreeInPreorder(){
+    vector<TreeNode*> temp = this->ExtractTree(this->getRoot()->getID());
+    for(unsigned i = 0; i < temp.size(); i++){
+        cout << temp[i]->getComponentProp()->getName() << " ";
+        // temp[i]->getComponentState()->printPinPosition();
+    }
+    cout << endl;
 }

@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    font-family: 'Raleway', sans-serif;
 }
 
 .wrapper {
@@ -21,23 +22,40 @@ body {
 }
 
 .tabcontent {
-    color: white;
-    display: none;
+    visibility: hidden; /*不能用 display: none, 會讓trackball轉不動*/
     text-align: center;
 }
 
-.box-container {
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
+.canvas-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 20vh;
 }
 
-.box-container .box {
-    flex: 1 1 25vw;
-    position: relative;
-    overflow: hidden;
+.canvas-container .canvas {
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
     border: .1rem solid rgba(0, 0, 0, .3);
     border-radius: .5rem;
     margin: 2em;
+}
+
+.canvas-container .control {
+    grid-column-start: 1;
+    grid-column-end: 6;
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+
+.canvas-container .left {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 6;
+}
+
+.canvas-container .right {
+    grid-column-start: 3;
+    grid-column-end: 6;
+    grid-row-start: 2;
+    grid-row-end: 6;
 }

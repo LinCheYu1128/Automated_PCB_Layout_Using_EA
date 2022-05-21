@@ -50,6 +50,7 @@ class MOEAD {
         // utility
         int dominateRelationship(Layout *layout_1, Layout *layout_2);
         void printExternalPopulation();
+        void writeCsvandPin();
 
         // void pushBehavior();
 };

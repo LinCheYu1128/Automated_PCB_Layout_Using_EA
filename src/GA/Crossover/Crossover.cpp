@@ -110,8 +110,6 @@ Layout*leftSubtreeCrossover(vector<Layout*>Parents){
 }
 
 Layout*randomSubtreeCrossover(vector<Layout*>Parents){
-    // cout << "start crossover"<<endl;
-    // ComponentList* component_list = new ComponentList();
     ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
@@ -125,7 +123,7 @@ Layout*randomSubtreeCrossover(vector<Layout*>Parents){
     }
     // cout << "picked_node: " << picked_node->getComponentProp()->getName() << endl;
 
-    picked_node->disconnect();
+    picked_node->disconnect("parent");
     // BTreeA->printBinaryTree();
     vector<TreeNode*> picked_node_list; // get the subtree of pick node
     vector<TreeNode*> stack;
@@ -224,6 +222,12 @@ bool checknodeexist(vector<TreeNode*> list, int index){
 Layout*kPointCrossover(vector<Layout*>Parents, int k){
     // cout << "start crossover"<<endl;
     // ComponentList* component_list = new ComponentList();
+
+    // cout << "=========Parents=========" << endl;
+    // for(unsigned i = 0; i < Parents.size(); i++){
+    //     Parents[i]->getBinaryTree()->printBinaryTreeInPreorder();
+    // }
+
     ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
     BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
     // BTreeA->printBinaryTree();
@@ -294,10 +298,10 @@ Layout*kPointCrossover(vector<Layout*>Parents, int k){
 
 Layout* nothingCrossover(vector<Layout*>Parents){
 
-    ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
+    // ComponentList* component_list = Parents.at(0)->getBinaryTree()->getComponentList();
 
-    BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
-    Layout* new_layout = new Layout(BTreeA, component_list, BTreeA->getSide());
+    // BinaryTree *BTreeA = Parents.at(0)->getBinaryTree()->copy();
+    Layout* new_layout = Parents.at(0)->copy();
     // Layout* new_layout = new Layout(component_list, 2);
 
     return new_layout;

@@ -38,7 +38,7 @@ vector<Layout*> GA::parentSelect() {
     int k = this->parameter->getTournamentNum();
     bool check = true;
 
-    vector<Layout*> selected_parent;
+    vector<Layout *> selected_parent;
     selected_parent.reserve(2);
     vector<int> index_arr;
     index_arr.reserve(k);
@@ -62,45 +62,41 @@ vector<Layout*> GA::parentSelect() {
             }
         }
     }
-    
+
     return selected_parent;
 }
 
 void GA::crossover() {
-    // TODO
-
     // cout << "Conduct Crossover" << endl;
 
     this->offspring.clear();
-    int mode = 0;//rand()%2;
-    // if(mode==0) cout << "randomSubtreeCrossover" << endl;
-    // else cout << "kPointCrossover" << endl;
-
     for(unsigned i = 0; i < this->population.size(); i++) {//
-        // cout << i ;
-        // cout << "test 1" << endl;
-        vector<Layout*> Parents = this->parentSelect();
-        // cout << "test 2" << endl;
-        
+        vector<Layout *> Parents = this->parentSelect();
         Layout *child;
-        switch (mode){
+        // int mode = rand() % 2;
+        int mode = 1;
+
+        switch (mode)
+        {
         case 0:
             child = randomSubtreeCrossover(Parents);
             break;
         case 1:
             child = kPointCrossover(Parents, 2);
             break;
-        case 2: 
+        case 2:
             child = nothingCrossover(Parents);
             break;
         default:
-            cout << "something wrong" << endl;
             break;
         }
-        // cout << "test 3" << endl;
+
         child->updateLayout();
+
+        // cout << "=========child=========" << endl;
+        // child->getBinaryTree()->printBinaryTreeInPreorder();
+
         offspring.push_back(child);
-        // cout << "test 4" << endl;
     }
 
     // cout << "End Crossover" << endl;
@@ -109,50 +105,55 @@ void GA::crossover() {
 void GA::mutation(int gen) {
 
     // cout << "Conduct mutation" << endl;
-    int mode ;
-    mode = rand()%7;
-    cout << "mutaion mode " <<mode<< endl;
+
     for(unsigned i = 0; i < this->offspring.size(); i++) {
         // offspring[i]->getBinaryTree()->printBinaryTree();
-        // int mode = 3;
-        // offspring[i]->getBinaryTree()->printBinaryTree();
-        // cout << i ;
+        // vector<TreeNode *> temp1 = offspring[i]->getBinaryTree()->ExtractTree(offspring[i]->getBinaryTree()->getRoot()->getID());
+        // for (unsigned j = 0; j < temp1.size(); j++)
+        // {
+        //     cout << temp1[j]->getComponentProp()->getName() << " ";
+        // }
+        // cout << endl;
+        int mode = 4;
+        // int mode = rand() % 7;
+        // int mode = rand() % 2;
+        // mode = (mode + 1) * 2;
         switch (mode)
         {
         case 0:
-            swapNodeMutation(this->offspring[i]);//nono
+            swapNodeMutation(this->offspring[i]);
             break;
         case 1:
-            insertMutation(this->offspring[i]);//nono
+            insertMutation(this->offspring[i]);
             break;
         case 2:
-            bitwiseMutation(this->offspring[i],0.2);//save
+            bitwiseMutation(this->offspring[i], 0.2); //something wrong
             break;
         case 3:
-            shiftSubtreeMutation(this->offspring[i]);//nono
+            shiftSubtreeMutation(this->offspring[i]); //something wrong
             break;
         case 4:
-            swapBranchMutation(this->offspring[i]);//save
+            swapBranchMutation(this->offspring[i]);
             break;
         case 5:
-            scrambleMutation(this->offspring[i]);//nono
+            scrambleMutation(this->offspring[i]);
             break;
         case 6:
-            swapSubtreeMutation(this->offspring[i]);//nono
+            swapSubtreeMutation(this->offspring[i]);
             break;
         case 7:
-            
+
             break;
         default:
             cout << "something wrong" << endl;
             break;
         }
-        // offspring[i]->getBinaryTree()->printBinaryTree();
         this->offspring[i]->updateLayout();
-        // cout << "test" << endl;
+        // offspring[i]->getBinaryTree()->printBinaryTree();
+        // cout << offspring[i] << endl;
         // vector<TreeNode*> temp = offspring[i]->getBinaryTree()->ExtractTree(offspring[i]->getBinaryTree()->getRoot()->getID());
-        // for(unsigned i = 0; i < temp.size(); i++){
-        //     cout << temp[i]->getComponentProp()->getName() << " ";
+        // for(unsigned j = 0; j < temp.size(); j++){
+        //     cout << temp[j]->getComponentProp()->getName() << " ";
         // }
         // cout << endl;
     }
@@ -161,26 +162,42 @@ void GA::mutation(int gen) {
     // for(unsigned i = 0; i < temp.size(); i++){
     //     cout << temp[i]->getComponentProp()->getName() << " ";
     // }
-    cout << "End mutation" << endl;
+    // cout << endl;
+    // cout << "End mutation" << endl;
 }
 
 void GA::survivorSelect() {
+    // cout << "----------Before----------" << endl;
+    // for(unsigned i = 0; i < this->population.size(); i++){
+    //     cout << population[i]->getFitness() << endl;
+    // }
+    // cout << "test 4-1" << endl;
     sort(this->population.begin(), this->population.end(), SortPop);
+    // cout << "test 4-2" << endl;
+    // cout << "----------After----------" << endl;
+    // for(unsigned i = 0; i < this->population.size(); i++){
+    //     cout << population[i]->getFitness() << endl;
+    // }
     for (unsigned int i = 0; i < this->offspring.size(); i++) {
+        // cout << "population " << this->population[this->parameter->getPopSize() + i] << endl;
         delete this->population[this->parameter->getPopSize() + i];
     }
+    // cout << "test 4-3" << endl;
     this->population.erase(this->population.begin() + this->parameter->getPopSize(), this->population.end());
+    // cout << "test 4-4" << endl;
 }
 
 void GA::evaluate(string target){
     if(target == "population"){
         int populationsize = this->getPopulation().size();
         for(int i = 0; i < populationsize; i++){
+            // this->population[i]->getBinaryTree()->printBinaryTreeInPreorder();
             this->population[i]->setFitness();
         }
     }else if(target == "offspring"){
         int offspringsize = this->getOffspring().size();
         for(int i = 0; i < offspringsize; i++){
+            // this->population[i]->getBinaryTree()->printBinaryTreeInPreorder();
             this->offspring[i]->setFitness();
         }
     }
@@ -188,7 +205,7 @@ void GA::evaluate(string target){
 
 void GA::updateBestOffspring(){
     // should use copy function
-    Layout* new_best = this->population[0]->copy();
+    Layout *new_best = this->population[0]->copy();
     // cout << "current fitness: " << this->population[0]->getFitness() << endl;
     // cout << "copy fitness: " << new_best->getFitness() << endl;
 
@@ -245,9 +262,9 @@ void GA::updateBestOffspring(){
     // cout << endl;
 
     // cout << "best fitness: " << this->bestOffspring->getFitness() << endl;
+    // cout << "new best: " << new_best->getFitness() << endl;
     if(new_best->getFitness() < this->bestOffspring->getFitness()){
-        // Layout* temp = this->bestOffspring;
-        // delete temp;
+        // if(this->bestOffspring) delete this->bestOffspring;
         this->bestOffspring = new_best;
     }
     if(this->population[0]->getFitness() != new_best->getFitness()) exit(EXIT_FAILURE);
@@ -271,11 +288,13 @@ vector<Layout*> GA::getParent() {
     return this->parent;
 }
 
-vector<Layout*> GA::getOffspring() {
+vector<Layout *> GA::getOffspring()
+{
     return this->offspring;
 }
 
-Layout* GA::getBest(string attr) {
+Layout *GA::getBest(string attr)
+{
     // area / wirelength / PnS / all
     return this->bestOffspring;
 }
