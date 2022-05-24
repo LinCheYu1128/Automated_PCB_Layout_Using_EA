@@ -4,7 +4,7 @@
 class MOEAD_Parameter {
     private:
         int kExpTime = 1;
-        int kGeneration = 80;
+        int kGeneration = 50;
         int kPopSize = 200;
         // parent selection
         int k_Tournament = 5;

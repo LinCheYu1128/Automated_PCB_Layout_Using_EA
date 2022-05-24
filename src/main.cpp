@@ -6,10 +6,10 @@
 using namespace std;
 
 int main (int argc, char **argv) {
-    srand((unsigned)time(0));
-    cout << (unsigned)time(0) << endl;
-    // srand(1652689932);
-    // srand(1652770053);
+    unsigned int seed = (unsigned)time(0);
+    srand(seed);
+    cout << seed << endl;
+    // seed = 1653323067;
     
 
     Console::set(argc, argv);

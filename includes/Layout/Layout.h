@@ -24,6 +24,8 @@ class Layout {
         double Pns = 0;
         double wirelength = 0;
         double fitness = 0;
+        double area_penalty = 0;
+        double aspect_ratio = 0;
 
     public:
         // constructor, destructor
@@ -42,6 +44,7 @@ class Layout {
         double getArea();
         double getWireLength();
         double getPns();
+        double getAspectRatio(){return this->aspect_ratio;};
 
         // setter
         void setBinaryTree(int side);

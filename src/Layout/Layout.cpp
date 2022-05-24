@@ -1,6 +1,7 @@
 #include "Layout.h"
 #include "console.h"
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -169,26 +170,36 @@ void Layout::setFitness(){
     // this->setWireLength();
     this->setPns();
 
-    this->fitness = 0.4*(this->area - 700) / (1000 - 700) + 0.6*(this->Pns + 35) / (-8 + 35);
-    // this->fitness = this->Pns; // -35~-8
-    // this->fitness = this->area; // 700~1000
+    double modifed_area = this->area;
+    double modifed_Pns = this->Pns;
+    // if(this->area < 900){
+    //     modifed_area = (this->area - 836) / (940 - 836);
+    // }
+    if(this->area_penalty == 0){
+        modifed_area = (this->area - 836) / (940 - 836);
+    }
+    if(this->Pns < 0){
+        modifed_Pns = (this->Pns + 8.25) / (0 + 8.25);
+    }
+
+    this->fitness = modifed_area + 0.8*modifed_Pns ;//this->aspect_ratio*500;
+    // this->fitness = (this->aspect_ratio+1)*modifed_area + modifed_Pns ;
+    // this->fitness = modifed_Pns;
+
+    // this->fitness = this->Pns; // -8~0
+    // this->fitness = this->area; // 836~940
     // this->fitness = this->area / 1000 * 0.4 + this->wirelength / 300 * 0.4 + this->Pns / 5 * 0.2;
 }
 
 void Layout::setFitness(tuple<double, double, double> weight_vector){
     this->setArea();
-    this->setWireLength();//memory leak
+    this->setWireLength();
     this->setPns();
 
     // Pns version 1
     this->fitness = (this->area - 827.604) / (2074.21 - 827.604) * get<0>(weight_vector) + 
                     (this->wirelength - 528.805) / (723.54 - 528.805) * get<1>(weight_vector) + 
                     (this->Pns - 4.25) / (15.75 - 4.25) * get<2>(weight_vector);
-    
-    // Pns version 2
-    // this->fitness = (this->area - 790.04) / (1962 - 790.04) * get<0>(weight_vector) + 
-    //                 (this->wirelength - 492.295) / (952 - 492.295) * get<1>(weight_vector) + 
-    //                 (this->Pns + 16.775) / (1.25733 + 16.775) * get<2>(weight_vector);
 }
 
 void Layout::setArea() {
@@ -374,6 +385,7 @@ double Layout::evaluateArea(int side){
     double MAX_X = 0;
     double MAX_Y = 0;
     double penalty = 0;
+    this->area_penalty = 0;
 
     if (side == 1){
         for (int i = 0; i < this->getContour("front")->getSize(); i++) {
@@ -391,9 +403,13 @@ double Layout::evaluateArea(int side){
         }
     }
     
-    if (MAX_X >= 29.2 + 1) {penalty = 10000;}
-    if (MAX_Y >= 32.5 + 1) {penalty = 10000;}
+    if (MAX_X >= 29.2) {this->area_penalty += (MAX_X - 29.2) * 10000;}
+    if (MAX_Y >= 32.5) {this->area_penalty += (MAX_Y - 32.5) * 10000;}
 
+    if (MAX_X >= 29.2) {penalty += (MAX_X - 29.2) * 10000;}
+    if (MAX_Y >= 32.5) {penalty += (MAX_Y - 32.5) * 10000;}
+
+    this->aspect_ratio = pow(((MAX_Y / MAX_X)-(32.5 / 29.2)), 2)*10000;
     // return MAX_X * MAX_Y + penalty;
     return MAX_X * MAX_Y;
 }
@@ -436,45 +452,13 @@ double Layout::calcuTwoSide(vector< Point > prim_list, vector< Point > sec_list)
 }
 
 double Layout::calcuTwoSideV2(vector< TreeNode* > f_prim_list, vector< TreeNode* > f_sec_list, vector< TreeNode* > b_prim_list, vector< TreeNode* > b_sec_list){
-    
     // version 1
-    // double f_rightest_primary_x = 0;
-    // double f_leftest_secondary_x = 27.2;
-    // double b_rightest_primary_x = 0;
-    // double b_leftest_secondary_x = 27.2;
-
-    // for(unsigned i = 0; i < f_prim_list.size(); i++){
-    //     f_rightest_primary_x = max(f_prim_list[i]->getComponentState()->getPosition().x + f_prim_list[i]->getComponentState()->getLength("outer")
-    //                                 , f_rightest_primary_x);
-    //     // cout << f_prim_list[i]->getComponentProp()->getName() << endl;
-    //     // cout << f_rightest_primary_x << endl;
-    // }
-    // for(unsigned i = 0; i < f_sec_list.size(); i++){
-    //     f_leftest_secondary_x = min(f_sec_list[i]->getComponentState()->getPosition().x, f_leftest_secondary_x);
-    //     // cout << f_sec_list[i]->getComponentProp()->getName() << endl;
-    //     // cout << f_leftest_secondary_x << endl;
-    // }
-    // double front_seperate = f_rightest_primary_x - f_leftest_secondary_x;
-
-    // for(unsigned i = 0; i < b_prim_list.size(); i++){
-    //     b_rightest_primary_x = max(b_prim_list[i]->getComponentState()->getPosition().x + b_prim_list[i]->getComponentState()->getLength("outer")
-    //                                 , b_rightest_primary_x);
-    //     // cout << b_prim_list[i]->getComponentProp()->getName() << endl;
-    //     // cout << b_rightest_primary_x << endl;
-    // }
-    // for(unsigned i = 0; i < b_sec_list.size(); i++){
-    //     b_leftest_secondary_x = min(b_sec_list[i]->getComponentState()->getPosition().x, b_leftest_secondary_x);
-    //     // cout << b_sec_list[i]->getComponentProp()->getName() << endl;
-    //     // cout << b_leftest_secondary_x << endl;
-    // }
-    // double back_seperate = b_rightest_primary_x - b_leftest_secondary_x;
-
-    // version 1 modifiy
     double f_leftest_primary_x = 27.2;
     double f_rightest_secondary_x = 0;
     double b_leftest_primary_x = 27.2;
     double b_rightest_secondary_x = 0;
 
+    double penalty = 0;
 
     for(unsigned i = 0; i < f_sec_list.size(); i++){
         f_rightest_secondary_x = max(f_sec_list[i]->getComponentState()->getPosition().x + f_sec_list[i]->getComponentState()->getLength("outer")
@@ -496,45 +480,69 @@ double Layout::calcuTwoSideV2(vector< TreeNode* > f_prim_list, vector< TreeNode*
         // cout << b_rightest_primary_x << endl;
     }
     for(unsigned i = 0; i < b_prim_list.size(); i++){
-        f_leftest_primary_x = min(b_prim_list[i]->getComponentState()->getPosition().x, f_leftest_primary_x);
+        b_leftest_primary_x = min(b_prim_list[i]->getComponentState()->getPosition().x, b_leftest_primary_x);
         // cout << b_sec_list[i]->getComponentProp()->getName() << endl;
         // cout << b_leftest_secondary_x << endl;
     }
-    double back_seperate = b_rightest_secondary_x - f_leftest_primary_x;
+    double back_seperate = b_rightest_secondary_x - b_leftest_primary_x;
 
-    if((f_prim_list.size() == 0 || f_sec_list.size() == 0) || (b_prim_list.size() == 0 || b_sec_list.size() == 0)){
-        return max(back_seperate, front_seperate);
-    }else{
-        if(back_seperate < 0) back_seperate = 0;
-        if(front_seperate < 0) front_seperate = 0;
-        return (back_seperate + front_seperate) / 2;
-    }
+    if(back_seperate > 0) {penalty += back_seperate * 1000;}
+    if(front_seperate > 0) {penalty += front_seperate * 1000;}
 
-    // // version 2
-    // double f_rightest_primary_sum = 0;
-    // double f_leftest_secondary_sum = 0;
-    // double b_rightest_primary_sum = 0;
-    // double b_leftest_secondary_sum = 0;
+    if((f_prim_list.size() == 0 || f_sec_list.size() == 0)){front_seperate = 0;}
+    if((b_prim_list.size() == 0 || b_sec_list.size() == 0)){back_seperate = 0;}
 
-    // for(unsigned i = 0; i < f_prim_list.size(); i++){
-    //     f_rightest_primary_sum += f_prim_list[i].x;
-    // }
+    return (back_seperate + front_seperate) / 2 + penalty;
+
+    // version 1 modifiy
+    // double f_leftest_primary_x = 0;
+    // double f_rightest_secondary_x = 0;
+    // double b_leftest_primary_x = 0;
+    // double b_rightest_secondary_x = 0;
+
+    // double penalty = 0;
+
     // for(unsigned i = 0; i < f_sec_list.size(); i++){
-    //     f_leftest_secondary_sum += f_sec_list[i].x;
+    //     double dist = f_sec_list[i]->getComponentState()->getPosition().x;
+    //     f_rightest_secondary_x += dist;
+    //     // f_rightest_secondary_x = max(f_sec_list[i]->getComponentState()->getPosition().x + f_sec_list[i]->getComponentState()->getLength("outer")
+    //     //                             , f_rightest_secondary_x);
+    //     // cout << f_prim_list[i]->getComponentProp()->getName() << endl;
+    //     // cout << f_rightest_primary_x << endl;
     // }
-    // double f_rightest_primary_avg = f_rightest_primary_sum / f_prim_list.size();
-    // double f_leftest_secondary_avg = f_leftest_secondary_sum / f_sec_list.size();
+    // for(unsigned i = 0; i < f_prim_list.size(); i++){
+    //     double dist = 27.2 - f_prim_list[i]->getComponentState()->getPosition().x + f_sec_list[i]->getComponentState()->getLength("outer");
+    //     f_leftest_primary_x += dist;
+    //     // f_leftest_primary_x = min(f_prim_list[i]->getComponentState()->getPosition().x, f_leftest_primary_x);
+    //     // cout << f_sec_list[i]->getComponentProp()->getName() << endl;
+    //     // cout << f_leftest_secondary_x << endl;
+    // }
+    // double front_seperate = f_rightest_secondary_x + f_leftest_primary_x;
 
-    // for(unsigned i = 0; i < b_prim_list.size(); i++){
-    //     b_rightest_primary_sum += b_prim_list[i].x;
-    // }
     // for(unsigned i = 0; i < b_sec_list.size(); i++){
-    //     b_leftest_secondary_sum += b_sec_list[i].x;
+    //     double dist = b_sec_list[i]->getComponentState()->getPosition().x;
+    //     b_rightest_secondary_x += dist;
+    //     // b_rightest_secondary_x = max(b_sec_list[i]->getComponentState()->getPosition().x + b_sec_list[i]->getComponentState()->getLength("outer")
+    //     //                             , b_rightest_secondary_x);
+    //     // cout << b_prim_list[i]->getComponentProp()->getName() << endl;
+    //     // cout << b_rightest_primary_x << endl;
     // }
-    // double b_rightest_primary_avg = b_rightest_primary_sum / b_prim_list.size();
-    // double b_leftest_secondary_avg = b_leftest_secondary_sum / b_sec_list.size();
+    // for(unsigned i = 0; i < b_prim_list.size(); i++){
+    //     double dist = 27.2 - b_prim_list[i]->getComponentState()->getPosition().x + b_prim_list[i]->getComponentState()->getLength("outer");
+    //     b_leftest_primary_x += dist;
+    //     // b_leftest_primary_x = min(b_prim_list[i]->getComponentState()->getPosition().x, b_leftest_primary_x);
+    //     // cout << b_sec_list[i]->getComponentProp()->getName() << endl;
+    //     // cout << b_leftest_secondary_x << endl;
+    // }
+    // double back_seperate = b_rightest_secondary_x - f_leftest_primary_x;
 
-    // return max(f_rightest_primary_avg - f_leftest_secondary_avg, b_rightest_primary_avg - b_leftest_secondary_avg);
+    // if(back_seperate > 0) {penalty += back_seperate * 1000;}
+    // if(front_seperate > 0) {penalty += front_seperate * 1000;}
+
+    // if((f_prim_list.size() == 0 || f_sec_list.size() == 0)){front_seperate = 0;}
+    // if((b_prim_list.size() == 0 || b_sec_list.size() == 0)){back_seperate = 0;}
+
+    // return (back_seperate + front_seperate) / 2 + penalty;
 
 }
 

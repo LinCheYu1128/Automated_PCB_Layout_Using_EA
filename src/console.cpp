@@ -9,8 +9,11 @@ Console* Console::instance;
 int Console::mode;
 
 void Console::run() {
-    GA_Optimization();
-
+    
+    for(int exp = 0; exp < 1; exp++){
+        GA_Optimization(exp);
+    }
+    
     // MOEAD_Optimization();
 
     // Test();
@@ -23,21 +26,14 @@ void Console::log(string message) {
     return;
 }
 
-void GA_Optimization(){
+void GA_Optimization(int exp){
     cout << "==========GA==========" << endl;
     
     GA* GA_optimizer = new GA();
-    // GA_optimizer->evaluate("population");
+
     
-    // int count = 0;
-    // while(1){
-    //     cout << count << endl;
-    //     cout << "origin fitness: " << GA_optimizer->getPopulation()[0]->getFitness() << endl;
-    //     Layout* temp = GA_optimizer->getPopulation()[0]->copy();
-    //     cout << "copy fitness: " << temp->getFitness() << endl;
-    //     if(GA_optimizer->getPopulation()[0]->getFitness() != temp->getFitness()) break;
-    //     count++;
-    // }
+    string filenamePin = "Pin" + to_string(exp) + ".csv";
+    string filenameCsv = "Placement" + to_string(exp) + ".csv";
 
     int generation = GA_optimizer->getParameter()->getGeneration();
 
@@ -59,26 +55,15 @@ void GA_Optimization(){
         // cout << "test 6" << endl;
         GA_optimizer->pushBehavior();
         // cout << "test 7" << endl;
-        // cout << "area " << GA_optimizer->getBestOffspring()->getArea() << endl;
-        cout << "fitness " << GA_optimizer->getBestOffspring()->getFitness() << endl;
-    
+        cout << "area: " << GA_optimizer->getBestOffspring()->getArea() << endl;
+        cout << "pns: " << GA_optimizer->getBestOffspring()->getPns() << endl;
+        cout << "fitness: " << GA_optimizer->getBestOffspring()->getFitness() << endl;
+        cout << "aspect ratio:" << GA_optimizer->getBestOffspring()->getAspectRatio() << endl;
         writeCsv(GA_optimizer->getBestOffspring());
         writePin(GA_optimizer->getBestOffspring());
 
         GA_optimizer->getOutputFile();
     }
-    
-    // GA_optimizer->getOutputFile();
-
-    // cout << "test 1" << endl;
-    // cout << GA_optimizer->getOffspring()[3] << endl;
-    // vector<TreeNode*> temp = GA_optimizer->getOffspring()[1]->getBinaryTree()->ExtractTree(GA_optimizer->getOffspring()[1]->getBinaryTree()->getRoot()->getID());
-    // for(unsigned i = 0; i < temp.size(); i++){
-    //     cout << temp[i]->getComponentProp()->getName() << " ";
-    // }
-    // cout << endl;
-    // writeCsv(GA_optimizer->getOffspring()[1]);
-    // writeCsv(GA_optimizer->getPopulation()[0]);
     
     cout << "area " << GA_optimizer->getBestOffspring()->getArea() << endl;
     cout << "WL " << GA_optimizer->getBestOffspring()->getWireLength() << endl;
@@ -86,6 +71,7 @@ void GA_Optimization(){
     // writeCsv(GA_optimizer->getBestOffspring());
     // cout << "test 2" << endl;
     delete GA_optimizer;
+    
 }
 
 void MOEAD_Optimization(){

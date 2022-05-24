@@ -37,7 +37,7 @@ class Console {
         static void log(string message);
 };
 
-void GA_Optimization();
+void GA_Optimization(int exp);
 void MOEAD_Optimization();
 void Test();
 

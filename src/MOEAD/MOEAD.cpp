@@ -324,17 +324,11 @@ void MOEAD::setOffspring(){
 }
 
 void MOEAD::writeCsvandPin(){
-    // for(unsigned i = 0; i < this->external_population.size(); i++){
-        string filenamePin = "pin.csv";
-        string filenameCsv = "placement.csv";
-        writePin(this->external_population[0], filenamePin);
-        writeCsv(this->external_population[0], filenameCsv);
-    // }
-    // for(unsigned i = 0; i < this->external_population.size(); i++){
-    //     string filenamePin = "pin" + to_string(i) + ".csv";
-    //     string filenameCsv = "placement" + to_string(i) + ".csv";
-    //     writePin(this->external_population[i], filenamePin);
-    //     writeCsv(this->external_population[i], filenameCsv);
-    // }
+    for(unsigned i = 0; i < this->external_population.size(); i++){
+        string filenamePin = "Pin" + to_string(i) + ".csv";
+        string filenameCsv = "Placement" + to_string(i) + ".csv";
+        writePin(this->external_population[i], filenamePin);
+        writeCsv(this->external_population[i], filenameCsv);
+    }
 }
 

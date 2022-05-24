@@ -73,8 +73,8 @@ void GA::crossover() {
     for(unsigned i = 0; i < this->population.size(); i++) {//
         vector<Layout *> Parents = this->parentSelect();
         Layout *child;
-        // int mode = rand() % 2;
-        int mode = 1;
+        int mode = rand() % 2;
+        // int mode = 1;
 
         switch (mode)
         {
@@ -114,17 +114,17 @@ void GA::mutation(int gen) {
         //     cout << temp1[j]->getComponentProp()->getName() << " ";
         // }
         // cout << endl;
-        int mode = 4;
+        // int mode = 1;
         // int mode = rand() % 7;
-        // int mode = rand() % 2;
-        // mode = (mode + 1) * 2;
+        int mode = rand() % 3;
+        // mode = (mode + 1);
         switch (mode)
         {
         case 0:
             swapNodeMutation(this->offspring[i]);
             break;
         case 1:
-            insertMutation(this->offspring[i]);
+            insertMutation(this->offspring[i]);// something wrong
             break;
         case 2:
             bitwiseMutation(this->offspring[i], 0.2); //something wrong
