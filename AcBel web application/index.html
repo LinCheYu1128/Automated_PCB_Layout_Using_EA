@@ -38,6 +38,8 @@
                 <input type="checkbox" id="show-Margin" onclick="showMargin()">
                 <label for="show-PNS">Show PNS:</label>
                 <input type="checkbox" id="show-PNS" onclick="showPNS()">
+                <label for="show-Route">Show Route:</label>
+                <input type="checkbox" id="show-Route" onclick="showRoute()">
             </div>
             <!-- <div id="Layout_single"></div> -->
             <div class="canvas left" id="Layout_front"></div>
@@ -82,6 +84,20 @@
             } else {
                 for (let i = 0; i < comp_list.length; i++) {
                     comp_list[i].setAttribute('fill', comp_list[i].getAttribute("original-fill"));
+                }
+            }
+        }
+
+        function showRoute() {
+            let checkBox = document.getElementById("show-Route");
+            let route_list = document.querySelectorAll(".route");
+            if (checkBox.checked == true) {
+                for (let i = 0; i < route_list.length; i++) {
+                    route_list[i].style.display = "block";
+                }
+            } else {
+                for (let i = 0; i < route_list.length; i++) {
+                    route_list[i].style.display = "none";
                 }
             }
         }

@@ -1,12 +1,21 @@
 import {Component} from "./geometry.js";
 import {SVG_Controller} from "./svg controller.js";
 
+function randomColor() {
+    var x = Math.round(0xffffff * Math.random()).toString(16);
+    var y = (6-x.length);
+    var z = "000000";
+    var z1 = z.substring(0,y);
+    return "#" + z1 + x;
+}
+
 export class Canvas {
     constructor(side, data) {
         this.placement_data = data["placement_data"];
         this.preplace_data = data["preplace_data"];
         this.pin_data = data["pin_data"];
         this.net_data = data["net_data"];
+        this.route_dict = data["route_data"];
         this.side = side;
         this.width = 29.2;
         this.height = 32.5;
@@ -23,9 +32,32 @@ export class Canvas {
 
         this.drawGrid();
         this.drawBoundary();
+        
         this.drawPlacement();
+        this.drawRoute();
         // this.drawPreplace();
         document.getElementById('Layout_'+this.side).appendChild(this.svg);
+    }
+
+    drawRoute() {
+        let net_color;
+        // var a = 13.01 + 5.5;
+        // console.log("test",a);
+        // iterate Net
+        for (let i = 0; i < Object.keys(this.route_dict).length; i++) {
+            net_color = randomColor();
+            // iterate route of each Net
+            // console.log(this.route_dict[Object.keys(this.route_dict)[i]]);
+            for (const [key, value] of Object.entries(this.route_dict[Object.keys(this.route_dict)[i]])) {
+                // console.log("raw",value[0]);
+                let x1 = Number(value[0]) + 5.5;
+                // console.log(x1);
+                let y1 = Number(value[1]) + 5.5;
+                let x2 = Number(value[2]) + 5.5;
+                let y2 = Number(value[3]) + 5.5;
+                this.create2DRoute({"polyline":`${x1}, ${y1} ${x2}, ${y2}`, stroke: net_color, stroke_width: 0.1});
+            }
+        }
     }
 
     drawGrid() {
@@ -170,6 +202,17 @@ export class Canvas {
         poly.setAttribute('fill', "none");
         poly.style['stroke'] = stroke;
         poly.style['stroke-width'] = stroke_width;
+        this.svg.appendChild(poly);
+        return;
+    }
+
+    create2DRoute({polyline, stroke="#666666", stroke_width=0.2}) {
+        let poly = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
+        poly.setAttribute('points', polyline);
+        poly.setAttribute('fill', "none");
+        poly.style['stroke'] = stroke;
+        poly.style['stroke-width'] = stroke_width;
+        poly.classList.add("route");
         this.svg.appendChild(poly);
         return;
     }

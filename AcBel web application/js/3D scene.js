@@ -135,10 +135,10 @@ function drawPlacement(placement_data, preplace_data, board_data) {
         }
     }
 
-    for (let i in preplace_data) {
-        console.log(preplace_data[i])
-        createOBJGeometry(preplace_data[i], board_data, {"axisHelper": false});
-    }
+    // for (let i in preplace_data) {
+    //     console.log(preplace_data[i])
+    //     createOBJGeometry(preplace_data[i], board_data, {"axisHelper": false});
+    // }
 }
 
 function createOBJGeometry(component, board_data, controls) {

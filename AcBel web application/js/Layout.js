@@ -3,15 +3,16 @@ import {Canvas} from "./svg canvas.js";
 import {drawTree} from "./drawTree.js"
 
 export class Layout {
-    constructor(placement_csv, pin_csv, preplace_csv, net_csv) {
+    constructor(placement_csv, pin_csv, preplace_csv, net_csv, route_csv) {
         this.component_data = {};
         this.placement_data = Placement_ArrayToMap(placement_csv);
         this.preplace_data = Preplace_ArrayToMap(preplace_csv);
         this.pin_data = Pin_ArrayToMap(pin_csv);
         this.net_data = Net_ArrayToMap(net_csv);
-        this.layout_front = new Canvas("front", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data});
-        this.layout_back = new Canvas("back", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data});
-
+        this.route_data = Route_ArrayToMap(route_csv);
+        this.layout_front = new Canvas("front", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data, "route_data": this.route_data});
+        this.layout_back = new Canvas("back", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data, "route_data": this.route_data});
+        
         drawTree({divID: 'Tree', width: 1500, height: 800, padding: 50, treeData: MapToTree(this.placement_data, placement_csv)});
     }
 
@@ -125,6 +126,21 @@ export function Net_ArrayToMap(csv) {
     return mapData;
 }
 
+export function Route_ArrayToMap(route_csv) {
+    // create route dictionary
+    let route_dict = {};
+    let current_route;
+    for (let i = 0; i < route_csv.length; i++) {
+        if (route_csv[i][0].includes("Net")) {
+            route_dict[route_csv[i][0]] = [];
+            current_route = route_csv[i][0];
+        } else {
+            route_dict[current_route].push(route_csv[i]);
+        }
+    }
+    return route_dict;
+}
+
 export function MapToTree(mapData, arrData) {
     let Tree = {};
     let queue = [];
@@ -150,3 +166,4 @@ export function MapToTree(mapData, arrData) {
     console.log("Tree", Tree)
     return Tree;
 }
+
