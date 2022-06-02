@@ -1,13 +1,7 @@
 import {Component} from "./geometry.js";
 import {SVG_Controller} from "./svg controller.js";
 
-function randomColor() {
-    var x = Math.round(0xffffff * Math.random()).toString(16);
-    var y = (6-x.length);
-    var z = "000000";
-    var z1 = z.substring(0,y);
-    return "#" + z1 + x;
-}
+
 
 export class Canvas {
     constructor(side, data) {
@@ -16,6 +10,7 @@ export class Canvas {
         this.pin_data = data["pin_data"];
         this.net_data = data["net_data"];
         this.route_dict = data["route_data"];
+        this.color_dict = data["color"];
         this.side = side;
         this.width = 29.2;
         this.height = 32.5;
@@ -29,7 +24,7 @@ export class Canvas {
         } else if (side == "back") {
             this.svg.style.transform = "rotateZ(180deg)";
         }
-
+        console.log(this.color_dict);
         this.drawGrid();
         this.drawBoundary();
         
@@ -45,7 +40,7 @@ export class Canvas {
         // console.log("test",a);
         // iterate Net
         for (let i = 0; i < Object.keys(this.route_dict).length; i++) {
-            net_color = randomColor();
+            net_color = this.color_dict[i];
             // iterate route of each Net
             // console.log(this.route_dict[Object.keys(this.route_dict)[i]]);
             for (const [key, value] of Object.entries(this.route_dict[Object.keys(this.route_dict)[i]])) {

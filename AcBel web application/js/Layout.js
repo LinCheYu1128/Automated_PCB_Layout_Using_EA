@@ -2,6 +2,18 @@ import {Canvas} from "./svg canvas.js";
 // import {Scene} from "./3D scene.js";
 import {drawTree} from "./drawTree.js"
 
+function randomColor(num) {
+    let color_dict = [];
+    for(let i = 0; i < num; i++){
+        var x = Math.round(0xffffff * Math.random()).toString(16);
+        var y = (6-x.length);
+        var z = "000000";
+        var z1 = z.substring(0,y);
+        color_dict.push("#" + z1 + x);
+    } 
+    return color_dict;
+}
+
 export class Layout {
     constructor(placement_csv, pin_csv, preplace_csv, net_csv, route_csv) {
         this.component_data = {};
@@ -10,8 +22,10 @@ export class Layout {
         this.pin_data = Pin_ArrayToMap(pin_csv);
         this.net_data = Net_ArrayToMap(net_csv);
         this.route_data = Route_ArrayToMap(route_csv);
-        this.layout_front = new Canvas("front", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data, "route_data": this.route_data});
-        this.layout_back = new Canvas("back", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data, "route_data": this.route_data});
+        this.color_dict = randomColor(Object.keys(this.route_data).length);
+        
+        this.layout_front = new Canvas("front", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data, "route_data": this.route_data, "color": this.color_dict});
+        this.layout_back = new Canvas("back", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data, "route_data": this.route_data, "color": this.color_dict});
         
         drawTree({divID: 'Tree', width: 1500, height: 800, padding: 50, treeData: MapToTree(this.placement_data, placement_csv)});
     }
