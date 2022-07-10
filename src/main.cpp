@@ -6,6 +6,7 @@
 using namespace std;
 
 int main (int argc, char **argv) {
+    cout << "test" << endl;
     unsigned int seed = (unsigned)time(0);
     srand(seed);
     cout << seed << endl;

@@ -1,0 +1,13 @@
+function exportSVG(id, filename) {
+    var svgData = document.getElementById(id).children[0];
+    var serializer = new XMLSerializer();
+    var source = serializer.serializeToString(svgData);
+    var svgUrl = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+    var downloadLink = document.createElement("a");
+    downloadLink.download = filename;
+    downloadLink.href = svgUrl;
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}

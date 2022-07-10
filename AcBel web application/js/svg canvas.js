@@ -5,6 +5,7 @@ import {SVG_Controller} from "./svg controller.js";
 
 export class Canvas {
     constructor(side, data) {
+        
         this.placement_data = data["placement_data"];
         this.preplace_data = data["preplace_data"];
         this.pin_data = data["pin_data"];
@@ -31,7 +32,15 @@ export class Canvas {
         this.drawPlacement();
         this.drawRoute();
         // this.drawPreplace();
+
         document.getElementById('Layout_'+this.side).appendChild(this.svg);
+
+        let checkBox = document.getElementById("show-Margin");
+        let comp_margin_list = document.querySelectorAll(".component-margin");
+        for (let i = 0; i < comp_margin_list.length; i++) {
+            comp_margin_list[i].style.display = "block";
+        }
+        // this.svg.clearRect(0, 0, 10, 10);
     }
 
     drawRoute() {

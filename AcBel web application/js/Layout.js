@@ -14,6 +14,7 @@ function randomColor(num) {
     return color_dict;
 }
 
+
 export class Layout {
     constructor(placement_csv, pin_csv, preplace_csv, net_csv, route_csv) {
         this.component_data = {};
@@ -28,6 +29,7 @@ export class Layout {
         this.layout_back = new Canvas("back", {"placement_data": this.placement_data, "preplace_data": this.preplace_data, "pin_data": this.pin_data, "net_data": this.net_data, "route_data": this.route_data, "color": this.color_dict});
         
         drawTree({divID: 'Tree', width: 1500, height: 800, padding: 50, treeData: MapToTree(this.placement_data, placement_csv)});
+        
     }
 
     importPlacement(arrData) {
